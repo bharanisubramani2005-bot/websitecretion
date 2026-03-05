@@ -14,13 +14,13 @@
             theme: {
                 extend: {
                     colors: {
-                        "primary": "#FFC107",
-                        "secondary": "#FF4F81",
-                        "bg-dark": "#3B1F0F",
-                        "bg-darker": "#2A1508",
-                        "bg-card": "#4E2E1A",
-                        "bg-card-light": "#5C3A24",
-                        "theme": "var(--theme-color, #FFC107)",
+                        "primary": "#FF4F81",
+                        "secondary": "#FF85B8",
+                        "bg-dark": "#FFF0F6",
+                        "bg-darker": "#FFD6E7",
+                        "bg-card": "#FFE4EF",
+                        "bg-card-light": "#FFFFFF",
+                        "theme": "var(--theme-color, #FF4F81)",
                     },
                     fontFamily: {
                         "display": ["Plus Jakarta Sans", "sans-serif"]
@@ -32,8 +32,8 @@
     <style>
         body {
             font-family: 'Plus Jakarta Sans', sans-serif;
-            background-color: #3B1F0F;
-            color: white;
+            background-color: #FFF0F6;
+            color: #1F2937;
             min-height: 100dvh;
         }
 
@@ -108,21 +108,21 @@
         }
 
         .size-btn.active {
-            border-color: var(--theme-color, #FFC107);
-            color: #2A1508;
+            border-color: var(--theme-color, #FF4F81);
+            color: #ffffff;
             transform: scale(1.02);
-            box-shadow: 0 8px 25px color-mix(in srgb, var(--theme-color, #FFC107) 30%, transparent);
+            box-shadow: 0 8px 25px color-mix(in srgb, var(--theme-color, #FF4F81) 30%, transparent);
         }
 
         .size-btn:not(.active) {
-            background: rgba(255, 255, 255, 0.05);
-            border-color: rgba(255, 255, 255, 0.08);
-            color: white;
+            background: rgba(255, 79, 129, 0.05);
+            border-color: rgba(255, 79, 129, 0.15);
+            color: #4B5563;
         }
 
         .size-btn:not(.active):hover {
-            background: rgba(255, 255, 255, 0.1);
-            border-color: rgba(255, 255, 255, 0.15);
+            background: rgba(255, 79, 129, 0.1);
+            border-color: rgba(255, 79, 129, 0.25);
             transform: scale(1.01);
         }
 
@@ -131,12 +131,12 @@
         }
 
         .size-btn.active .size-price {
-            color: #2A1508;
-            opacity: 0.7;
+            color: #ffffff;
+            opacity: 0.85;
         }
 
         .size-btn:not(.active) .size-price {
-            color: var(--theme-color, #FFC107);
+            color: var(--theme-color, #FF4F81);
         }
 
         /* ===== Animated Price ===== */
@@ -199,18 +199,18 @@
     <!-- Navbar -->
     <nav class="fixed top-0 left-0 right-0 z-50 px-4 py-5 flex items-center justify-between pointer-events-none">
         <button onclick="window.history.back()"
-            class="w-10 h-10 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center pointer-events-auto hover:bg-white/20 transition-all active:scale-90">
-            <span class="material-symbols-outlined text-white">arrow_back</span>
+            class="w-10 h-10 rounded-full bg-pink-100 border border-pink-200 flex items-center justify-center pointer-events-auto hover:bg-pink-200 transition-all active:scale-90 shadow-sm">
+            <span class="material-symbols-outlined text-pink-600">arrow_back</span>
         </button>
         <div class="flex gap-2 pointer-events-auto">
             <button
-                class="w-10 h-10 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center hover:bg-white/20 transition-all active:scale-90">
-                <span class="material-symbols-outlined text-white">share</span>
+                class="w-10 h-10 rounded-full bg-pink-100 border border-pink-200 flex items-center justify-center hover:bg-pink-200 transition-all active:scale-90 shadow-sm">
+                <span class="material-symbols-outlined text-pink-600">share</span>
             </button>
             <button id="favBtn"
-                class="w-10 h-10 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center hover:bg-white/20 transition-all active:scale-90"
+                class="w-10 h-10 rounded-full bg-pink-100 border border-pink-200 flex items-center justify-center hover:bg-pink-200 transition-all active:scale-90 shadow-sm"
                 onclick="toggleFav()">
-                <span class="material-symbols-outlined text-white" id="favIcon">favorite_border</span>
+                <span class="material-symbols-outlined text-pink-400" id="favIcon">favorite_border</span>
             </button>
         </div>
     </nav>
@@ -220,7 +220,7 @@
         <img id="drinkImg"
             src="https://images.unsplash.com/photo-1541658016709-82535e94bc69?w=800&q=85&auto=format&fit=crop&crop=center"
             class="w-full h-full object-cover object-center" alt="Drink image">
-        <div class="absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t from-bg-dark via-bg-dark/60 to-transparent">
+        <div class="absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t from-[#FFF0F6] via-[#FFF0F6]/60 to-transparent">
         </div>
     </div>
 
@@ -233,56 +233,60 @@
         </div>
 
         <!-- Drink Name -->
-        <h1 id="drinkName" class="text-3xl md:text-4xl font-extrabold mb-2 tracking-tight leading-snug">Death by
+        <h1 id="drinkName" class="text-3xl md:text-4xl font-extrabold mb-2 tracking-tight leading-snug text-gray-800">
+            Death by
             Chocolate</h1>
 
         <!-- Rating & Time -->
         <div class="flex items-center gap-4 mb-5">
             <div class="flex items-center gap-1">
                 <span class="material-symbols-outlined theme-accent text-sm fill-1">star</span>
-                <span class="text-sm font-bold">4.9</span>
-                <span class="text-xs text-white/40 font-medium">(1.2k)</span>
+                <span class="text-sm font-bold text-gray-800">4.9</span>
+                <span class="text-xs text-gray-400 font-medium">(1.2k)</span>
             </div>
-            <div class="h-4 w-[1px] bg-white/10"></div>
+            <div class="h-4 w-[1px] bg-pink-200"></div>
             <div class="flex items-center gap-1">
                 <span class="material-symbols-outlined theme-accent text-sm">schedule</span>
-                <span class="text-sm font-bold">10-15 min</span>
+                <span class="text-sm font-bold text-gray-800">10-15 min</span>
             </div>
-            <div class="h-4 w-[1px] bg-white/10"></div>
+            <div class="h-4 w-[1px] bg-pink-200"></div>
             <div class="flex items-center gap-1">
                 <span class="material-symbols-outlined theme-accent text-sm">local_fire_department</span>
-                <span class="text-sm font-bold">220 cal</span>
+                <span class="text-sm font-bold text-gray-800">220 cal</span>
             </div>
         </div>
 
         <!-- Description -->
-        <p id="drinkDesc" class="text-white/55 text-sm leading-relaxed mb-7">
+        <p id="drinkDesc" class="text-gray-500 text-sm leading-relaxed mb-7">
             Indulge in our signature triple-layered dark chocolate masterpiece. Blended with premium Swiss cocoa, dark
             chocolate chips, and topped with silky whipped cream. A true lover's paradise.
         </p>
 
         <!-- Nutrition Benefits -->
         <div class="grid grid-cols-3 gap-3 mb-7">
-            <div class="nutrition-card bg-white/5 border border-white/5 rounded-2xl p-3 text-center transition-all">
+            <div
+                class="nutrition-card bg-pink-50 border border-pink-100 rounded-2xl p-3 text-center transition-all shadow-sm">
                 <span class="material-symbols-outlined theme-accent mb-1 text-xl">bolt</span>
-                <p class="text-[10px] font-bold text-white/40 uppercase">Energy</p>
-                <p class="text-xs font-extrabold">Instant Kick</p>
+                <p class="text-[10px] font-bold text-pink-400 uppercase">Energy</p>
+                <p class="text-xs font-extrabold text-gray-700">Instant Kick</p>
             </div>
-            <div class="nutrition-card bg-white/5 border border-white/5 rounded-2xl p-3 text-center transition-all">
+            <div
+                class="nutrition-card bg-pink-50 border border-pink-100 rounded-2xl p-3 text-center transition-all shadow-sm">
                 <span class="material-symbols-outlined theme-accent mb-1 text-xl">eco</span>
-                <p class="text-[10px] font-bold text-white/40 uppercase">Natural</p>
-                <p class="text-xs font-extrabold">100% Pure</p>
+                <p class="text-[10px] font-bold text-pink-400 uppercase">Natural</p>
+                <p class="text-xs font-extrabold text-gray-700">100% Pure</p>
             </div>
-            <div class="nutrition-card bg-white/5 border border-white/5 rounded-2xl p-3 text-center transition-all">
+            <div
+                class="nutrition-card bg-pink-50 border border-pink-100 rounded-2xl p-3 text-center transition-all shadow-sm">
                 <span class="material-symbols-outlined theme-accent mb-1 text-xl">fitness_center</span>
-                <p class="text-[10px] font-bold text-white/40 uppercase">Protein</p>
-                <p class="text-xs font-extrabold">12g / serve</p>
+                <p class="text-[10px] font-bold text-pink-400 uppercase">Protein</p>
+                <p class="text-xs font-extrabold text-gray-700">12g / serve</p>
             </div>
         </div>
 
         <!-- Size Selection -->
         <div class="mb-7">
-            <h3 class="text-sm font-bold mb-3 flex items-center gap-1.5">
+            <h3 class="text-sm font-bold mb-3 flex items-center gap-1.5 text-gray-700">
                 <span class="material-symbols-outlined theme-accent text-base">straighten</span>
                 Choose Your Size
             </h3>
@@ -308,19 +312,19 @@
 
         <!-- Quantity Selector -->
         <div class="mb-7">
-            <h3 class="text-sm font-bold mb-3 flex items-center gap-1.5">
+            <h3 class="text-sm font-bold mb-3 flex items-center gap-1.5 text-gray-700">
                 <span class="material-symbols-outlined theme-accent text-base">add_shopping_cart</span>
                 Quantity
             </h3>
             <div class="flex items-center gap-4">
                 <button
-                    class="qty-btn w-11 h-11 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center hover:bg-white/10 transition-all"
+                    class="qty-btn w-11 h-11 rounded-xl bg-pink-50 border border-pink-200 flex items-center justify-center hover:bg-pink-100 transition-all"
                     onclick="changeQty(-1)">
-                    <span class="material-symbols-outlined text-white text-lg">remove</span>
+                    <span class="material-symbols-outlined text-pink-500 text-lg">remove</span>
                 </button>
-                <span id="qtyDisplay" class="text-2xl font-extrabold w-8 text-center">1</span>
+                <span id="qtyDisplay" class="text-2xl font-extrabold w-8 text-center text-gray-800">1</span>
                 <button
-                    class="qty-btn w-11 h-11 rounded-xl theme-bg-soft border border-white/10 flex items-center justify-center hover:opacity-80 transition-all"
+                    class="qty-btn w-11 h-11 rounded-xl theme-bg-soft border border-pink-100 flex items-center justify-center hover:opacity-80 transition-all"
                     onclick="changeQty(1)">
                     <span class="material-symbols-outlined theme-accent text-lg">add</span>
                 </button>
@@ -329,28 +333,28 @@
 
         <!-- Add-ons (optional extras) -->
         <div class="mb-8">
-            <h3 class="text-sm font-bold mb-3 flex items-center gap-1.5">
+            <h3 class="text-sm font-bold mb-3 flex items-center gap-1.5 text-gray-700">
                 <span class="material-symbols-outlined theme-accent text-base">tune</span>
                 Customize
             </h3>
             <div class="flex flex-wrap gap-2" id="addonsList">
                 <button
-                    class="addon-btn bg-white/5 border border-white/8 text-white/60 text-xs font-bold px-4 py-2 rounded-full transition-all hover:border-white/20"
+                    class="addon-btn bg-pink-50 border border-pink-200 text-gray-600 text-xs font-bold px-4 py-2 rounded-full transition-all hover:border-pink-400 hover:bg-pink-100"
                     data-addon-price="20" onclick="toggleAddon(this)">
                     🍯 Extra Honey +₹20
                 </button>
                 <button
-                    class="addon-btn bg-white/5 border border-white/8 text-white/60 text-xs font-bold px-4 py-2 rounded-full transition-all hover:border-white/20"
+                    class="addon-btn bg-pink-50 border border-pink-200 text-gray-600 text-xs font-bold px-4 py-2 rounded-full transition-all hover:border-pink-400 hover:bg-pink-100"
                     data-addon-price="30" onclick="toggleAddon(this)">
                     🥜 Protein Boost +₹30
                 </button>
                 <button
-                    class="addon-btn bg-white/5 border border-white/8 text-white/60 text-xs font-bold px-4 py-2 rounded-full transition-all hover:border-white/20"
+                    class="addon-btn bg-pink-50 border border-pink-200 text-gray-600 text-xs font-bold px-4 py-2 rounded-full transition-all hover:border-pink-400 hover:bg-pink-100"
                     data-addon-price="15" onclick="toggleAddon(this)">
                     🧊 Extra Ice +₹15
                 </button>
                 <button
-                    class="addon-btn bg-white/5 border border-white/8 text-white/60 text-xs font-bold px-4 py-2 rounded-full transition-all hover:border-white/20"
+                    class="addon-btn bg-pink-50 border border-pink-200 text-gray-600 text-xs font-bold px-4 py-2 rounded-full transition-all hover:border-pink-400 hover:bg-pink-100"
                     data-addon-price="25" onclick="toggleAddon(this)">
                     🍫 Choco Drizzle +₹25
                 </button>
@@ -360,16 +364,16 @@
 
     <!-- Sticky Footer -->
     <div
-        class="fixed bottom-0 left-0 right-0 bg-bg-darker/95 backdrop-blur-xl border-t border-white/5 px-6 py-4 flex items-center justify-between z-50">
+        class="fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur-xl border-t border-pink-100 px-6 py-4 flex items-center justify-between z-50 shadow-[0_-4px_20px_rgba(255,79,129,0.1)]">
         <div>
-            <p class="text-[10px] text-white/35 font-bold uppercase tracking-wider">Total Price</p>
+            <p class="text-[10px] text-pink-400 font-bold uppercase tracking-wider">Total Price</p>
             <div class="price-display">
-                <span class="text-white/40 text-lg font-bold mr-0.5">₹</span>
+                <span class="text-pink-300 text-lg font-bold mr-0.5">₹</span>
                 <span id="totalPrice" class="price-value text-2xl font-extrabold theme-accent">180</span>
             </div>
         </div>
         <button id="orderBtn" onclick="handleOrder()"
-            class="theme-bg theme-glow text-bg-dark px-8 py-3.5 rounded-2xl font-extrabold text-sm active:scale-95 transition-all flex items-center gap-2">
+            class="theme-bg theme-glow text-white px-8 py-3.5 rounded-2xl font-extrabold text-sm active:scale-95 transition-all flex items-center gap-2">
             <span class="material-symbols-outlined text-lg">shopping_bag</span>
             Order Now
         </button>
@@ -561,7 +565,7 @@
             isFav = !isFav;
             const icon = document.getElementById('favIcon');
             icon.textContent = isFav ? 'favorite' : 'favorite_border';
-            icon.style.color = isFav ? '#FF4F81' : 'white';
+            icon.style.color = isFav ? '#FF4F81' : '#f9a8d4';
 
             if (isFav) {
                 icon.style.transform = 'scale(1.3)';
