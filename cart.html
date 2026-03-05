@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Your Cart | NutriShake Bar</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+        rel="stylesheet" />
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#FFC107",
+                        "secondary": "#FF4F81",
+                        "bg-dark": "#FFF0F6",
+                        "bg-darker": "#FFE4F0",
+                        "bg-card": "#FFFFFF",
+                    },
+                },
+            },
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background: #FFF0F6;
+            color: #5C3A2A;
+            min-height: 100dvh;
+        }
+
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+    </style>
+</head>
+
+<body class="bg-bg-dark text-white font-display">
+    <nav
+        class="sticky top-0 z-50 bg-bg-darker/90 backdrop-blur-xl border-b border-white/5 px-4 py-4 flex items-center gap-4">
+        <a href="index.html" class="material-symbols-outlined text-rose-800">arrow_back</a>
+        <h1 class="text-lg font-extrabold tracking-tight text-rose-800">Your Cart</h1>
+    </nav>
+
+    <div class="px-4 py-6 max-w-2xl mx-auto">
+        <div id="cartItemsList" class="space-y-4">
+            <!-- Items injected here -->
+        </div>
+
+        <div id="emptyCart" class="hidden flex flex-col items-center justify-center py-20 text-center">
+            <span class="material-symbols-outlined text-6xl text-white/10 mb-4">shopping_cart_off</span>
+            <h2 class="text-xl font-bold text-rose-800">Your cart is empty</h2>
+            <p class="text-sm text-rose-800 mt-1">Add some delicious drinks to get started!</p>
+            <a href="menu.html"
+                class="mt-8 bg-primary text-bg-dark px-8 py-3 rounded-full font-extrabold text-sm">Explore Menu</a>
+        </div>
+
+        <div id="cartSummary" class="mt-10 border-t border-white/10 pt-6">
+            <div class="flex justify-between items-center mb-6">
+                <span class="text-white/50 font-bold">Total Amount</span>
+                <span class="text-2xl font-extrabold text-primary">₹<span id="grandTotal">0</span></span>
+            </div>
+            <button onclick="window.location.href='address.html'"
+                class="w-full bg-primary text-bg-dark py-4 rounded-2xl font-extrabold text-base shadow-xl shadow-primary/20 active:scale-[0.98] transition-transform">Proceed
+                to Checkout</button>
+        </div>
+    </div>
+
+    <script src="cart.js"></script>
+    <script>
+        function renderCart() {
+            const cart = getCart();
+            const list = document.getElementById('cartItemsList');
+            const summary = document.getElementById('cartSummary');
+            const empty = document.getElementById('emptyCart');
+
+            if (cart.length === 0) {
+                list.innerHTML = '';
+                summary.style.display = 'none';
+                empty.classList.remove('hidden');
+                return;
+            }
+
+            empty.classList.add('hidden');
+            summary.style.display = 'block';
+
+            let total = 0;
+            list.innerHTML = cart.map(item => {
+                total += item.price * item.quantity;
+                return `
+                    <div class="bg-bg-card border border-white/5 rounded-2xl p-4 flex gap-4">
+                        <div class="w-20 h-20 rounded-xl overflow-hidden flex-shrink-0">
+                            <img src="${item.img}" class="w-full h-full object-cover">
+                        </div>
+                        <div class="flex-1">
+                            <div class="flex justify-between items-start">
+                                <div>
+                                    <h3 class="font-bold text-gray-800 text-sm">${item.name}</h3>
+                                    <p class="text-[10px] text-gray-8000">${item.size}</p>
+                                </div>
+                                <button onclick="removeFromCart(${item.id})" class="text-white/20 hover:text-secondary transition-colors">
+                                    <span class="material-symbols-outlined text-sm">close</span>
+                                </button>
+                            </div>
+                            <div class="flex justify-between items-end mt-2">
+                                <div class="flex items-center gap-3 bg-white/5 rounded-lg px-2 py-1">
+                                    <button onclick="updateQuantity(${item.id}, -1)" class="material-symbols-outlined text-sm text-white/60">remove</button>
+                                    <span class="text-sm font-bold min-w-[20px] text-center">${item.quantity}</span>
+                                    <button onclick="updateQuantity(${item.id}, 1)" class="material-symbols-outlined text-sm text-white/60">add</button>
+                                </div>
+                                <span class="font-extrabold text-primary">₹${item.price * item.quantity}</span>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+
+            document.getElementById('grandTotal').textContent = total;
+        }
+
+        document.addEventListener('DOMContentLoaded', renderCart);
+    </script>
+</body>
+
+</html>

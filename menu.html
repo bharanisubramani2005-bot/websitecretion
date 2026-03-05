@@ -1,0 +1,1496 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Menu | NutriShake Bar</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+        rel="stylesheet" />
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#FFC107",
+                        "primary-dark": "#E5AC00",
+                        "secondary": "#FF4F81",
+                        "bg-dark": "#FFF0F6",
+                        "bg-darker": "#FFE4F0",
+                        "bg-card": "#FFEAF3",
+                        "bg-card-light": "#5C3A24",
+                        "pista": "#A8D88E",
+                        "berry": "#FF4F81",
+                        "choco": "#3B1F0F",
+                        "mango": "#FFC107",
+                        "cream": "#FFF8E1",
+                        "mojito": "#00E5FF",
+                        "lagoon": "#448AFF",
+                    },
+                    fontFamily: {
+                        "display": ["Plus Jakarta Sans", "sans-serif"]
+                    },
+                    borderRadius: { "DEFAULT": "1rem", "lg": "2rem", "xl": "3rem", "full": "9999px" },
+                },
+            },
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            min-height: 100dvh;
+        }
+
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+
+        .hide-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
+        .fill-1 {
+            font-variation-settings: 'FILL' 1;
+        }
+
+        /* Card hover */
+        .menu-card {
+            transition: transform 0.35s ease, box-shadow 0.35s ease;
+        }
+
+        .menu-card:hover {
+            transform: translateY(-6px) scale(1.02);
+            box-shadow: 0 16px 40px rgba(0, 0, 0, 0.4);
+        }
+
+        .menu-card:hover .card-img {
+            transform: scale(1.08);
+        }
+
+        .card-img {
+            transition: transform 0.5s ease;
+        }
+
+        /* Fade-in on scroll */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Filter tab active glow */
+        .tab-active {
+            box-shadow: 0 4px 20px rgba(216, 42, 222, 0.4);
+        }
+
+        /* Glow button */
+        .btn-glow {
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(255, 193, 7, 0.3);
+        }
+
+        .btn-glow:hover {
+            box-shadow: 0 6px 25px rgba(255, 193, 7, 0.5);
+            transform: translateY(-1px);
+        }
+
+        /* Mojito glow effect */
+        .mojito-glow {
+            box-shadow: 0 0 20px rgba(0, 229, 255, 0.15), 0 0 60px rgba(0, 229, 255, 0.05);
+        }
+
+        .mojito-glow:hover {
+            box-shadow: 0 0 30px rgba(0, 229, 255, 0.3), 0 0 80px rgba(0, 229, 255, 0.1);
+        }
+
+        /* Page reveal animation */
+        @keyframes pageReveal {
+            0% {
+                opacity: 0;
+            }
+
+            100% {
+                opacity: 1;
+            }
+        }
+
+        body {
+            animation: pageReveal 0.5s ease forwards;
+        }
+
+        /* ===== Responsive Image Handling ===== */
+
+        /* Consistent aspect ratio for all card image wrappers */
+        .menu-card .relative {
+            aspect-ratio: 4 / 5;
+        }
+
+        .menu-card .relative img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center center;
+        }
+
+        /* Desktop: wider aspect ratio */
+        @media (min-width: 768px) {
+            .menu-card .relative {
+                aspect-ratio: 5 / 4;
+            }
+        }
+
+        /* Large desktop */
+        @media (min-width: 1024px) {
+            .menu-card .relative {
+                aspect-ratio: 4 / 3;
+            }
+        }
+
+        /* Tablet landscape */
+        @media (min-width: 768px) and (max-width: 1023px) {
+            .menu-card .relative {
+                aspect-ratio: 1 / 1;
+            }
+        }
+
+        /* ===== Search Splash Animations ===== */
+
+        /* Found results banner */
+        .search-found {
+            display: none;
+            opacity: 0;
+            transform: translateY(-10px);
+            transition: opacity 0.4s ease, transform 0.4s ease;
+        }
+
+        .search-found.show {
+            display: block;
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* No results card */
+        .search-empty {
+            display: none;
+            opacity: 0;
+            transform: scale(0.85);
+            transition: opacity 0.5s ease, transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .search-empty.show {
+            display: flex;
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        /* Floating fruit icons */
+        @keyframes floatUp {
+
+            0%,
+            100% {
+                transform: translateY(0) rotate(0deg);
+            }
+
+            25% {
+                transform: translateY(-8px) rotate(-5deg);
+            }
+
+            50% {
+                transform: translateY(-14px) rotate(3deg);
+            }
+
+            75% {
+                transform: translateY(-6px) rotate(-2deg);
+            }
+        }
+
+        .float-icon {
+            display: inline-block;
+            animation: floatUp 3s ease-in-out infinite;
+        }
+
+        .float-icon:nth-child(2) {
+            animation-delay: 0.4s;
+        }
+
+        .float-icon:nth-child(3) {
+            animation-delay: 0.8s;
+        }
+
+        .float-icon:nth-child(4) {
+            animation-delay: 1.2s;
+        }
+
+        /* Bouncing emoji for no-results */
+        @keyframes bounce {
+
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            40% {
+                transform: translateY(-18px);
+            }
+
+            60% {
+                transform: translateY(-8px);
+            }
+        }
+
+        .bounce-icon {
+            display: inline-block;
+            animation: bounce 1.8s ease-in-out infinite;
+        }
+
+        /* Sparkle twinkle */
+        @keyframes twinkle {
+
+            0%,
+            100% {
+                opacity: 0.3;
+                transform: scale(0.8);
+            }
+
+            50% {
+                opacity: 1;
+                transform: scale(1.2);
+            }
+        }
+
+        .twinkle {
+            animation: twinkle 2s ease-in-out infinite;
+        }
+
+        .twinkle:nth-child(2) {
+            animation-delay: 0.5s;
+        }
+
+        .twinkle:nth-child(3) {
+            animation-delay: 1s;
+        }
+
+        /* Result count badge pulse */
+        @keyframes pulseBadge {
+
+            0%,
+            100% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.1);
+            }
+        }
+
+        .pulse-badge {
+            animation: pulseBadge 2s ease-in-out infinite;
+        }
+
+        /* ===== Drink Splash Loading Styles ===== */
+        .drink-splash {
+            position: fixed;
+            inset: 0;
+            z-index: 10000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .drink-splash.active {
+            display: flex;
+        }
+
+        .splash-bg {
+            position: absolute;
+            inset: 0;
+            background: var(--splash-color, #FFC107);
+            transform: scale(0);
+            border-radius: 50%;
+            transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .drink-splash.active .splash-bg {
+            transform: scale(3.5);
+            border-radius: 0;
+        }
+
+        .splash-content {
+            position: relative;
+            z-index: 10;
+            text-align: center;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.5s ease 0.3s;
+        }
+
+        .drink-splash.active .splash-content {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .splash-icon {
+            font-size: 4rem;
+            margin-bottom: 1.5rem;
+            display: inline-block;
+            animation: bounceSoft 1s ease-in-out infinite;
+        }
+
+        @keyframes bounceSoft {
+
+            0%,
+            100% {
+                transform: translateY(0) rotate(0);
+            }
+
+            50% {
+                transform: translateY(-15px) rotate(5deg);
+            }
+        }
+
+        .splash-text {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: #ffffff;
+            text-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            letter-spacing: -0.02em;
+        }
+
+        .splash-glow {
+            position: absolute;
+            width: 150px;
+            height: 150px;
+            background: #03ffb8;
+            filter: blur(50px);
+            opacity: 0.3;
+            border-radius: 50%;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            animation: pulseGlow 2s infinite;
+        }
+
+        @keyframes pulseGlow {
+
+            0%,
+            100% {
+                opacity: 0.2;
+                transform: translate(-50%, -50%) scale(1);
+            }
+
+            50% {
+                opacity: 0.4;
+                transform: translate(-50%, -50%) scale(1.3);
+            }
+        }
+
+        /* Transition wipes */
+        .wipe-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 10001;
+            background: #FFF0F6;
+            transform: translateX(-100%);
+            pointer-events: none;
+        }
+
+        .wipe-active .wipe-overlay {
+            animation: wipeRight 0.8s cubic-bezier(0.77, 0, 0.175, 1) forwards;
+        }
+
+        @keyframes wipeRight {
+            0% {
+                transform: translateX(-100%);
+            }
+
+            50% {
+                transform: translateX(0);
+            }
+
+            100% {
+                transform: translateX(100%);
+            }
+        }
+    </style>
+</head>
+
+<body class="bg-bg-dark text-white font-display">
+
+    <!-- Sticky Navbar -->
+    <nav
+        class="sticky top-0 z-50 bg-bg-darker/90 backdrop-blur-xl border-b border-primary/10 px-4 py-3 flex items-center justify-between">
+        <div class="flex items-center gap-3">
+            <a href="index.html" class="flex items-center gap-1 text-white/60 hover:text-primary transition-colors">
+                <span class="material-symbols-outlined text-xl">arrow_back</span>
+            </a>
+            <h1 class="text-xl font-extrabold tracking-tight">
+                <span class="text-primary">Our</span> <span class="text-white">Menu</span>
+            </h1>
+        </div>
+        <div class="flex items-center gap-3">
+            <div class="relative cursor-pointer hover:scale-110 transition-transform"
+                onclick="window.location.href='cart.html'">
+                <span class="material-symbols-outlined text-white/80">shopping_cart</span>
+                <span id="cartBadge"
+                    class="absolute -top-1.5 -right-1.5 bg-secondary text-white text-[9px] font-bold w-4 h-4 flex items-center justify-center rounded-full"
+                    style="display: none;">0</span>
+            </div>
+            <button onclick="window.location.href='wishlist.html'"
+                class="relative w-9 h-9 rounded-full bg-pink-100/10 hover:bg-pink-100/20 flex items-center justify-center transition-all hover:scale-110 active:scale-90"
+                title="Wishlist">
+                <span class="material-symbols-outlined text-secondary text-[22px]"
+                    style="font-variation-settings:'FILL' 0">favorite</span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Search Bar -->
+    <div class="px-4 pt-5 pb-2">
+        <div class="relative">
+            <span
+                class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-gray -700">search</span>
+            <input type="text" id="searchInput" placeholder="Search drinks..."
+                class="w-full bg-bg-card border border-gray-300 rounded-full pl-12 pr-5 py-3 text-sm text-gray-800 placeholder-gray-400 focus:outline-none focus:border-primary/50 focus:ring-1 focus:ring-primary/30 transition-all"
+                oninput="filterCards()" />
+        </div>
+    </div>
+
+    <!-- Category Filter Tabs -->
+    <div class="px-4 py-4">
+        <div class="flex gap-2 overflow-x-auto hide-scrollbar pb-2">
+            <button onclick="filterCategory('all')" data-cat="all"
+                class="filter-tab tab-active bg-primary text-bg-dark px-5 py-2.5 rounded-full text-sm font-extrabold whitespace-nowrap transition-all">
+                🍹 All Drinks
+            </button>
+            <button onclick="filterCategory('milkshake')" data-cat="milkshake"
+                class="filter-tab bg-bg-card text-gray-700 px-5 py-2.5 rounded-full text-sm font-bold whitespace-nowrap border border-white/5 transition-all hover:border-primary/30">
+                🥤 Milkshakes
+            </button>
+            <button onclick="filterCategory('nutdrink')" data-cat="nutdrink"
+                class="filter-tab bg-bg-card text-gray-700 px-5 py-2.5 rounded-full text-sm font-bold whitespace-nowrap border border-white/5 transition-all hover:border-pista/30">
+                🥜 Nut Drinks
+            </button>
+            <button onclick="filterCategory('juice')" data-cat="juice"
+                class="filter-tab bg-bg-card text-gray-700 px-5 py-2.5 rounded-full text-sm font-bold whitespace-nowrap border border-white/5 transition-all hover:border-secondary/30">
+                🍊 Juices
+            </button>
+            <button onclick="filterCategory('mojito')" data-cat="mojito"
+                class="filter-tab bg-bg-card text-gray-700 px-5 py-2.5 rounded-full text-sm font-bold whitespace-nowrap border border-white/5 transition-all hover:border-mojito/30">
+                🍋 Soda & Mojito
+            </button>
+        </div>
+    </div>
+
+    <!-- Search Found Banner -->
+    <div id="searchFound" class="search-found px-4 pb-2">
+        <div
+            class="bg-gradient-to-r from-primary/15 via-secondary/10 to-pista/15 rounded-2xl p-4 border border-primary/10">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center gap-2">
+                    <div class="float-icon text-lg">🥤</div>
+                    <div class="float-icon text-lg">✨</div>
+                    <div class="float-icon text-sm">🍓</div>
+                    <div class="float-icon text-sm">🥭</div>
+                </div>
+                <span id="resultBadge"
+                    class="pulse-badge bg-primary/20 text-primary text-xs font-extrabold px-3 py-1 rounded-full"></span>
+            </div>
+            <p class="text-sm font-bold text-white mt-2">Yay! We found something delicious for you <span
+                    class="twinkle">🥤</span><span class="twinkle">✨</span></p>
+            <p class="text-[11px] text-white/40 mt-0.5">Scroll down to explore your matches</p>
+        </div>
+    </div>
+
+    <!-- No Results Card -->
+    <div id="searchEmpty" class="search-empty px-4 py-10 flex-col items-center justify-center text-center">
+        <div
+            class="bg-gradient-to-br from-secondary/10 via-primary/8 to-pista/10 rounded-3xl p-8 border border-white/5 shadow-xl max-w-sm mx-auto">
+            <div class="text-5xl mb-4 bounce-icon">🍹</div>
+            <h3 class="text-xl font-extrabold text-pink-700 mb-2">Oops! No drinks found <span
+                    class="text-secondary">💔</span></h3>
+            <p class="text-sm text-gray-500 mb-5">Try searching something tasty!</p>
+            <div class="flex justify-center gap-3 text-2xl">
+                <span class="float-icon">🍊</span>
+                <span class="float-icon">🥛</span>
+                <span class="float-icon">🍋</span>
+                <span class="float-icon">🫐</span>
+            </div>
+            <button onclick="clearSearch()"
+                class="mt-5 bg-primary/20 hover:bg-primary text-primary hover:text-bg-dark px-6 py-2 rounded-full text-sm font-bold transition-all">
+                Clear Search
+            </button>
+        </div>
+    </div>
+
+    <!-- =========================================== -->
+    <!-- A. MILKSHAKES SECTION -->
+    <!-- =========================================== -->
+    <section id="sec-milkshake" class="px-4 pt-4 pb-8 category-section" data-category="milkshake">
+        <div class="flex items-center gap-2 mb-5">
+            <div class="w-8 h-8 bg-primary/15 rounded-lg flex items-center justify-center">
+                <span class="text-base">🥤</span>
+            </div>
+            <div>
+                <h2 class="text-xl font-extrabold text-rose-400">Signature Milkshakes</h2>
+                <p class="text-xs text-rose-400">Thick, creamy and oh-so-delicious</p>
+            </div>
+        </div>
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+
+            <!-- Rosemilk -->
+            <div class="menu-card fade-in bg-bg-card rounded-2xl overflow-hidden border border-white/5 cursor-pointer"
+                onclick="openDrinkDetail(this)" data-drink="strawberry" data-name="Rosemilk" data-price="80"
+                data-img="img_rosemilk.png"
+                data-desc="Chilled milk blended with sweet rose syrup, giving a refreshing floral flavor.">
+                <div class="relative overflow-hidden">
+                    <img class="card-img w-full h-40 md:h-48 object-cover" alt="Rich rosemilk flavoured milkshake"
+                        src="img_rosemilk.png" />
+                    <div class="absolute inset-0 bg-gradient-to-t from-bg-card via-transparent to-transparent"></div>
+                    <span
+                        class="absolute top-2 left-2 bg-primary/90 text-bg-dark text-[9px] font-extrabold px-2 py-0.5 rounded-full">⭐
+                        Popular</span>
+                </div>
+                <div class="p-3">
+                    <h4 class="font-bold text-rose-400 text-sm">Rosemilk</h4>
+                    <p class="text-[10px] text-rose-400 mb-2">Chilled milk blended with sweet rose syrup, giving a
+                        refreshing floral flavor.💗🤍</p>
+                    <div class="flex justify-between items-center">
+                        <span class="font-extrabold text-rose-500 text-base">₹80</span>
+                        <button
+                            class="bg-pink-500/20 hover:bg-pink-500 text-pink-500 hover:text-white p-1.5 rounded-lg transition-all">
+                            <span class="material-symbols-outlined text-sm font-bold">add</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Strawberry -->
+            <div class="menu-card fade-in bg-gradient-to-br from-secondary/15 to-bg-card rounded-2xl overflow-hidden border border-secondary/10 cursor-pointer"
+                onclick="openDrinkDetail(this)" data-drink="strawberry" data-name="strawberry bliss" data-price="160"
+                data-img="img_strawberry.png" data-desc="Real strawberries, vanilla cream.">
+                <div class="relative overflow-hidden">
+                    <img class="card-img w-full h-40 md:h-48 object-cover" alt="Fresh strawberry milkshake"
+                        src="img_strawberry.png" />
+                    <div class="absolute inset-0 bg-gradient-to-t from-bg-card via-transparent to-transparent"></div>
+                </div>
+                <div class="p-3">
+                    <h4 class="font-bold text-rose-400 text-sm">Strawberry Bliss</h4>
+                    <p class="text-[10px] text-rose-400 mb-2">Real strawberries, vanilla cream</p>
+                    <div class="flex justify-between items-center">
+                        <span class="font-extrabold text-rose-500 text-base">₹160</span>
+                        <button
+                            class="bg-secondary/20 hover:bg-secondary text-secondary hover:text-white p-1.5 rounded-lg transition-all">
+                            <span class="material-symbols-outlined text-sm font-bold">add</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Oreo -->
+            <div class="menu-card fade-in bg-bg-card rounded-2xl overflow-hidden border border-white/5 cursor-pointer"
+                onclick="openDrinkDetail(this)" data-drink="choco" data-name="oreo overload" data-price="190"
+                data-img="img_oreo.png" data-desc="Crunchy cookie crumbles blended with a creamy milk base.">
+                <div class="relative overflow-hidden">
+                    <img class="card-img w-full h-40 md:h-48 object-cover" alt="Oreo cookies and cream milkshake"
+                        src="img_oreo.png" />
+                    <div class="absolute inset-0 bg-gradient-to-t from-bg-card via-transparent to-transparent"></div>
+                </div>
+                <div class="p-3">
+                    <h4 class="font-bold text-rose-400 text-sm">Oreo Overload</h4>
+                    <p class="text-[10px] text-rose-400 mb-2">Crunchy cookie crumbles, milk base</p>
+                    <div class="flex justify-between items-center">
+                        <span class="font-extrabold text-rose-500 text-base">₹190</span>
+                        <button
+                            class="bg-primary/20 hover:bg-primary text-primary hover:text-bg-dark p-1.5 rounded-lg transition-all">
+                            <span class="material-symbols-outlined text-sm font-bold">add</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Mango -->
+            <div class="menu-card fade-in bg-gradient-to-br from-primary/12 to-bg-card rounded-2xl overflow-hidden border border-primary/10 cursor-pointer"
+                onclick="openDrinkDetail(this)" data-drink="mango" data-name="mango magic" data-price="170"
+                data-img="img_mango.png" data-desc="Alphonso pulp, creamy delight — a tropical mango milkshake.">
+                <div class="relative overflow-hidden">
+                    <img class="card-img w-full h-40 md:h-48 object-cover" alt="Fresh mango milkshake"
+                        src="img_mango.png" />
+                    <div class="absolute inset-0 bg-gradient-to-t from-bg-card via-transparent to-transparent"></div>
+                    <span
+                        class="absolute top-2 left-2 bg-primary/90 text-bg-dark text-[9px] font-extrabold px-2 py-0.5 rounded-full">🥭
+                        Seasonal</span>
+                </div>
+                <div class="p-3">
+                    <h4 class="font-bold text-rose-400 text-sm">Mango Magic</h4>
+                    <p class="text-[10px] text-rose-400 mb-2">Alphonso pulp, creamy delight</p>
+                    <div class="flex justify-between items-center">
+                        <span class="font-extrabold text-rose-500 text-base">₹170</span>
+                        <button
+                            class="bg-primary/20 hover:bg-primary text-primary hover:text-bg-dark p-1.5 rounded-lg transition-all">
+                            <span class="material-symbols-outlined text-sm font-bold">add</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Banana -->
+            <div class="menu-card fade-in bg-bg-card rounded-2xl overflow-hidden border border-white/5 cursor-pointer"
+                onclick="openDrinkDetail(this)" data-drink="lemon" data-name="banana caramel" data-price="150"
+                data-img="img_banana.png" data-desc="Sweet banana with a salted caramel drizzle, thick and creamy.">
+                <div class="relative overflow-hidden">
+                    <img class="card-img w-full h-40 md:h-48 object-cover" alt="Banana caramel milkshake"
+                        src="img_banana.png" />
+                    <div class="absolute inset-0 bg-gradient-to-t from-bg-card via-transparent to-transparent"></div>
+                </div>
+                <div class="p-3">
+                    <h4 class="font-bold text-rose-400 text-sm">Banana Caramel</h4>
+                    <p class="text-[10px] text-rose-400 mb-2">Sweet banana with salted caramel drizzle</p>
+                    <div class="flex justify-between items-center">
+                        <span class="font-extrabold text-rose-500 text-base">₹150</span>
+                        <button
+                            class="bg-primary/20 hover:bg-primary text-primary hover:text-bg-dark p-1.5 rounded-lg transition-all">
+                            <span class="material-symbols-outlined text-sm font-bold">add</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Blueberry -->
+            <div class="menu-card fade-in bg-gradient-to-br from-indigo-500/10 to-bg-card rounded-2xl overflow-hidden border border-indigo-500/10 cursor-pointer"
+                onclick="openDrinkDetail(this)" data-drink="lagoon" data-name="blueberry burst" data-price="185"
+                data-img="img_blueberry.png" data-desc="Wild blueberries with a creamy yogurt swirl.">
+                <div class="relative overflow-hidden">
+                    <img class="card-img w-full h-40 md:h-48 object-cover" alt="Fresh blueberry milkshake"
+                        src="img_blueberry.png" />
+                    <div class="absolute inset-0 bg-gradient-to-t from-bg-card via-transparent to-transparent"></div>
+                </div>
+                <div class="p-3">
+                    <h4 class="font-bold text-rose-400 text-sm">Blueberry Burst</h4>
+                    <p class="text-[10px] text-rose-400 mb-2">Wild blueberries, yogurt swirl</p>
+                    <div class="flex justify-between items-center">
+                        <span class="font-extrabold text-rose-500 text-base">₹185</span>
+                        <button
+                            class="bg-indigo-500/20 hover:bg-indigo-500 text-indigo-400 hover:text-white p-1.5 rounded-lg transition-all">
+                            <span class="material-symbols-outlined text-sm font-bold">add</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Peanut Butter -->
+            <div class="menu-card fade-in bg-bg-card rounded-2xl overflow-hidden border border-white/5 cursor-pointer"
+                onclick="openDrinkDetail(this)" data-drink="pista" data-name="peanut butter power" data-price="200"
+                data-img="img_peanutbutter.png" data-desc="Creamy PB, banana, and oat milk — packed with protein.">
+                <div class="relative overflow-hidden">
+                    <img class="card-img w-full h-40 md:h-48 object-cover" alt="Peanut butter protein milkshake"
+                        src="img_peanutbutter.png" />
+                    <div class="absolute inset-0 bg-gradient-to-t from-bg-card via-transparent to-transparent"></div>
+                    <span
+                        class="absolute top-2 left-2 bg-pista/90 text-bg-dark text-[9px] font-extrabold px-2 py-0.5 rounded-full">💪
+                        Protein</span>
+                </div>
+                <div class="p-3">
+                    <h4 class="font-bold text-rose-400 text-sm">Peanut Butter Power</h4>
+                    <p class="text-[10px] text-rose-400 mb-2">Creamy PB, banana, oat milk</p>
+                    <div class="flex justify-between items-center">
+                        <span class="font-extrabold text-rose-500 text-base">₹200</span>
+                        <button
+                            class="bg-primary/20 hover:bg-primary text-primary hover:text-bg-dark p-1.5 rounded-lg transition-all">
+                            <span class="material-symbols-outlined text-sm font-bold">add</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- =========================================== -->
+    <!-- B. NUT DRINKS SECTION -->
+    <!-- =========================================== -->
+    <section id="sec-nutdrink" class="relative px-4 pt-4 pb-8 category-section" data-category="nutdrink">
+        <div
+            class="absolute inset-0 bg-gradient-to-b from-pista/5 via-pista/8 to-transparent pointer-events-none rounded-3xl">
+        </div>
+        <div class="relative z-10">
+            <div class="flex items-center gap-2 mb-5">
+                <div class="w-8 h-8 bg-pista/15 rounded-lg flex items-center justify-center">
+                    <span class="text-base">🥜</span>
+                </div>
+                <div>
+                    <h2 class="text-xl font-extrabold text-rose-400">Power-Packed Nut Drinks</h2>
+                    <p class="text-xs text-rose-400">Natural energy for your busy day</p>
+                </div>
+            </div>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+
+                <!-- Badam Milk -->
+                <div class="menu-card fade-in bg-bg-card rounded-2xl overflow-hidden border border-pista/10 cursor-pointer"
+                    onclick="openDrinkDetail(this)" data-drink="pista" data-name="Royal Badam Milk" data-price="140"
+                    data-img="img_badam.png" data-desc="Golden badam milk brewed with premium saffron and cardamom.">
+                    <div class="relative overflow-hidden">
+                        <img class="card-img w-full h-40 md:h-48 object-cover" alt="Golden badam milk with saffron"
+                            src="img_badam.png" />
+                        <div class="absolute inset-0 bg-gradient-to-t from-bg-card via-transparent to-transparent">
+                        </div>
+                        <span
+                            class="absolute top-2 left-2 bg-pista/90 text-bg-dark text-[9px] font-extrabold px-2 py-0.5 rounded-full">🛡️
+                            Immunity Boost</span>
+                    </div>
+                    <div class="p-3">
+                        <h4 class="font-bold text-rose-400 text-sm">Royal Badam Milk</h4>
+                        <p class="text-[10px] text-rose-400 mb-2">Saffron, almonds, cardamom</p>
+                        <div class="flex justify-between items-center">
+                            <span class="font-extrabold text-rose-500 text-base">₹140</span>
+                            <button onclick="event.stopPropagation(); addToCart('Royal Badam Milk')"
+                                class="bg-pista/20 hover:bg-pista text-pista hover:text-bg-dark p-1.5 rounded-lg transition-all">
+                                <span class="material-symbols-outlined text-sm font-bold">add</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Pista Shake -->
+                <div class="menu-card fade-in bg-gradient-to-br from-pista/10 to-bg-card rounded-2xl overflow-hidden border border-pista/10 cursor-pointer"
+                    onclick="openDrinkDetail(this)" data-drink="pista" data-name="Pista Shake" data-price="160"
+                    data-img="img_pista.png"
+                    data-desc="Creamy milkshake with roasted pistachios and a hint of vanilla.">
+                    <div class="relative overflow-hidden">
+                        <img class="card-img w-full h-40 md:h-48 object-cover" alt="Creamy pistachio shake"
+                            src="img_pista.png" />
+                        <div class="absolute inset-0 bg-gradient-to-t from-bg-card via-transparent to-transparent">
+                        </div>
+                    </div>
+                    <div class="p-3">
+                        <h4 class="font-bold text-rose-400 text-sm">Pista Shake</h4>
+                        <p class="text-[10px] text-rose-400 mb-2">Roasted pistachios, milk, sugar</p>
+                        <div class="flex justify-between items-center">
+                            <span class="font-extrabold text-rose-500 text-base">₹160</span>
+                            <button onclick="event.stopPropagation(); addToCart('Pista Shake')"
+                                class="bg-pista/20 hover:bg-pista text-pista hover:text-bg-dark p-1.5 rounded-lg transition-all">
+                                <span class="material-symbols-outlined text-sm font-bold">add</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Dates Shake -->
+                <div class="menu-card fade-in bg-bg-card rounded-2xl overflow-hidden border border-primary/10 cursor-pointer"
+                    onclick="openDrinkDetail(this)" data-drink="choco" data-name="Dates & Walnut Shake" data-price="210"
+                    data-img="img_dates.png" data-desc="A natural energetic blend of soft dates and crunchy walnuts.">
+                    <div class="relative overflow-hidden">
+                        <img class="card-img w-full h-40 md:h-48 object-cover" alt="Dates and walnut shake"
+                            src="img_dates.png" />
+                        <div class="absolute inset-0 bg-gradient-to-t from-bg-card via-transparent to-transparent">
+                        </div>
+                        <span
+                            class="absolute top-2 left-2 bg-primary/90 text-bg-dark text-[9px] font-extrabold px-2 py-0.5 rounded-full">⚡
+                            Energy Booster</span>
+                    </div>
+                    <div class="p-3">
+                        <h4 class="font-bold text-rose-400 text-sm">Dates & Walnut Shake</h4>
+                        <p class="text-[10px] text-rose-400 mb-2">Natural sugar, high protein</p>
+                        <div class="flex justify-between items-center">
+                            <span class="font-extrabold text-rose-500 text-base">₹210</span>
+                            <button onclick="event.stopPropagation(); addToCart('Dates & Walnut Shake')"
+                                class="bg-primary/20 hover:bg-primary text-primary hover:text-bg-dark p-1.5 rounded-lg transition-all">
+                                <span class="material-symbols-outlined text-sm font-bold">add</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Dry Fruit Special -->
+                <div class="menu-card fade-in bg-bg-card rounded-2xl overflow-hidden border border-white/5 cursor-pointer"
+                    onclick="openDrinkDetail(this)" data-drink="mango" data-name="Dry Fruit Special" data-price="250"
+                    data-img="https://i.pinimg.com/736x/fb/a0/bc/fba0bcbf553d18b190f8c1d4a68e2ada.jpg"
+                    data-desc="The ultimate royal blend of cashews, almonds, and pistachios.">
+                    <div class="relative overflow-hidden">
+                        <img class="card-img w-full h-40 md:h-48 object-cover" alt="Mixed dry fruit shake"
+                            src="https://i.pinimg.com/736x/fb/a0/bc/fba0bcbf553d18b190f8c1d4a68e2ada.jpg" />
+                        <div class="absolute inset-0 bg-gradient-to-t from-bg-card via-transparent to-transparent">
+                        </div>
+                        <span
+                            class="absolute top-2 left-2 bg-secondary/90 text-white text-[9px] font-extrabold px-2 py-0.5 rounded-full">👑
+                            Premium</span>
+                    </div>
+                    <div class="p-3">
+                        <h4 class="font-bold text-rose-400 text-sm">Dry Fruit Special</h4>
+                        <p class="text-[10px] text-rose-400 mb-2">Cashew, almond, pistachio blend</p>
+                        <div class="flex justify-between items-center">
+                            <span class="font-extrabold text-rose-500 text-base">₹250</span>
+                            <button onclick="event.stopPropagation(); addToCart('Dry Fruit Special')"
+                                class="bg-primary/20 hover:bg-primary text-primary hover:text-bg-dark p-1.5 rounded-lg transition-all">
+                                <span class="material-symbols-outlined text-sm font-bold">add</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Protein Nut Shake -->
+                <div class="menu-card fade-in bg-gradient-to-br from-primary/10 to-bg-card rounded-2xl overflow-hidden border border-primary/8 cursor-pointer"
+                    onclick="openDrinkDetail(this)" data-drink="pista" data-name="Protein Nut Shake" data-price="230"
+                    data-img="https://i.pinimg.com/736x/dc/2e/d8/dc2ed88755aa648dea6067c0ad46ddc7.jpg"
+                    data-desc="High protein shake with whey, almonds, and oat milk.">
+                    <div class="relative overflow-hidden">
+                        <img class="card-img w-full h-40 md:h-48 object-cover" alt="Protein nut power shake"
+                            src="https://i.pinimg.com/736x/dc/2e/d8/dc2ed88755aa648dea6067c0ad46ddc7.jpg" />
+                        <div class="absolute inset-0 bg-gradient-to-t from-bg-card via-transparent to-transparent">
+                        </div>
+                        <span
+                            class="absolute top-2 left-2 bg-pista/90 text-bg-dark text-[9px] font-extrabold px-2 py-0.5 rounded-full">💪
+                            Gym Fuel</span>
+                    </div>
+                    <div class="p-3">
+                        <h4 class="font-bold text-rose-400 text-sm">Protein Nut Shake</h4>
+                        <p class="text-[10px] text-rose-400 mb-2">Whey, almonds, peanuts, oat milk</p>
+                        <div class="flex justify-between items-center">
+                            <span class="font-extrabold text-rose-500 text-base">₹230</span>
+                            <button onclick="event.stopPropagation(); addToCart('Protein Nut Shake')"
+                                class="bg-pista/20 hover:bg-pista text-pista hover:text-bg-dark p-1.5 rounded-lg transition-all">
+                                <span class="material-symbols-outlined text-sm font-bold">add</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- =========================================== -->
+    <!-- C. FRESH FRUIT JUICES SECTION -->
+    <!-- =========================================== -->
+    <section id="sec-juice" class="relative px-4 pt-4 pb-8 category-section" data-category="juice">
+        <div
+            class="absolute inset-0 bg-gradient-to-b from-secondary/3 via-secondary/6 to-transparent pointer-events-none">
+        </div>
+        <div class="relative z-10">
+            <div class="flex items-center gap-2 mb-5">
+                <div class="w-8 h-8 bg-secondary/15 rounded-lg flex items-center justify-center">
+                    <span class="text-base">🍊</span>
+                </div>
+                <div>
+                    <h2 class="text-xl font-extrabold text-rose-400">Fresh Fruit Juices</h2>
+                    <p class="text-xs text-rose-400">100% fresh, zero preservatives</p>
+                </div>
+            </div>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+
+                <!-- Orange -->
+                <div class="menu-card fade-in bg-gradient-to-br from-orange-500/15 to-bg-card rounded-2xl overflow-hidden border border-orange-500/10 cursor-pointer"
+                    onclick="openDrinkDetail(this)" data-drink="orange" data-name="Fresh Orange" data-price="120"
+                    data-img="img_orange.png" data-desc="Cold-pressed Nagpur oranges bursting with Vitamin C.">
+                    <div class="relative overflow-hidden">
+                        <img class="card-img w-full h-44 md:h-52 object-cover" alt="Fresh squeezed orange juice"
+                            src="img_orange.png" />
+                        <div class="absolute inset-0 bg-gradient-to-t from-bg-card via-transparent to-transparent">
+                        </div>
+                    </div>
+                    <div class="p-3">
+                        <h4 class="font-bold text-rose-400 text-sm">Fresh Orange</h4>
+                        <p class="text-[10px] text-rose-400 mb-2">Cold-pressed Nagpur oranges</p>
+                        <div class="flex justify-between items-center">
+                            <span class="font-extrabold text-rose-500 text-base">₹120</span>
+                            <button onclick="event.stopPropagation(); addToCart('Fresh Orange')"
+                                class="bg-orange-500/20 hover:bg-orange-500 text-orange-400 hover:text-white p-1.5 rounded-lg transition-all">
+                                <span class="material-symbols-outlined text-sm font-bold">add</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Apple -->
+                <div class="menu-card fade-in bg-gradient-to-br from-red-500/10 to-bg-card rounded-2xl overflow-hidden border border-red-500/8 cursor-pointer"
+                    onclick="openDrinkDetail(this)" data-drink="apple" data-name="Fresh Apple" data-price="130"
+                    data-img="img_apple.png" data-desc="Naturally sweet juice from crisp Shimla apples.">
+                    <div class="relative overflow-hidden">
+                        <img class="card-img w-full h-44 md:h-52 object-cover" alt="Fresh apple juice"
+                            src="img_apple.png" />
+                        <div class="absolute inset-0 bg-gradient-to-t from-bg-card via-transparent to-transparent">
+                        </div>
+                    </div>
+                    <div class="p-3">
+                        <h4 class="font-bold text-rose-400 text-sm">Fresh Apple</h4>
+                        <p class="text-[10px] text-rose-400 mb-2">Shimla apples, naturally sweet</p>
+                        <div class="flex justify-between items-center">
+                            <span class="font-extrabold text-rose-500 text-base">₹130</span>
+                            <button onclick="event.stopPropagation(); addToCart('Fresh Apple')"
+                                class="bg-red-500/20 hover:bg-red-500 text-red-400 hover:text-white p-1.5 rounded-lg transition-all">
+                                <span class="material-symbols-outlined text-sm font-bold">add</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Watermelon -->
+                <div class="menu-card fade-in bg-gradient-to-br from-secondary/10 to-bg-card rounded-2xl overflow-hidden border border-secondary/8 cursor-pointer"
+                    onclick="openDrinkDetail(this)" data-drink="watermelon" data-name="Watermelon Chill"
+                    data-price="100" data-img="img_watermelon.png"
+                    data-desc="Ice-cold, hydrating watermelon juice for the perfect summer chill.">
+                    <div class="relative overflow-hidden">
+                        <img class="card-img w-full h-44 md:h-52 object-cover" alt="Refreshing watermelon juice"
+                            src="img_watermelon.png" />
+                        <div class="absolute inset-0 bg-gradient-to-t from-bg-card via-transparent to-transparent">
+                        </div>
+                        <span
+                            class="absolute top-2 left-2 bg-secondary/90 text-white text-[9px] font-extrabold px-2 py-0.5 rounded-full">🧊
+                            Summer Hit</span>
+                    </div>
+                    <div class="p-3">
+                        <h4 class="font-bold text-rose-400 text-sm">Watermelon Chill</h4>
+                        <p class="text-[10px] text-rose-400 mb-2">Ice-cold, refreshing, hydrating</p>
+                        <div class="flex justify-between items-center">
+                            <span class="font-extrabold text-rose-400 text-base">₹100</span>
+                            <button onclick="event.stopPropagation(); addToCart('Watermelon Chill')"
+                                class="bg-secondary/20 hover:bg-secondary text-secondary hover:text-white p-1.5 rounded-lg transition-all">
+                                <span class="material-symbols-outlined text-sm font-bold">add</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Pineapple -->
+                <div class="menu-card fade-in bg-gradient-to-br from-primary/10 to-bg-card rounded-2xl overflow-hidden border border-primary/8 cursor-pointer"
+                    onclick="openDrinkDetail(this)" data-drink="pineapple" data-name="Pineapple Punch" data-price="110"
+                    data-img="img_pineapple.png" data-desc="Tropical pineapple sweetness with a punch of vitamins.">
+                    <div class="relative overflow-hidden">
+                        <img class="card-img w-full h-44 md:h-52 object-cover" alt="Tropical pineapple juice"
+                            src="img_pineapple.png" />
+                        <div class="absolute inset-0 bg-gradient-to-t from-bg-card via-transparent to-transparent">
+                        </div>
+                    </div>
+                    <div class="p-3">
+                        <h4 class="font-bold text-rose-400 text-sm">Pineapple Punch</h4>
+                        <p class="text-[10px] text-rose-400 mb-2">Tropical sweetness, vitamin-rich</p>
+                        <div class="flex justify-between items-center">
+                            <span class="font-extrabold text-rose-400 text-base">₹110</span>
+                            <button onclick="event.stopPropagation(); addToCart('Pineapple Punch')"
+                                class="bg-primary/20 hover:bg-primary text-primary hover:text-bg-dark p-1.5 rounded-lg transition-all">
+                                <span class="material-symbols-outlined text-sm font-bold">add</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Pomegranate -->
+                <div class="menu-card fade-in bg-gradient-to-br from-rose-600/10 to-bg-card rounded-2xl overflow-hidden border border-rose-600/10 cursor-pointer"
+                    onclick="openDrinkDetail(this)" data-drink="pomegranate" data-name="Pomegranate Ruby"
+                    data-price="150" data-img="img_pomegranate.png"
+                    data-desc="Antioxidant-rich pure pomegranate extract for a healthy heart.">
+                    <div class="relative overflow-hidden">
+                        <img class="card-img w-full h-44 md:h-52 object-cover" alt="Fresh pomegranate juice"
+                            src="img_pomegranate.png" />
+                        <div class="absolute inset-0 bg-gradient-to-t from-bg-card via-transparent to-transparent">
+                        </div>
+                        <span
+                            class="absolute top-2 left-2 bg-rose-500/90 text-white text-[9px] font-extrabold px-2 py-0.5 rounded-full">❤️
+                            Heart Healthy</span>
+                    </div>
+                    <div class="p-3">
+                        <h4 class="font-bold text-rose-400 text-sm">Pomegranate Ruby</h4>
+                        <p class="text-[10px] text-rose-400 mb-2">Antioxidant-rich, pure extract</p>
+                        <div class="flex justify-between items-center">
+                            <span class="font-extrabold text-rose-400 text-base">₹150</span>
+                            <button onclick="event.stopPropagation(); addToCart('Pomegranate Ruby')"
+                                class="bg-rose-500/20 hover:bg-rose-500 text-rose-400 hover:text-white p-1.5 rounded-lg transition-all">
+                                <span class="material-symbols-outlined text-sm font-bold">add</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Mixed Fruit -->
+                <div class="menu-card fade-in bg-gradient-to-br from-primary/8 from-secondary/8 to-bg-card rounded-2xl overflow-hidden border border-primary/10 cursor-pointer"
+                    onclick="openDrinkDetail(this)" data-drink="mango" data-name="Mixed Fruit Fiesta" data-price="140"
+                    data-img="img_mixedfruit.png" data-desc="A vibrant six-fruit blend for a complete vitamin fiesta.">
+                    <div class="relative overflow-hidden">
+                        <img class="card-img w-full h-44 md:h-52 object-cover" alt="Colorful mixed fruit juice"
+                            src="img_mixedfruit.png" />
+                        <div class="absolute inset-0 bg-gradient-to-t from-bg-card via-transparent to-transparent">
+                        </div>
+                        <span
+                            class="absolute top-2 left-2 bg-primary/90 text-bg-dark text-[9px] font-extrabold px-2 py-0.5 rounded-full">🌈
+                            Best Seller</span>
+                    </div>
+                    <div class="p-3">
+                        <h4 class="font-bold text-rose-400 text-sm">Mixed Fruit Fiesta</h4>
+                        <p class="text-[10px] text-rose-400 mb-2">6-fruit blend, naturally sweet</p>
+                        <div class="flex justify-between items-center">
+                            <span class="font-extrabold text-rose-400 text-base">₹140</span>
+                            <button onclick="event.stopPropagation(); addToCart('Mixed Fruit Fiesta')"
+                                class="bg-primary/20 hover:bg-primary text-primary hover:text-bg-dark p-1.5 rounded-lg transition-all">
+                                <span class="material-symbols-outlined text-sm font-bold">add</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- =========================================== -->
+    <!-- D. SODA & MOJITO SECTION -->
+    <!-- =========================================== -->
+    <section id="sec-mojito" class="relative px-4 pt-4 pb-10 category-section" data-category="mojito">
+        <div class="absolute inset-0 bg-gradient-to-b from-mojito/3 via-mojito/5 to-transparent pointer-events-none">
+        </div>
+        <div class="relative z-10">
+            <div class="flex items-center gap-2 mb-5">
+                <div class="w-8 h-8 bg-mojito/15 rounded-lg flex items-center justify-center">
+                    <span class="text-base">🍋</span>
+                </div>
+                <div>
+                    <h2 class="text-xl font-extrabold text-rose-400">Soda & Mojito</h2>
+                    <p class="text-xs text-rose-400">Fizzy, refreshing, and vibrant</p>
+                </div>
+            </div>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+
+                <!-- Mint Mojito -->
+                <div class="menu-card fade-in mojito-glow bg-gradient-to-br from-emerald-500/15 to-bg-card rounded-2xl overflow-hidden border border-emerald-500/15 cursor-pointer"
+                    onclick="openDrinkDetail(this)" data-drink="mojito" data-name="Mint Mojito" data-price="130"
+                    data-img="img_mojito.png" data-desc="Fresh mint leaves, tangy lime, and sparkling soda override.">
+                    <div class="relative overflow-hidden">
+                        <img class="card-img w-full h-40 md:h-48 object-cover" alt="Fresh mint mojito with lime"
+                            src="img_mojito.png" />
+                        <div class="absolute inset-0 bg-gradient-to-t from-bg-card via-transparent to-transparent">
+                        </div>
+                        <span
+                            class="absolute top-2 left-2 bg-rose-400/90 text-white text-[9px] font-extrabold px-2 py-0.5 rounded-full">🌿
+                            Refreshing</span>
+                    </div>
+                    <div class="p-3">
+                        <h4 class="font-bold text-rose-400 text-sm">Mint Mojito</h4>
+                        <p class="text-[10px] text-rose-400 mb-2">Crushed mint, lime, soda</p>
+                        <div class="flex justify-between items-center">
+                            <span class="font-extrabold text-rose-400 text-base">₹130</span>
+                            <button onclick="event.stopPropagation(); addToCart('Mint Mojito')"
+                                class="bg-rose-500/20 hover:bg-rose-500 text-emerald-400 hover:text-white p-1.5 rounded-lg transition-all">
+                                <span class="material-symbols-outlined text-sm font-bold">add</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Blue Lagoon -->
+                <div class="menu-card fade-in mojito-glow bg-gradient-to-br from-blue-500/15 to-bg-card rounded-2xl overflow-hidden border border-blue-500/15 cursor-pointer"
+                    onclick="openDrinkDetail(this)" data-drink="lagoon" data-name="Blue Lagoon" data-price="150"
+                    data-img="https://i.pinimg.com/736x/10/3f/b7/103fb7276b96e8f5dfe04b08489e1b08.jpg"
+                    data-desc="A stunning blue curacao and lemonade blend for an electric refresher.">
+                    <div class="relative overflow-hidden">
+                        <img class="card-img w-full h-40 md:h-48 object-cover" alt="Electric blue lagoon drink"
+                            src="https://i.pinimg.com/736x/10/3f/b7/103fb7276b96e8f5dfe04b08489e1b08.jpg" />
+                        <div class="absolute inset-0 bg-gradient-to-t from-bg-card via-transparent to-transparent">
+                        </div>
+                        <span
+                            class="absolute top-2 left-2 bg-blue-500/90 text-white text-[9px] font-extrabold px-2 py-0.5 rounded-full">💎
+                            Stunning</span>
+                    </div>
+                    <div class="p-3">
+                        <h4 class="font-bold text-rose-400 text-sm">Blue Lagoon</h4>
+                        <p class="text-[10px] text-rose-400 mb-2">Blue curacao, lemonade, ice</p>
+                        <div class="flex justify-between items-center">
+                            <span class="font-extrabold text-rose-400 text-base">₹150</span>
+                            <button onclick="event.stopPropagation(); addToCart('Blue Lagoon')"
+                                class="bg-blue-500/20 hover:bg-blue-500 text-blue-400 hover:text-white p-1.5 rounded-lg transition-all">
+                                <span class="material-symbols-outlined text-sm font-bold">add</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Lemon Soda -->
+                <div class="menu-card fade-in mojito-glow bg-gradient-to-br from-primary/12 to-bg-card rounded-2xl overflow-hidden border border-primary/12 cursor-pointer"
+                    onclick="openDrinkDetail(this)" data-drink="lemon" data-name="Lemon Soda" data-price="80"
+                    data-img="https://i.pinimg.com/736x/f2/3c/bd/f23cbdd8ef4dbea21ff7d4857422994f.jpg"
+                    data-desc="The classic fizzy lemon refresher, perfect with salt or sugar.">
+                    <div class="relative overflow-hidden">
+                        <img class="card-img w-full h-40 md:h-48 object-cover" alt="Fresh lemon soda with ice"
+                            src="https://i.pinimg.com/736x/f2/3c/bd/f23cbdd8ef4dbea21ff7d4857422994f.jpg" />
+                        <div class="absolute inset-0 bg-gradient-to-t from-bg-card via-transparent to-transparent">
+                        </div>
+                    </div>
+                    <div class="p-3">
+                        <h4 class="font-bold text-rose-400 text-sm">Lemon Soda</h4>
+                        <p class="text-[10px] text-rose-400 mb-2">Classic lemon fizz, salt/sweet</p>
+                        <div class="flex justify-between items-center">
+                            <span class="font-extrabold text-rose-400 text-base">₹80</span>
+                            <button onclick="event.stopPropagation(); addToCart('Lemon Soda')"
+                                class="bg-primary/20 hover:bg-primary text-primary hover:text-bg-dark p-1.5 rounded-lg transition-all">
+                                <span class="material-symbols-outlined text-sm font-bold">add</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Green Apple Soda -->
+                <div class="menu-card fade-in mojito-glow bg-gradient-to-br from-lime-500/12 to-bg-card rounded-2xl overflow-hidden border border-lime-500/12 cursor-pointer"
+                    onclick="openDrinkDetail(this)" data-drink="apple" data-name="Green Apple Soda" data-price="100"
+                    data-img="https://i.pinimg.com/1200x/f7/01/1b/f7011b8ec27d98698e0d3dbfec17a754.jpg"
+                    data-desc="Tangy green apple syrup blended with sparkling soda for a crisp hit.">
+                    <div class="relative overflow-hidden">
+                        <img class="card-img w-full h-40 md:h-48 object-cover" alt="Green apple soda with fizz"
+                            src="https://i.pinimg.com/1200x/f7/01/1b/f7011b8ec27d98698e0d3dbfec17a754.jpg" />
+                        <div class="absolute inset-0 bg-gradient-to-t from-bg-card via-transparent to-transparent">
+                        </div>
+                    </div>
+                    <div class="p-3">
+                        <h4 class="font-bold text-rose-400 text-sm">Green Apple Soda</h4>
+                        <p class="text-[10px] text-rose-400 mb-2">Tangy apple, sparkling fizz</p>
+                        <div class="flex justify-between items-center">
+                            <span class="font-extrabold text-rose-400 text-base">₹100</span>
+                            <button onclick="event.stopPropagation(); addToCart('Green Apple Soda')"
+                                class="bg-lime-500/20 hover:bg-lime-500 text-lime-400 hover:text-bg-dark p-1.5 rounded-lg transition-all">
+                                <span class="material-symbols-outlined text-sm font-bold">add</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Dragon Mojito -->
+                <div class="menu-card fade-in mojito-glow bg-gradient-to-br from-cyan-500/12 to-bg-card rounded-2xl overflow-hidden border border-cyan-500/12 cursor-pointer"
+                    onclick="openDrinkDetail(this)" data-drink="dragon" data-name="Dragon mojito" data-price="120"
+                    data-img="https://i.pinimg.com/736x/41/b7/61/41b7612d86b7d928770c38bc960ed290.jpg"
+                    data-desc="Handcrafted Dragon mojito with dragon fruit, fresh mint, and sprite.">
+                    <div class="relative overflow-hidden">
+                        <img class="card-img w-full h-40 md:h-48 object-cover"
+                            alt="Classic Dragon mojito with lime and mint"
+                            src="https://i.pinimg.com/736x/41/b7/61/41b7612d86b7d928770c38bc960ed290.jpg" />
+                        <div class="absolute inset-0 bg-gradient-to-t from-bg-card via-transparent to-transparent">
+                        </div>
+                        <span
+                            class="absolute top-2 left-2 bg-cyan-400/90 text-bg-dark text-[9px] font-extrabold px-2 py-0.5 rounded-full">⭐
+                            Favourite</span>
+                    </div>
+                    <div class="p-3">
+                        <h4 class="font-bold text-rose-400 text-sm">Dragon Mojito</h4>
+                        <p class="text-[10px] text-rose-400 mb-2">Sprite, lime, mint, crushed ice</p>
+                        <div class="flex justify-between items-center">
+                            <span class="font-extrabold text-rose-400 text-base">₹120</span>
+                            <button onclick="event.stopPropagation(); addToCart('Dragon Mojito')"
+                                class="bg-cyan-500/20 hover:bg-cyan-500 text-cyan-400 hover:text-white p-1.5 rounded-lg transition-all">
+                                <span class="material-symbols-outlined text-sm font-bold">add</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Bottom Nav Bar -->
+    <div
+        class="fixed bottom-0 left-0 right-0 z-50 bg-bg-darker/95 backdrop-blur-xl border-t border-white/5 px-4 py-2.5 flex justify-between items-center">
+        <a class="flex flex-col items-center gap-1 text-white/40 hover:text-primary transition-colors"
+            href="index.html">
+            <span class="material-symbols-outlined">home</span>
+            <span class="text-[10px] font-medium">Home</span>
+        </a>
+        <a class="flex flex-col items-center gap-1 text-primary" href="menu.html">
+            <span class="material-symbols-outlined fill-1">restaurant_menu</span>
+            <span class="text-[10px] font-bold">Menu</span>
+        </a>
+        <a class="flex flex-col items-center gap-1 text-white/40 hover:text-primary transition-colors" href="#">
+            <span class="material-symbols-outlined">local_offer</span>
+            <span class="text-[10px] font-medium">Deals</span>
+        </a>
+        <a class="flex flex-col items-center gap-1 text-white/40 hover:text-primary transition-colors" href="#">
+            <span class="material-symbols-outlined">person</span>
+            <span class="text-[10px] font-medium">Profile</span>
+        </a>
+    </div>
+
+    <!-- Padding for bottom nav -->
+    <div class="h-20"></div>
+
+    <!-- Drink Splash Overlay -->
+    <div id="drinkSplash" class="drink-splash">
+        <div class="splash-bg"></div>
+        <div class="splash-glow"></div>
+        <div class="splash-content">
+            <div class="splash-icon" id="splashIcon">🥤</div>
+            <div class="splash-text" id="splashText">Blending your drink... 🥤✨</div>
+        </div>
+    </div>
+    <div class="wipe-overlay" id="wipeOverlay"></div>
+
+    <script src="cart.js"></script>
+    <script src="wishlist.js"></script>
+    <style>
+        @keyframes heartPop {
+            0% {
+                transform: scale(1);
+            }
+
+            40% {
+                transform: scale(1.5);
+            }
+
+            70% {
+                transform: scale(0.85);
+            }
+
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        .heart-pop {
+            animation: heartPop 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .wishlist-heart-btn {
+            transition: all 0.2s ease;
+        }
+
+        .wishlist-heart-btn:hover {
+            transform: scale(1.15);
+        }
+    </style>
+    <script>
+
+        function addToCart(name) {
+            const cards = document.querySelectorAll('.menu-card');
+            let card = null;
+            for (let c of cards) {
+                if (c.dataset.name === name) {
+                    card = c;
+                    break;
+                }
+            }
+            if (!card) return;
+
+            const item = {
+                name: name,
+                price: parseInt(card.dataset.price),
+                img: card.dataset.img,
+                size: 'Regular',
+                quantity: 1,
+                theme: card.dataset.theme || 'default'
+            };
+            addItemToCart(item);
+        }
+
+        // ============================
+        // Category Filter
+        // ============================
+        function filterCategory(category) {
+            // Update tabs
+            document.querySelectorAll('.filter-tab').forEach(tab => {
+                const isActive = tab.dataset.cat === category;
+                tab.classList.toggle('tab-active', isActive);
+                tab.classList.toggle('bg-primary', isActive);
+                tab.classList.toggle('text-bg-dark', isActive);
+                tab.classList.toggle('bg-bg-card', !isActive);
+                tab.classList.toggle('text-white/60', !isActive);
+            });
+
+            // Show/hide sections
+            document.querySelectorAll('.category-section').forEach(section => {
+                if (category === 'all' || section.dataset.category === category) {
+                    section.style.display = '';
+                    // Re-trigger fade-in
+                    section.querySelectorAll('.fade-in').forEach(card => {
+                        card.classList.remove('visible');
+                        setTimeout(() => observeCards(), 100);
+                    });
+                } else {
+                    section.style.display = 'none';
+                }
+            });
+
+            // Scroll to top of content
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // ============================
+        // Search Filter with Splash
+        // ============================
+        let searchDebounce = null;
+        function filterCards() {
+            clearTimeout(searchDebounce);
+            searchDebounce = setTimeout(() => {
+                const query = document.getElementById('searchInput').value.toLowerCase().trim();
+                const foundBanner = document.getElementById('searchFound');
+                const emptyCard = document.getElementById('searchEmpty');
+                const resultBadge = document.getElementById('resultBadge');
+
+                let visibleCount = 0;
+
+                document.querySelectorAll('.menu-card').forEach(card => {
+                    const name = card.dataset.name || '';
+                    const match = !query || name.includes(query);
+                    card.style.display = match ? '' : 'none';
+                    if (match && query) visibleCount++;
+                });
+
+                // Show all sections when searching
+                if (query) {
+                    document.querySelectorAll('.category-section').forEach(s => s.style.display = '');
+                }
+
+                // Hide section headers when no cards visible in that section
+                if (query) {
+                    document.querySelectorAll('.category-section').forEach(section => {
+                        const visibleCards = section.querySelectorAll('.menu-card[style=""], .menu-card:not([style])');
+                        let sectionHasVisible = false;
+                        visibleCards.forEach(c => { if (c.style.display !== 'none') sectionHasVisible = true; });
+                        section.style.display = sectionHasVisible ? '' : 'none';
+                    });
+                }
+
+                // Splash banners
+                if (query && visibleCount > 0) {
+                    resultBadge.textContent = visibleCount + ' drink' + (visibleCount > 1 ? 's' : '') + ' found';
+                    foundBanner.classList.remove('show');
+                    void foundBanner.offsetHeight; // force reflow
+                    foundBanner.classList.add('show');
+                    emptyCard.classList.remove('show');
+                } else if (query && visibleCount === 0) {
+                    emptyCard.classList.remove('show');
+                    void emptyCard.offsetHeight;
+                    emptyCard.classList.add('show');
+                    foundBanner.classList.remove('show');
+                } else {
+                    foundBanner.classList.remove('show');
+                    emptyCard.classList.remove('show');
+                }
+            }, 200);
+        }
+
+        function clearSearch() {
+            document.getElementById('searchInput').value = '';
+            filterCards();
+            // Reset all cards visible
+            document.querySelectorAll('.menu-card').forEach(c => c.style.display = '');
+            document.querySelectorAll('.category-section').forEach(s => s.style.display = '');
+            document.getElementById('searchFound').classList.remove('show');
+            document.getElementById('searchEmpty').classList.remove('show');
+        }
+
+        // ============================
+        // Scroll Fade-in Observer
+        // ============================
+        function observeCards() {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach((entry, index) => {
+                    if (entry.isIntersecting) {
+                        setTimeout(() => {
+                            entry.target.classList.add('visible');
+                        }, index * 80);
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.1 });
+
+            document.querySelectorAll('.fade-in:not(.visible)').forEach(el => observer.observe(el));
+        }
+
+        // ============================
+        // Drink Detail Splash Transition
+        // ============================
+        const THEMES = {
+            'mango': { color: '#FFB300', icon: '🥭', text: 'Mango Magic incoming... 🥭✨' },
+            'pomegranate': { color: '#B91C1C', icon: '🍎', text: 'Pomegranate Ruby pouring... ❤️✨' },
+            'watermelon': { color: '#FF4F81', icon: '🍉', text: 'Watermelon Chill blending... 🍉🧊' },
+            'orange': { color: '#FF9800', icon: '🍊', text: 'Orange Zest squeezing... 🍊✨' },
+            'lemon': { color: '#FDE047', icon: '🍋', text: 'Lemon Fizz refreshing... 🍋✨' },
+            'apple': { color: '#66BB6A', icon: '🍎', text: 'Apple Freshness pouring... 🍎✨' },
+            'pineapple': { color: '#FDD835', icon: '🍍', text: 'Pineapple Punch blending... 🍍✨' },
+            'guava': { color: '#F472B6', icon: '🍈', text: 'Guava Bliss loading... 🍈💖' },
+            'mojito': { color: '#10B981', icon: '🌿', text: 'Minty freshness loading... 🌿✨' },
+            'lagoon': { color: '#0EA5E9', icon: '💎', text: 'Blue lagoon surfing... 💎🌊' },
+            'strawberry': { color: '#FF4F81', icon: '🍓', text: 'Berry Bliss pouring... 🍓💖' },
+            'choco': { color: '#3B1F0F', icon: '🍫', text: 'Cocoa dreams blending... 🍫✨' },
+            'pista': { color: '#A8D88E', icon: '🥜', text: 'Nutty energy charging... 🥜💪' },
+            'berry': { color: '#EF4444', icon: '🍉', text: 'Fruity goodness ahead... 🍉🍎' },
+            'dragon': { color: '#FF4F81', icon: '🐍', text: 'Exotic pink refreshment incoming🍸🧃' },
+            'default': { color: '#FFC107', icon: '🥤', text: 'Pouring freshness... 🥤✨' }
+        };
+
+        function openDrinkDetail(element) {
+            const drinkId = element.dataset.drink || 'default';
+            const splash = document.getElementById('drinkSplash');
+            const iconEl = document.getElementById('splashIcon');
+            const textEl = document.getElementById('splashText');
+
+            // Determine theme - prioritize data-theme, fallback to data-drink, fallback to default
+            const themeKey = element.dataset.theme || drinkId;
+            const theme = THEMES[themeKey] || THEMES['default'];
+
+            // Set theme color
+            splash.style.setProperty('--splash-color', theme.color);
+            iconEl.textContent = theme.icon;
+            textEl.textContent = theme.text;
+
+            // Activate splash
+            splash.classList.add('active');
+
+            // Duration: 1.2s then transition
+            setTimeout(() => {
+                document.body.classList.add('wipe-active');
+                setTimeout(() => {
+                    // In a real app, we would navigate to drink-detail.html?id=...
+                    // For now, we'll just log and simulate or navigate if page exists
+                    const name = element.dataset.name;
+                    const price = element.dataset.price || '180';
+                    const img = element.dataset.img || '';
+                    const desc = element.dataset.desc || '';
+                    console.log(`Opening detail for: ${name} with theme: ${themeKey}`);
+
+                    // Navigate to detail page with parameters
+                    const themeToPass = element.dataset.theme || drinkId;
+                    window.location.href = `drink-detail.html?name=${encodeURIComponent(name)}&theme=${themeToPass}&price=${price}&img=${encodeURIComponent(img)}&desc=${encodeURIComponent(desc)}`;
+                }, 400); // mid-wipe
+            }, 1200);
+        }
+
+        // Initial load
+        document.addEventListener('DOMContentLoaded', () => {
+            observeCards();
+            injectHeartButtons();
+            syncWishlistHearts();
+        });
+
+        // Inject a heart (wishlist) button into each .menu-card image — top-right overlay
+        function injectHeartButtons() {
+            document.querySelectorAll('.menu-card').forEach(card => {
+                const name = card.dataset.name;
+                if (!name) return;
+
+                // Find the image container (relative overflow-hidden div)
+                const imgContainer = card.querySelector('.relative.overflow-hidden');
+                if (!imgContainer || imgContainer.querySelector('.wishlist-heart-btn')) return;
+
+                const img = card.dataset.img || '';
+                const price = card.dataset.price || '0';
+                const desc = card.dataset.desc || '';
+                const drink = card.dataset.drink || 'default';
+
+                const btn = document.createElement('button');
+                btn.className = 'wishlist-heart-btn absolute top-2 right-2 w-8 h-8 rounded-full bg-black/30 hover:bg-secondary/60 backdrop-blur-sm flex items-center justify-center transition-all active:scale-90 z-10';
+                btn.title = 'Save to Wishlist';
+                btn.setAttribute('data-wishlist-btn', name);
+                btn.innerHTML = `<span class="material-symbols-outlined text-white text-[18px]" style="font-variation-settings:'FILL' 0">favorite</span>`;
+
+                btn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    toggleWishlist({ name, img, price, desc, drink }, btn);
+                });
+
+                imgContainer.appendChild(btn);
+            });
+        }
+    </script>
+
+</body>
+
+</html>

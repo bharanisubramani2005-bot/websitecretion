@@ -1,0 +1,802 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Checkout | NutriShake Bar</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+        rel="stylesheet" />
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#FFC107",
+                        "secondary": "#FF4F81",
+                        "bg-dark": "#FFF0F6",
+                        "bg-darker": "#FFE4F0",
+                        "bg-card": "#FFFFFF",
+                    },
+                },
+            },
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background: #FFF0F6;
+            color: #5C3A2A;
+            min-height: 100dvh;
+        }
+
+        /* ===== Step Indicator ===== */
+        .step-dot {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 11px;
+            font-weight: 800;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            border: 2px solid rgba(255, 79, 129, 0.2);
+            background: #FFE4F0;
+            color: rgba(92, 58, 42, 0.4);
+        }
+
+        .step-dot.active {
+            background: #FF4F81;
+            border-color: #FF4F81;
+            color: white;
+            box-shadow: 0 0 0 4px rgba(255, 79, 129, 0.15);
+        }
+
+        .step-dot.done {
+            background: #34D399;
+            border-color: #34D399;
+            color: white;
+        }
+
+        .step-line {
+            flex: 1;
+            height: 2px;
+            background: rgba(255, 79, 129, 0.15);
+            transition: background 0.4s ease;
+        }
+
+        .step-line.done {
+            background: #34D399;
+        }
+
+        /* ===== Section transitions ===== */
+        .checkout-section {
+            display: none;
+            animation: slideUp 0.45s cubic-bezier(0.16, 1, 0.3, 1) both;
+        }
+
+        .checkout-section.active {
+            display: block;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(24px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* ===== Input styling ===== */
+        .field-input {
+            width: 100%;
+            padding: 14px 16px;
+            border-radius: 14px;
+            border: 1.5px solid rgba(255, 79, 129, 0.15);
+            background: white;
+            color: #5C3A2A;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.25s ease;
+            outline: none;
+        }
+
+        .field-input:focus {
+            border-color: #FF4F81;
+            box-shadow: 0 0 0 3px rgba(255, 79, 129, 0.12);
+        }
+
+        .field-input::placeholder {
+            color: rgba(92, 58, 42, 0.3);
+        }
+
+        .field-input.error {
+            border-color: #EF4444;
+            background: #fff5f5;
+        }
+
+        .field-label {
+            display: block;
+            font-size: 10px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            color: rgba(92, 58, 42, 0.5);
+            margin-bottom: 6px;
+            margin-left: 4px;
+        }
+
+        /* ===== Card ===== */
+        .summary-card {
+            background: white;
+            border-radius: 20px;
+            border: 1.5px solid rgba(255, 79, 129, 0.1);
+            box-shadow: 0 4px 20px rgba(255, 79, 129, 0.06);
+        }
+
+        /* ===== Buttons ===== */
+        .btn-primary {
+            width: 100%;
+            background: linear-gradient(135deg, #FF4F81, #FF6B9D);
+            color: white;
+            padding: 16px;
+            border-radius: 16px;
+            font-weight: 800;
+            font-size: 15px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            box-shadow: 0 8px 24px rgba(255, 79, 129, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 12px 28px rgba(255, 79, 129, 0.35);
+        }
+
+        .btn-primary:active {
+            transform: scale(0.98);
+        }
+
+        .btn-ghost {
+            width: 100%;
+            background: transparent;
+            color: #FF4F81;
+            padding: 16px;
+            border-radius: 16px;
+            font-weight: 800;
+            font-size: 15px;
+            border: 2px solid rgba(255, 79, 129, 0.25);
+            cursor: pointer;
+            transition: all 0.25s ease;
+        }
+
+        .btn-ghost:hover {
+            background: rgba(255, 79, 129, 0.06);
+            border-color: #FF4F81;
+        }
+
+        /* ===== Order item row ===== */
+        .order-row {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 0;
+            border-bottom: 1px solid rgba(255, 79, 129, 0.08);
+        }
+
+        .order-row:last-child {
+            border-bottom: none;
+        }
+
+        /* ===== Success confetti ring ===== */
+        @keyframes ringPop {
+            0% {
+                transform: scale(0.5);
+                opacity: 0;
+            }
+
+            60% {
+                transform: scale(1.12);
+            }
+
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        @keyframes checkDraw {
+            from {
+                transform: scale(0) rotate(-20deg);
+                opacity: 0;
+            }
+
+            to {
+                transform: scale(1) rotate(0deg);
+                opacity: 1;
+            }
+        }
+
+        @keyframes confettiBurst {
+
+            0%,
+            100% {
+                transform: translateY(0) rotate(0deg);
+                opacity: 1;
+            }
+
+            50% {
+                transform: translateY(-20px) rotate(180deg);
+                opacity: 0.8;
+            }
+        }
+
+        .success-ring {
+            animation: ringPop 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
+        }
+
+        .success-check {
+            animation: checkDraw 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.3s both;
+        }
+
+        .confetti-dot {
+            position: absolute;
+            border-radius: 50%;
+            animation: confettiBurst 1.5s ease-in-out infinite;
+        }
+
+        /* ===== Section header label ===== */
+        .section-label {
+            font-size: 10px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: #FF4F81;
+            margin-bottom: 14px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Navbar -->
+    <nav
+        class="sticky top-0 z-50 bg-bg-darker/90 backdrop-blur-xl border-b border-secondary/10 px-4 py-3.5 flex items-center gap-3">
+        <button id="navBackBtn" onclick="handleNavBack()"
+            class="w-9 h-9 rounded-full bg-secondary/10 hover:bg-secondary/20 flex items-center justify-center transition-all active:scale-90">
+            <span class="material-symbols-outlined text-secondary text-xl">arrow_back</span>
+        </button>
+        <div>
+            <h1 id="navTitle" class="text-base font-extrabold text-rose-800 tracking-tight">Delivery Address</h1>
+            <p id="navSubtitle" class="text-[10px] text-rose-800/50 font-medium">Fill in your details</p>
+        </div>
+    </nav>
+
+    <!-- Step Indicator -->
+    <div id="stepIndicator" class="px-6 pt-5 pb-2">
+        <div class="flex items-center gap-2 max-w-xs mx-auto">
+            <div class="step-dot active" id="dot1">1</div>
+            <div class="step-line" id="line1"></div>
+            <div class="step-dot" id="dot2">2</div>
+            <div class="step-line" id="line2"></div>
+            <div class="step-dot" id="dot3">3</div>
+        </div>
+        <div class="flex justify-between max-w-xs mx-auto mt-1.5 px-0.5">
+            <span class="text-[9px] font-bold text-secondary/70 uppercase">Address</span>
+            <span class="text-[9px] font-bold text-secondary/40 uppercase">Confirm</span>
+            <span class="text-[9px] font-bold text-secondary/40 uppercase">Done</span>
+        </div>
+    </div>
+
+    <div class="px-4 py-4 max-w-lg mx-auto">
+
+        <!-- ============================================================ -->
+        <!--  STEP 1: Address Form                                       -->
+        <!-- ============================================================ -->
+        <section id="stepAddress" class="checkout-section active">
+            <div class="space-y-4">
+
+                <!-- Full Name -->
+                <div>
+                    <label class="field-label">Full Name</label>
+                    <input id="fname" class="field-input" type="text" placeholder="e.g. Priya Sharma"
+                        autocomplete="name">
+                </div>
+
+                <!-- Phone -->
+                <div>
+                    <label class="field-label">Phone Number</label>
+                    <input id="fphone" class="field-input" type="tel" placeholder="+91 98765 43210" autocomplete="tel">
+                </div>
+
+                <!-- Street Address -->
+                <div>
+                    <label class="field-label">House / Street Address</label>
+                    <input id="fstreet" class="field-input" type="text"
+                        placeholder="Flat 4B, Rose Garden Apartments, MG Road">
+                </div>
+
+                <!-- City + Pincode -->
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="field-label">City</label>
+                        <input id="fcity" class="field-input" type="text" placeholder="Chennai">
+                    </div>
+                    <div>
+                        <label class="field-label">Pincode</label>
+                        <input id="fpincode" class="field-input" type="text" placeholder="600001" maxlength="6">
+                    </div>
+                </div>
+
+                <!-- Delivery Note -->
+                <div>
+                    <label class="field-label">Delivery Instructions <span
+                            class="normal-case font-normal text-[9px] text-secondary/40">(Optional)</span></label>
+                    <textarea id="fnotes" class="field-input resize-none" rows="2"
+                        placeholder="e.g. Leave at door, ring bell twice…"></textarea>
+                </div>
+
+                <!-- Order mini summary -->
+                <div class="summary-card p-4 mt-2" id="miniSummary">
+                    <p class="section-label"><span class="material-symbols-outlined text-sm">shopping_bag</span> Your
+                        Order</p>
+                    <div id="miniItemList" class="space-y-0"></div>
+                    <div class="flex justify-between items-center mt-3 pt-3 border-t border-secondary/10">
+                        <span class="text-xs font-bold text-secondary/60">Total</span>
+                        <span class="font-extrabold text-secondary">₹<span id="miniTotal">0</span></span>
+                    </div>
+                </div>
+
+                <button class="btn-primary mt-2" onclick="goToConfirm()">
+                    <span class="material-symbols-outlined text-lg">check_circle</span>
+                    Continue to Confirm
+                </button>
+            </div>
+        </section>
+
+        <!-- ============================================================ -->
+        <!--  STEP 2: Order Confirmation                                 -->
+        <!-- ============================================================ -->
+        <section id="stepConfirm" class="checkout-section">
+            <div class="space-y-4">
+
+                <!-- Items -->
+                <div class="summary-card p-5">
+                    <p class="section-label"><span class="material-symbols-outlined text-sm">restaurant_menu</span>
+                        Ordered Items</p>
+                    <div id="confirmItemList"></div>
+                    <div class="flex justify-between items-center mt-3 pt-3 border-t border-secondary/10">
+                        <span class="text-xs font-bold text-secondary/60">Total Amount</span>
+                        <span class="text-xl font-extrabold text-secondary">₹<span id="confirmTotal">0</span></span>
+                    </div>
+                </div>
+
+                <!-- Address -->
+                <div class="summary-card p-5">
+                    <p class="section-label"><span class="material-symbols-outlined text-sm">location_on</span> Delivery
+                        Address</p>
+                    <p id="confirmAddress" class="text-sm font-semibold text-rose-800 leading-relaxed"></p>
+                    <p id="confirmNotes" class="text-xs text-rose-800/50 mt-1 italic"></p>
+                </div>
+
+                <!-- Delivery time -->
+                <div class="summary-card p-5 flex items-center gap-4">
+                    <div class="w-12 h-12 rounded-2xl bg-secondary/10 flex items-center justify-center flex-shrink-0">
+                        <span class="material-symbols-outlined text-secondary text-2xl">schedule</span>
+                    </div>
+                    <div>
+                        <p class="text-xs font-bold text-secondary/60 uppercase">Estimated Delivery</p>
+                        <p class="text-base font-extrabold text-rose-800">25 – 35 minutes</p>
+                    </div>
+                </div>
+
+                <!-- Payment mode selector -->
+                <div class="summary-card p-5">
+                    <p class="section-label"><span class="material-symbols-outlined text-sm">payments</span> Payment</p>
+                    <div class="grid grid-cols-2 gap-3">
+                        <label
+                            class="pay-opt relative flex items-center gap-3 p-3 rounded-xl border-2 border-secondary/15 cursor-pointer hover:border-secondary/40 transition-all"
+                            for="payCOD">
+                            <input type="radio" id="payCOD" name="payment" value="COD" checked class="hidden">
+                            <span class="material-symbols-outlined text-secondary text-xl">payments</span>
+                            <span class="text-xs font-extrabold text-rose-800">Cash on Delivery</span>
+                        </label>
+                        <label
+                            class="pay-opt relative flex items-center gap-3 p-3 rounded-xl border-2 border-secondary/15 cursor-pointer hover:border-secondary/40 transition-all"
+                            for="payUPI">
+                            <input type="radio" id="payUPI" name="payment" value="UPI" class="hidden">
+                            <span class="material-symbols-outlined text-secondary text-xl">qr_code_2</span>
+                            <span class="text-xs font-extrabold text-rose-800">UPI / Online</span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Action buttons -->
+                <div class="grid grid-cols-2 gap-3 pt-2 pb-8">
+                    <button class="btn-ghost" onclick="goBack()">
+                        <span>Cancel</span>
+                    </button>
+                    <button class="btn-primary" style="width:auto;" onclick="confirmOrder()">
+                        <span class="material-symbols-outlined text-lg">rocket_launch</span>
+                        Confirm Order
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- ============================================================ -->
+        <!--  STEP 3: Success                                            -->
+        <!-- ============================================================ -->
+        <section id="stepSuccess" class="checkout-section">
+            <div class="flex flex-col items-center text-center py-6">
+
+                <!-- Animated success ring -->
+                <div class="relative mb-6 mt-2">
+                    <!-- Confetti dots -->
+                    <div class="confetti-dot w-3 h-3 bg-secondary" style="top:-12px;left:-14px;animation-delay:0.1s;">
+                    </div>
+                    <div class="confetti-dot w-2 h-2 bg-primary" style="top:-8px;right:-10px;animation-delay:0.3s;">
+                    </div>
+                    <div class="confetti-dot w-2.5 h-2.5 bg-green-400"
+                        style="bottom:-10px;left:-16px;animation-delay:0.2s;"></div>
+                    <div class="confetti-dot w-2 h-2 bg-blue-400" style="bottom:-8px;right:-12px;animation-delay:0.4s;">
+                    </div>
+
+                    <div
+                        class="success-ring w-28 h-28 rounded-full bg-gradient-to-br from-secondary/20 to-pink-100 flex items-center justify-center border-4 border-secondary/30">
+                        <span class="success-check material-symbols-outlined text-secondary text-5xl"
+                            style="font-variation-settings:'FILL' 1">check_circle</span>
+                    </div>
+                </div>
+
+                <h2 class="text-3xl font-extrabold text-rose-800 mb-1">🎉 Order Confirmed!</h2>
+                <p class="text-sm text-rose-800/50 font-medium mb-6">Your freshness is being prepared 🥤✨</p>
+
+                <!-- Order summary card -->
+                <div class="summary-card w-full p-5 text-left mb-6">
+                    <p class="section-label"><span class="material-symbols-outlined text-sm">receipt_long</span> Order
+                        Summary</p>
+
+                    <div id="successItemList" class="mb-4"></div>
+
+                    <div class="grid grid-cols-2 gap-3 pt-3 border-t border-secondary/10">
+                        <div>
+                            <span class="text-[10px] font-bold text-secondary/50 uppercase block">Total Paid</span>
+                            <span id="successTotal" class="text-lg font-extrabold text-secondary">₹0</span>
+                        </div>
+                        <div class="text-right">
+                            <span class="text-[10px] font-bold text-secondary/50 uppercase block">Order ID</span>
+                            <span id="successOrderId"
+                                class="text-sm font-bold font-mono text-rose-800/60">#000000</span>
+                        </div>
+                        <div>
+                            <span class="text-[10px] font-bold text-secondary/50 uppercase block">Est. Delivery</span>
+                            <span class="text-sm font-extrabold text-rose-800">25 – 35 mins</span>
+                        </div>
+                        <div class="text-right">
+                            <span class="text-[10px] font-bold text-secondary/50 uppercase block">Payment</span>
+                            <span id="successPayment" class="text-sm font-bold text-rose-800">COD</span>
+                        </div>
+                    </div>
+
+                    <div class="mt-3 pt-3 border-t border-secondary/10">
+                        <span class="text-[10px] font-bold text-secondary/50 uppercase block mb-1">Delivering To</span>
+                        <p id="successAddress" class="text-sm font-semibold text-rose-800 leading-relaxed"></p>
+                    </div>
+                </div>
+
+                <button onclick="window.location.href='index.html'" class="btn-primary mb-3">
+                    <span class="material-symbols-outlined text-lg">home</span>
+                    Back to Home
+                </button>
+                <button onclick="window.location.href='menu.html'" class="btn-ghost"
+                    style="border-radius:16px; padding:14px 16px;">
+                    <span>Order More 🍹</span>
+                </button>
+            </div>
+        </section>
+
+    </div>
+
+    <!-- Bottom spacer -->
+    <div class="h-8"></div>
+
+    <script src="cart.js"></script>
+    <script>
+        // ============================
+        // State
+        // ============================
+        const ADDR_KEY = 'nutrishake_address';
+        let currentStep = 1;
+
+        // ============================
+        // Init on load
+        // ============================
+        document.addEventListener('DOMContentLoaded', () => {
+            renderMiniSummary();
+            restoreSavedAddress();
+            setupPaymentSelect();
+        });
+
+        // ============================
+        // Mini summary (Step 1)
+        // ============================
+        function renderMiniSummary() {
+            const cart = getCart();
+            const list = document.getElementById('miniItemList');
+            const totalEl = document.getElementById('miniTotal');
+
+            if (cart.length === 0) {
+                list.innerHTML = '<p class="text-xs text-rose-800/40 py-2">Your cart is empty. <a href="menu.html" class="text-secondary font-bold">Browse Menu</a></p>';
+                totalEl.textContent = '0';
+                return;
+            }
+
+            let total = 0;
+            list.innerHTML = cart.map(item => {
+                total += item.price * item.quantity;
+                return `
+                    <div class="order-row">
+                        <div class="w-10 h-10 rounded-xl overflow-hidden flex-shrink-0 bg-secondary/10">
+                            <img src="${item.img}" class="w-full h-full object-cover" onerror="this.src='https://via.placeholder.com/40/FFE4F0/FF4F81?text=🥤'">
+                        </div>
+                        <div class="flex-1 min-w-0">
+                            <p class="text-xs font-extrabold text-rose-800 truncate">${item.name}</p>
+                            <p class="text-[10px] text-rose-800/40">${item.size} × ${item.quantity}</p>
+                        </div>
+                        <span class="text-xs font-extrabold text-secondary flex-shrink-0">₹${item.price * item.quantity}</span>
+                    </div>`;
+            }).join('');
+
+            totalEl.textContent = total;
+            updateCartBadge();
+        }
+
+        // ============================
+        // Restore saved address fields
+        // ============================
+        function restoreSavedAddress() {
+            const saved = JSON.parse(localStorage.getItem(ADDR_KEY) || '{}');
+            if (saved.name) document.getElementById('fname').value = saved.name;
+            if (saved.phone) document.getElementById('fphone').value = saved.phone;
+            if (saved.street) document.getElementById('fstreet').value = saved.street;
+            if (saved.city) document.getElementById('fcity').value = saved.city;
+            if (saved.pincode) document.getElementById('fpincode').value = saved.pincode;
+            if (saved.notes) document.getElementById('fnotes').value = saved.notes;
+        }
+
+        // ============================
+        // Payment option styling
+        // ============================
+        function setupPaymentSelect() {
+            document.querySelectorAll('.pay-opt input[type=radio]').forEach(radio => {
+                radio.addEventListener('change', () => {
+                    document.querySelectorAll('.pay-opt').forEach(l => {
+                        l.style.borderColor = '';
+                        l.style.background = '';
+                    });
+                    if (radio.checked) {
+                        radio.closest('.pay-opt').style.borderColor = '#FF4F81';
+                        radio.closest('.pay-opt').style.background = 'rgba(255,79,129,0.06)';
+                    }
+                });
+            });
+            // Activate default
+            const defRadio = document.querySelector('.pay-opt input[checked]');
+            if (defRadio) {
+                defRadio.closest('.pay-opt').style.borderColor = '#FF4F81';
+                defRadio.closest('.pay-opt').style.background = 'rgba(255,79,129,0.06)';
+            }
+        }
+
+        // ============================
+        // STEP 1 → STEP 2: Validate & Continue
+        // ============================
+        function goToConfirm() {
+            // Validate required fields
+            const required = [
+                { id: 'fname', label: 'Full Name' },
+                { id: 'fphone', label: 'Phone' },
+                { id: 'fstreet', label: 'Address' },
+                { id: 'fcity', label: 'City' },
+                { id: 'fpincode', label: 'Pincode' }
+            ];
+
+            let hasError = false;
+            required.forEach(({ id }) => {
+                const el = document.getElementById(id);
+                if (!el.value.trim()) {
+                    el.classList.add('error');
+                    hasError = true;
+                } else {
+                    el.classList.remove('error');
+                }
+            });
+
+            if (hasError) {
+                // Scroll to first error
+                const firstErr = document.querySelector('.field-input.error');
+                if (firstErr) firstErr.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                return;
+            }
+
+            // Save to localStorage
+            const addr = {
+                name: document.getElementById('fname').value.trim(),
+                phone: document.getElementById('fphone').value.trim(),
+                street: document.getElementById('fstreet').value.trim(),
+                city: document.getElementById('fcity').value.trim(),
+                pincode: document.getElementById('fpincode').value.trim(),
+                notes: document.getElementById('fnotes').value.trim()
+            };
+            localStorage.setItem(ADDR_KEY, JSON.stringify(addr));
+
+            // Populate Step 2
+            populateConfirmation(addr);
+            goToStep(2);
+        }
+
+        // ============================
+        // Populate Step 2
+        // ============================
+        function populateConfirmation(addr) {
+            const cart = getCart();
+            const list = document.getElementById('confirmItemList');
+            const totalEl = document.getElementById('confirmTotal');
+
+            let total = 0;
+            list.innerHTML = cart.map(item => {
+                total += item.price * item.quantity;
+                return `
+                    <div class="order-row">
+                        <div class="w-10 h-10 rounded-xl overflow-hidden flex-shrink-0 bg-secondary/10">
+                            <img src="${item.img}" class="w-full h-full object-cover" onerror="this.src='https://via.placeholder.com/40/FFE4F0/FF4F81?text=🥤'">
+                        </div>
+                        <div class="flex-1 min-w-0">
+                            <p class="text-sm font-extrabold text-rose-800 truncate">${item.name}</p>
+                            <p class="text-[11px] text-rose-800/45">${item.size} × ${item.quantity}</p>
+                        </div>
+                        <span class="text-sm font-extrabold text-secondary flex-shrink-0">₹${item.price * item.quantity}</span>
+                    </div>`;
+            }).join('');
+
+            totalEl.textContent = total;
+
+            // Address
+            document.getElementById('confirmAddress').textContent =
+                `${addr.name}, ${addr.street}, ${addr.city} – ${addr.pincode}`;
+            const notesEl = document.getElementById('confirmNotes');
+            if (addr.notes) {
+                notesEl.textContent = '📝 ' + addr.notes;
+                notesEl.style.display = '';
+            } else {
+                notesEl.style.display = 'none';
+            }
+        }
+
+        // ============================
+        // STEP 2 → STEP 3: Confirm Order
+        // ============================
+        function confirmOrder() {
+            const btn = event.target.closest('button');
+            btn.innerHTML = `<span class="material-symbols-outlined animate-spin text-lg">sync</span> Placing Order…`;
+            btn.style.pointerEvents = 'none';
+
+            setTimeout(() => {
+                const cart = getCart();
+                const addr = JSON.parse(localStorage.getItem(ADDR_KEY) || '{}');
+                const paymentMode = document.querySelector('input[name="payment"]:checked')?.value || 'COD';
+
+                let total = cart.reduce((sum, i) => sum + i.price * i.quantity, 0);
+                const orderId = '#' + Math.floor(Math.random() * 900000 + 100000);
+
+                // Populate success
+                document.getElementById('successTotal').textContent = '₹' + total;
+                document.getElementById('successOrderId').textContent = orderId;
+                document.getElementById('successPayment').textContent =
+                    paymentMode === 'COD' ? 'Cash on Delivery' : 'UPI / Online';
+                document.getElementById('successAddress').textContent =
+                    `${addr.name}, ${addr.street}, ${addr.city} – ${addr.pincode}`;
+
+                // Success item list
+                const sList = document.getElementById('successItemList');
+                sList.innerHTML = cart.map(item => `
+                    <div class="order-row">
+                        <div class="w-9 h-9 rounded-lg overflow-hidden flex-shrink-0 bg-secondary/10">
+                            <img src="${item.img}" class="w-full h-full object-cover" onerror="this.src='https://via.placeholder.com/36/FFE4F0/FF4F81?text=🥤'">
+                        </div>
+                        <div class="flex-1 min-w-0">
+                            <p class="text-xs font-extrabold text-rose-800 truncate">${item.name}</p>
+                            <p class="text-[10px] text-rose-800/40">${item.size} × ${item.quantity}</p>
+                        </div>
+                        <span class="text-xs font-extrabold text-secondary flex-shrink-0">₹${item.price * item.quantity}</span>
+                    </div>`).join('');
+
+                // Clear cart Now ✅
+                clearCart();
+                localStorage.removeItem(ADDR_KEY);
+
+                goToStep(3);
+            }, 1200);
+        }
+
+        // ============================
+        // Navigation helpers
+        // ============================
+        function goToStep(step) {
+            currentStep = step;
+
+            // Hide all sections
+            document.querySelectorAll('.checkout-section').forEach(s => {
+                s.classList.remove('active');
+            });
+
+            // Show target
+            const sections = { 1: 'stepAddress', 2: 'stepConfirm', 3: 'stepSuccess' };
+            document.getElementById(sections[step]).classList.add('active');
+
+            // Update step dots
+            for (let i = 1; i <= 3; i++) {
+                const dot = document.getElementById('dot' + i);
+                dot.classList.remove('active', 'done');
+                if (i < step) dot.classList.add('done');
+                else if (i === step) dot.classList.add('active');
+            }
+
+            // Update lines
+            for (let i = 1; i <= 2; i++) {
+                const line = document.getElementById('line' + i);
+                line.classList.toggle('done', i < step);
+            }
+
+            // Update nav title
+            const titles = {
+                1: ['Delivery Address', 'Fill in your details'],
+                2: ['Confirm Order', 'Review before placing'],
+                3: ['Order Success 🎉', 'Your drink is being prepared!']
+            };
+            document.getElementById('navTitle').textContent = titles[step][0];
+            document.getElementById('navSubtitle').textContent = titles[step][1];
+
+            // Hide step indicator on success
+            document.getElementById('stepIndicator').style.display = step === 3 ? 'none' : '';
+
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function goBack() {
+            if (currentStep > 1) goToStep(currentStep - 1);
+            else window.location.href = 'cart.html';
+        }
+
+        function handleNavBack() {
+            if (currentStep === 1) window.location.href = 'cart.html';
+            else if (currentStep === 2) goToStep(1);
+            else window.location.href = 'index.html';
+        }
+
+        // Remove error highlight on input
+        document.addEventListener('DOMContentLoaded', () => {
+            document.querySelectorAll('.field-input').forEach(el => {
+                el.addEventListener('input', () => el.classList.remove('error'));
+            });
+        });
+    </script>
+</body>
+
+</html>

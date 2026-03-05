@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>My Wishlist | NutriShake Bar</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+        rel="stylesheet" />
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#FF7EB6",
+                        "secondary": "#FF4F81",
+                        "bg-dark": "#1a0a12",
+                        "bg-darker": "#120709",
+                        "bg-card": "#2a1020",
+                        "pista": "#A8D88E",
+                    },
+                    fontFamily: { "display": ["Plus Jakarta Sans", "sans-serif"] },
+                },
+            },
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background: #1a0a12;
+            min-height: 100dvh;
+        }
+
+        .fill-1 {
+            font-variation-settings: 'FILL' 1;
+        }
+
+        @keyframes heartPop {
+            0% {
+                transform: scale(1);
+            }
+
+            40% {
+                transform: scale(1.5);
+            }
+
+            70% {
+                transform: scale(0.85);
+            }
+
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        .heart-pop {
+            animation: heartPop 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        @keyframes fadeSlideIn {
+            from {
+                opacity: 0;
+                transform: translateY(18px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .wish-card {
+            animation: fadeSlideIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
+        }
+
+        @keyframes float {
+
+            0%,
+            100% {
+                transform: translateY(0) rotate(-5deg);
+            }
+
+            50% {
+                transform: translateY(-12px) rotate(5deg);
+            }
+        }
+
+        .float-icon {
+            animation: float 3s ease-in-out infinite;
+        }
+
+        .card-img-wrap {
+            position: relative;
+            overflow: hidden;
+            aspect-ratio: 4/3;
+            background: #2a1020;
+        }
+
+        .card-img-wrap img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center;
+            transition: transform 0.4s ease;
+        }
+
+        .wish-card:hover .card-img-wrap img {
+            transform: scale(1.06);
+        }
+
+        .remove-btn {
+            transition: all 0.2s ease;
+        }
+
+        .remove-btn:hover {
+            transform: scale(1.1);
+        }
+
+        /* Glassmorphism card */
+        .glass-card {
+            background: rgba(255, 79, 129, 0.06);
+            border: 1px solid rgba(255, 79, 129, 0.15);
+            backdrop-filter: blur(8px);
+        }
+
+        /* Wishlist count badge pulse */
+        @keyframes badgePulse {
+
+            0%,
+            100% {
+                box-shadow: 0 0 0 0 rgba(255, 79, 129, 0.4);
+            }
+
+            50% {
+                box-shadow: 0 0 0 6px transparent;
+            }
+        }
+
+        .badge-pulse {
+            animation: badgePulse 2s ease-in-out infinite;
+        }
+    </style>
+</head>
+
+<body class="bg-bg-dark text-white font-display">
+
+    <!-- Navbar -->
+    <nav
+        class="sticky top-0 z-50 bg-bg-darker/90 backdrop-blur-xl border-b border-secondary/10 px-4 py-3 flex items-center justify-between">
+        <div class="flex items-center gap-3">
+            <button onclick="window.history.back()"
+                class="w-9 h-9 rounded-full bg-white/5 hover:bg-white/10 flex items-center justify-center transition-all active:scale-90">
+                <span class="material-symbols-outlined text-white/70 text-xl">arrow_back</span>
+            </button>
+            <div>
+                <h1 class="text-lg font-extrabold tracking-tight">
+                    <span class="text-secondary">My</span> <span class="text-white">Wishlist</span>
+                </h1>
+            </div>
+        </div>
+        <div class="flex items-center gap-2">
+            <span id="wishCount"
+                class="badge-pulse bg-secondary/20 text-secondary text-xs font-extrabold px-3 py-1 rounded-full border border-secondary/20">
+                0 saved
+            </span>
+            <button onclick="clearAllWishlist()"
+                class="text-[10px] font-bold text-white/30 hover:text-secondary transition-colors px-2 py-1 rounded-lg hover:bg-secondary/10"
+                id="clearAllBtn" style="display:none;">
+                Clear All
+            </button>
+        </div>
+    </nav>
+
+    <!-- Hero Banner -->
+    <div class="px-4 pt-6 pb-3">
+        <div
+            class="relative overflow-hidden rounded-2xl bg-gradient-to-br from-secondary/25 via-pink-900/20 to-bg-darker p-5 border border-secondary/15">
+            <div class="absolute right-4 top-1/2 -translate-y-1/2 text-5xl float-icon pointer-events-none select-none">
+                💗</div>
+            <h2 class="text-xl font-extrabold text-white pr-14">Your Loved Drinks</h2>
+            <p class="text-xs text-white/45 mt-1">All your favourites, saved in one place</p>
+            <div class="flex gap-2 mt-3">
+                <span
+                    class="text-[10px] font-bold bg-secondary/20 text-secondary px-2.5 py-1 rounded-full border border-secondary/20">❤️
+                    Wishlisted</span>
+                <span class="text-[10px] font-bold bg-white/5 text-white/40 px-2.5 py-1 rounded-full">Tap heart to
+                    remove</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Wishlist Grid -->
+    <main class="px-4 py-4" id="wishlistGrid">
+        <!-- Cards injected by JS -->
+    </main>
+
+    <!-- Empty State -->
+    <div id="emptyState" class="hidden px-4 py-16 flex flex-col items-center justify-center text-center">
+        <div
+            class="bg-gradient-to-br from-secondary/10 via-pink-900/10 to-bg-darker rounded-3xl p-10 border border-secondary/10 max-w-sm mx-auto">
+            <div class="text-6xl mb-4 float-icon">🫀</div>
+            <h3 class="text-xl font-extrabold text-white mb-2">Nothing saved yet!</h3>
+            <p class="text-sm text-white/40 mb-6">Tap the <span class="text-secondary font-bold">❤️ heart</span> on any
+                drink to save it here.</p>
+            <button onclick="window.location.href='menu.html'"
+                class="bg-secondary text-white px-8 py-3 rounded-2xl font-extrabold text-sm hover:opacity-90 transition-all active:scale-95 shadow-lg shadow-secondary/30">
+                <span class="material-symbols-outlined text-base align-middle mr-1">restaurant_menu</span>
+                Browse Menu
+            </button>
+        </div>
+    </div>
+
+    <!-- Bottom Nav -->
+    <div
+        class="fixed bottom-0 left-0 right-0 z-50 bg-bg-darker/95 backdrop-blur-xl border-t border-white/5 px-4 py-2.5 flex justify-between items-center">
+        <a class="flex flex-col items-center gap-1 text-white/40 hover:text-secondary transition-colors"
+            href="index.html">
+            <span class="material-symbols-outlined">home</span>
+            <span class="text-[10px] font-medium">Home</span>
+        </a>
+        <a class="flex flex-col items-center gap-1 text-white/40 hover:text-secondary transition-colors"
+            href="menu.html">
+            <span class="material-symbols-outlined">restaurant_menu</span>
+            <span class="text-[10px] font-medium">Menu</span>
+        </a>
+        <a class="flex flex-col items-center gap-1 text-secondary" href="wishlist.html">
+            <span class="material-symbols-outlined fill-1">favorite</span>
+            <span class="text-[10px] font-bold">Wishlist</span>
+        </a>
+        <a class="flex flex-col items-center gap-1 text-white/40 hover:text-secondary transition-colors"
+            href="cart.html">
+            <span class="material-symbols-outlined">shopping_cart</span>
+            <span class="text-[10px] font-medium">Cart</span>
+        </a>
+    </div>
+
+    <!-- Bottom spacing -->
+    <div class="h-24"></div>
+
+    <script src="wishlist.js"></script>
+    <script src="cart.js"></script>
+    <script>
+        function renderWishlist() {
+            const list = getWishlist();
+            const grid = document.getElementById('wishlistGrid');
+            const empty = document.getElementById('emptyState');
+            const countEl = document.getElementById('wishCount');
+            const clearBtn = document.getElementById('clearAllBtn');
+
+            countEl.textContent = list.length + (list.length === 1 ? ' saved' : ' saved');
+
+            if (list.length === 0) {
+                grid.innerHTML = '';
+                empty.classList.remove('hidden');
+                empty.classList.add('flex');
+                clearBtn.style.display = 'none';
+                return;
+            }
+
+            empty.classList.add('hidden');
+            empty.classList.remove('flex');
+            clearBtn.style.display = '';
+
+            grid.innerHTML = list.map((item, i) => `
+                <div class="wish-card glass-card rounded-2xl overflow-hidden mb-4 cursor-pointer"
+                    style="animation-delay: ${i * 0.06}s"
+                    onclick="openDetail(${JSON.stringify(item).replace(/"/g, '&quot;')})">
+                    <div class="card-img-wrap">
+                        <img src="${item.img || ''}" alt="${item.name}"
+                            onerror="this.src='https://via.placeholder.com/400x300/2a1020/FF4F81?text=🍹'"
+                            loading="lazy" />
+                        <div class="absolute inset-0 bg-gradient-to-t from-bg-darker/80 via-transparent to-transparent"></div>
+                        <span class="absolute top-3 right-3">
+                            <button class="wishlist-heart-btn w-9 h-9 rounded-full bg-secondary/20 hover:bg-secondary/40 backdrop-blur-sm flex items-center justify-center transition-all active:scale-90"
+                                onclick="event.stopPropagation(); removeAndRefresh('${item.name}', this)"
+                                title="Remove from wishlist">
+                                <span class="material-symbols-outlined text-secondary text-[20px]" style="font-variation-settings:'FILL' 1">favorite</span>
+                            </button>
+                        </span>
+                    </div>
+                    <div class="p-4">
+                        <div class="flex justify-between items-start gap-3">
+                            <div class="flex-1 min-w-0">
+                                <h4 class="font-extrabold text-white text-base truncate">${item.name}</h4>
+                                <p class="text-[11px] text-white/45 mt-0.5 line-clamp-2">${item.desc || 'A delicious drink from NutriShake Bar'}</p>
+                            </div>
+                            <div class="flex-shrink-0 text-right">
+                                <div class="text-secondary font-extrabold text-lg">₹${item.price || '—'}</div>
+                            </div>
+                        </div>
+                        <div class="flex gap-2 mt-4">
+                            <button onclick="event.stopPropagation(); addToCartFromWishlist('${item.name}', ${item.price || 0}, '${item.img || ''}')"
+                                class="flex-1 bg-secondary text-white py-2.5 rounded-xl font-extrabold text-sm hover:opacity-90 transition-all active:scale-95 flex items-center justify-center gap-1.5">
+                                <span class="material-symbols-outlined text-base">shopping_cart</span>
+                                Add to Cart
+                            </button>
+                            <button onclick="event.stopPropagation(); openDetail(${JSON.stringify(item).replace(/"/g, '&quot;')})"
+                                class="bg-white/5 hover:bg-white/10 text-white/70 px-4 py-2.5 rounded-xl font-bold text-sm transition-all border border-white/5">
+                                View
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function removeAndRefresh(name, btn) {
+            btn.closest('.wish-card').style.transition = 'opacity 0.3s, transform 0.3s';
+            btn.closest('.wish-card').style.opacity = '0';
+            btn.closest('.wish-card').style.transform = 'scale(0.9)';
+            removeFromWishlist(name);
+            setTimeout(renderWishlist, 280);
+        }
+
+        function clearAllWishlist() {
+            if (!confirm('Remove all saved drinks from wishlist?')) return;
+            localStorage.removeItem('nutrishake_wishlist');
+            renderWishlist();
+        }
+
+        function addToCartFromWishlist(name, price, img) {
+            if (typeof addItemToCart === 'function') {
+                addItemToCart({ name, price: parseInt(price), img, size: 'Regular', quantity: 1 });
+            }
+            // Show quick feedback
+            const btns = document.querySelectorAll('button');
+            btns.forEach(b => {
+                if (b.textContent.trim().includes('Add to Cart') && b.closest('.wish-card')) {
+                    b.innerHTML = `<span class="material-symbols-outlined text-base">check_circle</span> Added!`;
+                    b.classList.add('bg-green-500');
+                    setTimeout(() => {
+                        b.innerHTML = `<span class="material-symbols-outlined text-base">shopping_cart</span> Add to Cart`;
+                        b.classList.remove('bg-green-500');
+                    }, 1400);
+                }
+            });
+        }
+
+        function openDetail(item) {
+            const themeToPass = item.drink || 'default';
+            window.location.href = `drink-detail.html?name=${encodeURIComponent(item.name)}&theme=${themeToPass}&price=${item.price || 180}&img=${encodeURIComponent(item.img || '')}&desc=${encodeURIComponent(item.desc || '')}`;
+        }
+
+        // Init
+        renderWishlist();
+    </script>
+</body>
+
+</html>

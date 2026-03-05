@@ -1,0 +1,1767 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>NutriShake Bar | Fresh &amp; Energizing</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+        rel="stylesheet" />
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#FF7EB6",
+                        "primary-dark": "#FF4F81",
+                        "secondary": "#FF4F81",
+                        "bg-dark": "#FFF0F6",
+                        "bg-darker": "#FFE4F0",
+                        "bg-card": "#FFE4F0",
+                        "bg-card-light": "#d412e6ff",
+                        "pista": "#A8D88E",
+                        "berry": "#FF4F81",
+                        "choco": "#3B1F0F",
+                        "mango": "#FFC107",
+                        "cream": "#FFF8E1",
+                    },
+                    fontFamily: {
+                        "display": ["Plus Jakarta Sans", "sans-serif"]
+                    },
+                    borderRadius: { "DEFAULT": "1rem", "lg": "2rem", "xl": "3rem", "full": "9999px" },
+                },
+            },
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            min-height: 100dvh;
+        }
+
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+
+        .hide-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
+        /* Filled star icons */
+        .fill-1 {
+            font-variation-settings: 'FILL' 1;
+        }
+
+        /* Smooth hover transitions */
+        .card-hover {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .card-hover:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 32px rgba(15, 12, 15, 0.35);
+        }
+
+        /* Glow effect for buttons */
+        .btn-glow {
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(10, 10, 10, 0.3);
+        }
+
+        .btn-glow:hover {
+            box-shadow: 0 6px 25px rgba(10, 10, 10, 0.5);
+            transform: translateY(-1px);
+        }
+
+        /* Subtle section gradient shimmer */
+        @keyframes shimmer {
+            0% {
+                background-position: -200% center;
+            }
+
+            100% {
+                background-position: 200% center;
+            }
+        }
+
+        .gradient-shimmer {
+            background-size: 200% auto;
+            animation: shimmer 8s linear infinite;
+        }
+
+        /* Splash transition overlay */
+        /* Rotating Offer Banner Animation */
+        @keyframes scroll-text {
+            0% {
+                transform: translateX(0);
+            }
+
+            100% {
+                transform: translateX(-50%);
+            }
+        }
+
+        .animate-scroll-text {
+            animation: scroll-text 30s linear infinite;
+        }
+
+        /* Time-based theme transitions */
+        body {
+            transition: background-color 1s ease, color 1s ease;
+        }
+
+        .morning-theme {
+
+            --bg-dark: #FFF8E1;
+            --bg-darker: #FFECB3;
+            --bg-card: #FFFFFF;
+            --text-main: #9c9d72;
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+        }
+
+        .morning-theme nav {
+            background-color: rgba(255, 236, 179, 0.9);
+            border-bottom-color: rgba(0, 0, 0, 0.05);
+        }
+
+        .morning-theme .text-white {
+            color: #c069b4;
+        }
+
+        .morning-theme .text-white\/80 {
+            color: rgba(198, 92, 162, 0.8);
+        }
+
+        .morning-theme .text-white\/40 {
+            color: rgba(214, 65, 177, 0.4);
+        }
+
+        .morning-theme .text-white\/50 {
+            color: rgba(188, 43, 190, 0.5);
+        }
+
+        .morning-theme .bg-bg-card {
+            background-color: #FFF0F5;
+            border-color: rgba(0, 0, 0, 0.05);
+        }
+
+        .night-theme {
+            --bg-dark: #ef57bd;
+            --bg-darker: #ec43c8;
+            --bg-card: #dd42d5;
+            background-color: var(--bg-dark);
+        }
+
+        /* Floating background elements */
+        .floating-element {
+            position: fixed;
+            pointer-events: none;
+            z-index: -1;
+            opacity: 0.05;
+            animation: floatSlow 20s infinite linear;
+        }
+
+        .splash-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 9999;
+            background: #da9c22;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        @keyframes floatSlow {
+            0% {
+                transform: translate(0, 0) rotate(0deg);
+            }
+
+            33% {
+                transform: translate(30px, 50px) rotate(10deg);
+            }
+
+            66% {
+                transform: translate(-20px, 100px) rotate(-5deg);
+            }
+
+            100% {
+                transform: translate(0, 0) rotate(0deg);
+            }
+        }
+
+
+        .splash-overlay.active {
+            pointer-events: all;
+            opacity: 1;
+        }
+
+        .splash-circle {
+            position: absolute;
+            border-radius: 50%;
+            transform: scale(0);
+        }
+
+        .splash-overlay.active .splash-circle:nth-child(1) {
+            width: 300vmax;
+            height: 300vmax;
+            top: 50%;
+            left: 50%;
+            margin-top: -150vmax;
+            margin-left: -150vmax;
+            background: radial-gradient(circle, #FFC107 0%, #FF4F81 50%, #3B1F0F 100%);
+            animation: splashExpand 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+        }
+
+        .splash-overlay.active .splash-circle:nth-child(2) {
+            width: 200vmax;
+            height: 200vmax;
+            top: 50%;
+            left: 50%;
+            margin-top: -100vmax;
+            margin-left: -100vmax;
+            background: radial-gradient(circle, #FF4F81 0%, #FFC107 60%, transparent 100%);
+            animation: splashExpand 1s 0.15s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+            opacity: 0.7;
+        }
+
+        .splash-overlay.active .splash-circle:nth-child(3) {
+            width: 150vmax;
+            height: 150vmax;
+            top: 50%;
+            left: 50%;
+            margin-top: -75vmax;
+            margin-left: -75vmax;
+            background: radial-gradient(circle, #d000ff 0%, #FFC107 40%, transparent 100%);
+            animation: splashExpand 0.8s 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+            opacity: 0.5;
+        }
+
+        /* Splash droplets */
+        .splash-drop {
+            position: absolute;
+            border-radius: 50%;
+            opacity: 0;
+        }
+
+        .splash-overlay.active .splash-drop {
+            animation: dropBurst 0.8s ease-out forwards;
+        }
+
+        .splash-overlay.active .splash-drop:nth-child(4) {
+            top: 40%;
+            left: 20%;
+            width: 20px;
+            height: 20px;
+            background: #FFC107;
+            animation-delay: 0.2s;
+        }
+
+        .splash-overlay.active .splash-drop:nth-child(5) {
+            top: 25%;
+            left: 70%;
+            width: 14px;
+            height: 14px;
+            background: #FF4F81;
+            animation-delay: 0.3s;
+        }
+
+        .splash-overlay.active .splash-drop:nth-child(6) {
+            top: 60%;
+            left: 80%;
+            width: 18px;
+            height: 18px;
+            background: #A8D88E;
+            animation-delay: 0.25s;
+        }
+
+        .splash-overlay.active .splash-drop:nth-child(7) {
+            top: 70%;
+            left: 30%;
+            width: 12px;
+            height: 12px;
+            background: #FFC107;
+            animation-delay: 0.35s;
+        }
+
+        .splash-overlay.active .splash-drop:nth-child(8) {
+            top: 30%;
+            left: 45%;
+            width: 16px;
+            height: 16px;
+            background: #FF4F81;
+            animation-delay: 0.15s;
+        }
+
+        /* Loading text */
+        .splash-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: white;
+            opacity: 0;
+            z-index: 10;
+        }
+
+        .splash-overlay.active .splash-text {
+            animation: textFade 0.6s 0.6s ease forwards;
+        }
+
+        @keyframes splashExpand {
+            0% {
+                transform: scale(0);
+            }
+
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        @keyframes dropBurst {
+            0% {
+                transform: scale(0) translateY(0);
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 1;
+            }
+
+            100% {
+                transform: scale(2) translateY(-40px);
+                opacity: 0;
+            }
+        }
+
+        @keyframes textFade {
+            0% {
+                opacity: 0;
+                transform: translate(-50%, -50%) scale(0.8);
+            }
+
+            100% {
+                opacity: 1;
+                transform: translate(-50%, -50%) scale(1);
+            }
+        }
+
+        .btn-splash-click {
+            animation: btnPop 0.4s ease;
+        }
+
+        @keyframes btnPop {
+            0% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(0.95);
+            }
+
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        /* ===== Drink Splash Loading — Ripple Effect ===== */
+        .drink-splash-v2 {
+            position: fixed;
+            inset: 0;
+            z-index: 10000;
+            pointer-events: none;
+            opacity: 0;
+            overflow: hidden;
+        }
+
+        .drink-splash-v2.active {
+            pointer-events: all;
+            opacity: 1;
+        }
+
+        /* Ripple circle that expands from click point */
+        .ripple-circle {
+            position: absolute;
+            border-radius: 50%;
+            background: var(--ripple-color, #FFC107);
+            transform: scale(0);
+            will-change: transform;
+        }
+
+        .drink-splash-v2.active .ripple-circle {
+            animation: rippleExpand 0.8s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+        }
+
+        @keyframes rippleExpand {
+            0% {
+                transform: scale(0);
+            }
+
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        /* Glassmorphism overlay on top of ripple */
+        .splash-glass {
+            position: absolute;
+            inset: 0;
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            opacity: 0;
+            transition: opacity 0.4s ease 0.3s;
+        }
+
+        .drink-splash-v2.active .splash-glass {
+            opacity: 1;
+        }
+
+        /* Splash content — centered icon + text */
+        .splash-center {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            z-index: 10;
+            opacity: 0;
+            transition: opacity 0.3s ease 0.45s, transform 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.35s;
+        }
+
+        .drink-splash-v2.active .splash-center {
+            opacity: 1;
+            transform: translate(-50%, -50%) scale(1);
+        }
+
+        .splash-emoji {
+            font-size: 3.5rem;
+            display: inline-block;
+            animation: none;
+        }
+
+        .drink-splash-v2.active .splash-emoji {
+            animation: floatBounce 1.2s ease-in-out infinite;
+        }
+
+        @keyframes floatBounce {
+
+            0%,
+            100% {
+                transform: translateY(0) rotate(0deg);
+            }
+
+            30% {
+                transform: translateY(-18px) rotate(-8deg);
+            }
+
+            60% {
+                transform: translateY(-8px) rotate(4deg);
+            }
+        }
+
+        .splash-label {
+            margin-top: 1rem;
+            font-size: 1.15rem;
+            font-weight: 800;
+            color: white;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
+            letter-spacing: -0.01em;
+        }
+
+        /* Soft glow behind icon */
+        .splash-glow-ring {
+            position: absolute;
+            width: 140px;
+            height: 140px;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -60%);
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.25) 0%, transparent 70%);
+            filter: blur(25px);
+            opacity: 0;
+            z-index: 5;
+            transition: opacity 0.4s ease 0.5s;
+        }
+
+        .drink-splash-v2.active .splash-glow-ring {
+            opacity: 1;
+            animation: pulseRing 1.5s ease-in-out infinite;
+        }
+
+        @keyframes pulseRing {
+
+            0%,
+            100% {
+                transform: translate(-50%, -60%) scale(1);
+                opacity: 0.6;
+            }
+
+            50% {
+                transform: translate(-50%, -60%) scale(1.25);
+                opacity: 1;
+            }
+        }
+
+        /* Page-exit wipe */
+        .wipe-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 10001;
+            background: #4f270e;
+            transform: translateX(-100%);
+            pointer-events: none;
+        }
+
+        .wipe-active .wipe-overlay {
+            animation: wipeRightLiquid 0.8s cubic-bezier(0.77, 0, 0.175, 1) forwards;
+        }
+
+        @keyframes wipeRightLiquid {
+            0% {
+                transform: translateX(-100%);
+            }
+
+            50% {
+                transform: translateX(0);
+            }
+
+            100% {
+                transform: translateX(100%);
+            }
+        }
+
+        /* ===== Hero Slideshow ===== */
+        .hero-slide {
+            position: absolute;
+            inset: 0;
+            opacity: 0;
+            transition: opacity 1.2s ease-in-out;
+            z-index: 0;
+        }
+
+        .hero-slide.active {
+            opacity: 1;
+            z-index: 1;
+        }
+
+        .hero-slide img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center center;
+        }
+
+        /* Dynamic theme overlay — color shifts per slide */
+        .hero-theme-overlay {
+            transition: background 1.2s ease-in-out;
+        }
+
+        /* Dot indicators */
+        .slide-dots {
+            display: flex;
+            gap: 8px;
+            justify-content: center;
+            z-index: 20;
+        }
+
+        .slide-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 9999px;
+            background: rgba(255, 255, 255, 0.3);
+            border: none;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            padding: 0;
+        }
+
+        .slide-dot.active {
+            width: 28px;
+            background: var(--hero-accent, #FFC107);
+            box-shadow: 0 0 12px var(--hero-accent-glow, rgba(255, 193, 7, 0.5));
+        }
+
+        /* Arrow controls */
+        .slide-arrow {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 20;
+            background: rgba(0, 0, 0, 0.25);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            color: white;
+            border-radius: 50%;
+            width: 38px;
+            height: 38px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            opacity: 0;
+        }
+
+        .hero-wrapper:hover .slide-arrow {
+            opacity: 1;
+        }
+
+        .slide-arrow:hover {
+            background: rgba(255, 255, 255, 0.15);
+            border-color: rgba(255, 255, 255, 0.3);
+            transform: translateY(-50%) scale(1.1);
+        }
+
+        .slide-arrow.left {
+            left: 14px;
+        }
+
+        .slide-arrow.right {
+            right: 14px;
+        }
+
+        /* ===== Responsive Image Handling ===== */
+
+        /* Hero slide images — always centered, no subject crop */
+        .hero-slide img {
+            object-position: center center;
+        }
+
+        /* Product card images — consistent 4:5 aspect ratio */
+        .product-img-wrap {
+            position: relative;
+            overflow: hidden;
+            aspect-ratio: 4 / 5;
+        }
+
+        .product-img-wrap img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center center;
+        }
+
+        /* Nut drink circular thumbnails */
+        .nut-thumb {
+            width: 64px;
+            height: 64px;
+            object-fit: cover;
+            object-position: center;
+            border-radius: 9999px;
+        }
+
+        /* Desktop: landscape hero, taller product cards */
+        @media (min-width: 768px) {
+            .hero-slide img {
+                object-position: center center;
+                object-fit: cover;
+            }
+
+            .hero-wrapper {
+                min-height: 500px;
+            }
+
+            .product-img-wrap {
+                aspect-ratio: 5 / 4;
+            }
+
+            .nut-thumb {
+                width: 80px;
+                height: 80px;
+            }
+        }
+
+        /* Large desktop */
+        @media (min-width: 1024px) {
+            .hero-wrapper {
+                min-height: 560px;
+            }
+
+            .product-img-wrap {
+                aspect-ratio: 4 / 3;
+            }
+        }
+
+        /* Tablet landscape */
+        @media (min-width: 768px) and (max-width: 1023px) {
+            .product-img-wrap {
+                aspect-ratio: 1 / 1;
+            }
+        }
+
+        /* ===== Signature Drinks Section ===== */
+        .sig-card {
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s ease;
+            cursor: pointer;
+        }
+
+        .sig-card:hover {
+            transform: translateY(-6px) scale(1.02);
+            box-shadow: 0 20px 50px rgba(187, 0, 255, 0.4);
+        }
+
+        .sig-card:active {
+            transform: scale(0.97);
+        }
+
+        .sig-card .sig-img {
+            transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .sig-card:hover .sig-img {
+            transform: scale(1.08);
+        }
+
+        .sig-card .sig-badge {
+            transition: transform 0.3s ease;
+        }
+
+        .sig-card:hover .sig-badge {
+            transform: scale(1.05);
+        }
+
+        /* Signature card image container */
+        .sig-img-wrap {
+            position: relative;
+            overflow: hidden;
+            aspect-ratio: 4 / 5;
+        }
+
+        .sig-img-wrap img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center center;
+        }
+
+        @media (min-width: 768px) {
+            .sig-img-wrap {
+                aspect-ratio: 5 / 4;
+            }
+        }
+
+        @media (min-width: 1024px) {
+            .sig-img-wrap {
+                aspect-ratio: 4 / 3;
+            }
+        }
+    </style>
+</head>
+
+<body class="bg-bg-dark text-white font-display">
+
+    <!-- Rotating Offer Banner -->
+    <div class="bg-gradient-to-r from-secondary to-primary/80 py-2 overflow-hidden relative" id="topOfferBanner">
+        <div class="flex whitespace-nowrap animate-scroll-text" id="bannerContainer">
+            <span class="text-[10px] font-extrabold uppercase tracking-widest text-white px-8">🌈 Buy 2 Get 1 Free on
+                all Milkshakes! 🌈</span>
+            <span class="text-[10px] font-extrabold uppercase tracking-widest text-white px-8">🍓 20% Off on Berry Bliss
+                today! 🍓</span>
+            <span class="text-[10px] font-extrabold uppercase tracking-widest text-white px-8">🥑 Weekend Special: Any 3
+                Drinks for ₹450! 🥑</span>
+            <!-- Duplicate for infinite scroll effect -->
+            <span class="text-[10px] font-extrabold uppercase tracking-widest text-white px-8">🌈 Buy 2 Get 1 Free on
+                all Milkshakes! 🌈</span>
+            <span class="text-[10px] font-extrabold uppercase tracking-widest text-white px-8">🍓 20% Off on Berry Bliss
+                today! 🍓</span>
+            <span class="text-[10px] font-extrabold uppercase tracking-widest text-white px-8">🥑 Weekend Special: Any 3
+                Drinks for ₹450! 🥑</span>
+        </div>
+    </div>
+
+
+    <!-- Splash Transition Overlay -->
+    <div id="splashOverlay" class="splash-overlay">
+        <div class="splash-circle"></div>
+        <div class="splash-circle"></div>
+        <div class="splash-circle"></div>
+        <div class="splash-drop"></div>
+        <div class="splash-drop"></div>
+        <div class="splash-drop"></div>
+        <div class="splash-drop"></div>
+        <div class="splash-drop"></div>
+        <div class="splash-text">🥤🍭 Loading Menu...🍭🧁</div>
+    </div>
+
+    <!-- 1. Sticky Navbar -->
+    <nav
+        class="sticky top-0 z-50 bg-bg-darker/90 backdrop-blur-xl border-b border-primary/10 px-4 py-3 flex items-center justify-between">
+        <div class="flex items-center gap-2">
+            <span
+                class="material-symbols-outlined text-primary text-3xl cursor-pointer hover:scale-110 transition-transform">menu</span>
+            <h1 class="text-xl font-extrabold tracking-tight">
+                <span class="text-primary">Nutri</span><span class="text-white">Shake</span>
+                <span class="text-secondary text-sm font-bold ml-0.5">Bar</span>
+            </h1>
+        </div>
+        <div class="flex items-center gap-3">
+            <div class="relative cursor-pointer hover:scale-110 transition-transform"
+                onclick="window.location.href='cart.html'">
+                <span class="material-symbols-outlined text-white/80">shopping_cart</span>
+                <span id="cartBadge"
+                    class="absolute -top-1.5 -right-1.5 bg-secondary text-white text-[9px] font-bold w-4 h-4 flex items-center justify-center rounded-full"
+                    style="display: none;">0</span>
+            </div>
+            <button onclick="window.location.href='wishlist.html'"
+                class="relative w-9 h-9 rounded-full bg-pink-100 hover:bg-pink-200 flex items-center justify-center transition-all hover:scale-110 active:scale-90 shadow-sm"
+                title="Wishlist" id="navWishlistBtn">
+                <span class="material-symbols-outlined text-secondary text-[22px]"
+                    style="font-variation-settings:'FILL' 0">favorite</span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- 2. Hero Section with Slideshow -->
+    <section class="relative px-4 py-6">
+        <div class="hero-wrapper relative overflow-hidden rounded-2xl min-h-[420px] flex flex-col justify-end p-6"
+            id="heroSlider">
+
+            <!-- Slideshow Images — high-quality Unsplash stock photos -->
+            <!-- Slide 0: Strawberry Milkshake -->
+            <div class="hero-slide active" data-slide="0" data-theme-accent="#FF6B9D"
+                data-theme-glow="rgba(255,107,157,0.5)" data-theme-overlay="rgba(180,30,60,0.18)">
+                <img alt="Vibrant strawberry milkshake with fresh berries and whipped cream"
+                    src="https://images.pexels.com/photos/3342301/pexels-photo-3342301.jpeg" loading="eager" />
+            </div>
+
+            <!-- Slide 1: Mango Smoothie -->
+            <div class="hero-slide" data-slide="1" data-theme-accent="#FFB800" data-theme-glow="rgba(255,184,0,0.5)"
+                data-theme-overlay="rgba(200,110,0,0.18)">
+                <img alt="Fresh golden mango smoothie with mango slices and mint"
+                    src="https://images.pexels.com/photos/12912638/pexels-photo-12912638.png" loading="lazy" />
+            </div>
+
+            <!-- Slide 2: Lime Mojito -->
+            <div class="hero-slide" data-slide="2" data-theme-accent="#7EC850" data-theme-glow="rgba(126,200,80,0.5)"
+                data-theme-overlay="rgba(40,130,30,0.18)">
+                <img alt="Refreshing lime mojito with fresh mint leaves and crushed ice"
+                    src="https://images.pexels.com/photos/7259042/pexels-photo-7259042.jpeg" loading="lazy" />
+            </div>
+
+            <!-- Slide 3: Chocolate Milkshake -->
+            <div class="hero-slide" data-slide="3" data-theme-accent="#C8956A" data-theme-glow="rgba(200,149,106,0.5)"
+                data-theme-overlay="rgba(80,40,10,0.25)">
+                <img alt="Decadent chocolate milkshake topped with whipped cream and cocoa drizzle"
+                    src="https://images.pexels.com/photos/20066464/pexels-photo-20066464.jpeg" loading="lazy" />
+            </div>
+
+            <!-- Slide 4: Fresh Juice -->
+            <div class="hero-slide" data-slide="4" data-theme-accent="#FF8A00" data-theme-glow="rgba(255,138,0,0.5)"
+                data-theme-overlay="rgba(200,80,0,0.18)">
+                <img alt="Colorful assorted fresh fruit juices with tropical fruits"
+                    src="https://images.pexels.com/photos/34034733/pexels-photo-34034733.jpeg" loading="lazy" />
+            </div>
+
+            <!-- Soft bottom-to-top gradient for text legibility — reduced opacity -->
+            <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-black/10 z-[2]"></div>
+            <!-- Per-slide color tint overlay -->
+            <div class="hero-theme-overlay absolute inset-0 z-[3]" id="heroThemeOverlay"></div>
+
+            <!-- Left / Right Arrows -->
+            <button class="slide-arrow left" onclick="heroSlideChange(-1)" aria-label="Previous slide">
+                <span class="material-symbols-outlined text-lg">chevron_left</span>
+            </button>
+            <button class="slide-arrow right" onclick="heroSlideChange(1)" aria-label="Next slide">
+                <span class="material-symbols-outlined text-lg">chevron_right</span>
+            </button>
+
+            <!-- Fixed text content (stays on top) -->
+            <div class="relative z-10 space-y-4">
+                <div>
+                    <span
+                        class="inline-block bg-secondary/20 border border-secondary/30 text-secondary text-[11px] font-bold px-3 py-1 rounded-full mb-3 backdrop-blur-sm">🔥
+                        Freshly Made Daily</span>
+                </div>
+                <h2 class="text-4xl md:text-5xl font-extrabold text-white leading-tight drop-shadow-lg">
+                    Fresh. Creamy.<br /><span class="text-primary">Energizing.</span>
+                </h2>
+                <p class="text-white/80 font-medium text-base max-w-sm">Delicious milkshakes &amp; nutritious nut drinks
+                    crafted with premium ingredients.</p>
+                <div class="flex gap-3 pt-2">
+                    <button id="exploreMenuBtn" onclick="window.location.href='menu.html'"
+                        class="btn-glow bg-primary text-bg-dark px-6 py-3.5 rounded-full font-extrabold flex-1 text-sm cursor-pointer">Explore
+                        Menu</button>
+                    <button onclick="handleOrderNow()"
+                        class="bg-white/10 border-2 border-white/30 text-white px-6 py-3.5 rounded-full font-bold flex-1 text-sm backdrop-blur-sm hover:bg-white/20 transition-colors active:scale-95">Order
+                        Now</button>
+                </div>
+                <!-- Dot indicators -->
+                <div class="slide-dots pt-4" id="slideDots">
+                    <button class="slide-dot active" data-index="0" onclick="goToSlide(0)"></button>
+                    <button class="slide-dot" data-index="1" onclick="goToSlide(1)"></button>
+                    <button class="slide-dot" data-index="2" onclick="goToSlide(2)"></button>
+                    <button class="slide-dot" data-index="3" onclick="goToSlide(3)"></button>
+                    <button class="slide-dot" data-index="4" onclick="goToSlide(4)"></button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- NEW: Trending Now Section -->
+    <section class="relative px-4 py-8">
+        <div class="flex justify-between items-end mb-5">
+            <div>
+                <h3 class="text-xl font-extrabold text-pink-500">Trending Now</h3>
+                <p class="text-xs text-pink-500">Most loved this week</p>
+            </div>
+        </div>
+
+        <div class="flex gap-4 overflow-x-auto hide-scrollbar pb-4 snap-x snap-mandatory">
+            <!-- Item 1 -->
+            <div
+                class="card-hover min-w-[160px] bg-bg-card rounded-2xl overflow-hidden border border-white/5 snap-start shadow-xl shadow-primary/5">
+                <div class="relative h-28">
+                    <img src="https://images.pexels.com/photos/8743859/pexels-photo-8743859.jpeg"
+                        class="w-full h-full object-cover">
+                    <span
+                        class="absolute top-2 left-2 bg-primary text-bg-dark text-[8px] font-bold px-2 py-0.5 rounded-full">#1
+                        BESTSELLER</span>
+                </div>
+                <div class="p-3">
+                    <h4 class="text-xs font-bold text-pink-500 truncate">Oreo Overload</h4>
+                    <span class="text-primary text-xs font-extrabold text-pink-500">₹80</span>
+                </div>
+            </div>
+            <!-- Item 2 -->
+            <div
+                class="card-hover min-w-[160px] bg-bg-card rounded-2xl overflow-hidden border border-white/5 snap-start">
+                <div class="relative h-28">
+                    <img src="https://images.pexels.com/photos/1187766/pexels-photo-1187766.jpeg"
+                        class="w-full h-full object-cover">
+                    <span
+                        class="absolute top-2 left-2 bg-secondary text-white text-[8px] font-bold px-2 py-0.5 rounded-full text-white/50">NEWLY
+                        LAUNCHED</span>
+                </div>
+                <div class="p-3">
+                    <h4 class="text-xs font-bold text-pink-500 truncate">Blue lagoon</h4>
+                    <span class="text-secondary text-xs font-extrabold text-pink-500">₹170</span>
+                </div>
+            </div>
+            <!-- Item 3 -->
+            <div
+                class="card-hover min-w-[160px] bg-bg-card rounded-2xl overflow-hidden border border-white/5 snap-start">
+                <div class="relative h-28">
+                    <img src="https://images.pexels.com/photos/4551414/pexels-photo-4551414.jpeg"
+                        class="w-full h-full object-cover">
+                    <span
+                        class="absolute top-2 left-2 bg-pista text-bg-dark text-[8px] font-bold px-2 py-0.5 rounded-full">TOP
+                        RATED</span>
+                </div>
+                <div class="p-3">
+                    <h4 class="text-xs font-bold text-pink-500 truncate">Blueberry overflows</h4>
+                    <span class="text-pista text-xs font-extrabold text-pink-500">₹150</span>
+                </div>
+            </div>
+            <!-- Item 4 -->
+            <div
+                class="card-hover min-w-[160px] bg-bg-card rounded-2xl overflow-hidden border border-white/5 snap-start">
+                <div class="relative h-28">
+                    <img src="https://images.pexels.com/photos/20205942/pexels-photo-20205942.jpeg"
+                        class="w-full h-full object-cover">
+                    <span
+                        class="absolute top-2 left-2 bg-secondary text-white text-[8px] font-bold px-2 py-0.5 rounded-full text-white">#2
+                        TOP RATED AND LIKED
+                    </span>
+                </div>
+                <div class="p-3">
+                    <h4 class="text-xs font-bold text-pink-500 truncate">Watermelon Chill</h4>
+                    <span class="text-primary text-xs font-extrabold text-pink-500">₹40</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 5. Nut Drinks -->
+    <section class="relative px-4 py-10">
+        <!-- Gradient overlay for depth -->
+        <div
+            class="absolute inset-0 bg-gradient-to-b from-pista/5 via-pista/8 to-transparent pointer-events-none rounded-3xl">
+        </div>
+        <div class="relative z-10">
+            <div class="mb-6">
+                <h3 class="text-2xl font-extrabold text-pink-500">Power-Packed Nut Drinks</h3>
+                <p class="text-sm text-pink-500 mt-1">Natural energy for your busy day</p>
+            </div>
+            <div class="flex gap-4 overflow-x-auto hide-scrollbar pb-4">
+                <!-- Badam Milk -->
+                <div class="card-hover min-w-[280px] bg-bg-card rounded-2xl shadow-xl p-4 border border-pista/10 cursor-pointer open-splash"
+                    data-drink="pista" data-name="Royal Badam Milk" data-price="140" data-theme="pista"
+                    data-img="https://images.pexels.com/photos/2113915/pexels-photo-2113915.jpeg"
+                    data-desc="Golden badam milk brewed with premium saffron and cardamom.">
+                    <div class="flex justify-between items-start mb-4">
+                        <div class="space-y-1.5">
+                            <span class="text-[10px] font-bold text-pista bg-pista/15 px-2.5 py-0.5 rounded-full">🛡️
+                                Immunity Boost</span>
+                            <h4 class="text-lg font-bold text-pink-500">Royal Badam Milk</h4>
+                            <p class="text-xs text-pink-500">Saffron &amp; Almond richness</p>
+                        </div>
+                        <img class="w-16 h-16 rounded-full object-cover border-2 border-pista/40 shadow-lg"
+                            alt="Golden almond milk with saffron strands"
+                            src="https://images.pexels.com/photos/2113915/pexels-photo-2113915.jpeg" />
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <span class="text-xl font-extrabold text-pink-500">₹140</span>
+                        <button
+                            onclick="event.stopPropagation(); addItemToCart({name:'Royal Badam Milk', price:140, img:'https://images.pexels.com/photos/2113915/pexels-photo-2113915.jpeg', size:'Regular', quantity:1})"
+                            class="btn-glow bg-primary px-6 py-2 rounded-full font-extrabold text-sm text-bg-dark">Order</button>
+                    </div>
+                </div>
+                <!-- Dates Shake -->
+                <div class="card-hover min-w-[280px] bg-bg-card rounded-2xl shadow-xl p-4 border border-primary/10 cursor-pointer open-splash"
+                    data-drink="choco" data-name="Dates & Walnut Shake" data-price="210" data-theme="choco"
+                    data-img="https://i.pinimg.com/1200x/34/27/10/342710d0af4358d61322329c09cbc494.jpg"
+                    data-desc="A natural energetic blend of soft dates and crunchy walnuts.">
+                    <div class="flex justify-between items-start mb-4">
+                        <div class="space-y-1.5">
+                            <span class="text-[10px] font-bold text-primary bg-primary/15 px-2.5 py-0.5 rounded-full">⚡
+                                Energy Booster</span>
+                            <h4 class="text-lg font-bold text-pink-500">Dates &amp; Walnut Shake</h4>
+                            <p class="text-xs text-pink-500">Natural sugar, high protein</p>
+                        </div>
+                        <img class="w-16 h-16 rounded-full object-cover border-2 border-primary/40 shadow-lg"
+                            alt="Healthy dates and walnut protein shake"
+                            src="https://i.pinimg.com/1200x/34/27/10/342710d0af4358d61322329c09cbc494.jpg" />
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <span class="text-xl font-extrabold text-pink-500">₹210</span>
+                        <button
+                            onclick="event.stopPropagation(); addItemToCart({name:'Dates &amp; Walnut Shake', price:210, img:'https://i.pinimg.com/1200x/34/27/10/342710d0af4358d61322329c09cbc494.jpg', size:'Regular', quantity:1})"
+                            class="btn-glow bg-primary px-6 py-2 rounded-full font-extrabold text-sm text-bg-dark">Order</button>
+                    </div>
+                </div>
+                <!-- Cashew Shake -->
+                <div class="card-hover min-w-[280px] bg-bg-card rounded-2xl shadow-xl p-4 border border-secondary/10 cursor-pointer open-splash"
+                    data-drink="pista" data-name="Cashew Power Shake" data-price="180" data-theme="pista"
+                    data-img="https://i.pinimg.com/736x/e2/58/06/e258060b0f6e4664820b52990e8e2b5b.jpg"
+                    data-desc="Creamy and nutrient-dense cashew nut protein shake.">
+                    <div class="flex justify-between items-start mb-4">
+                        <div class="space-y-1.5">
+                            <span
+                                class="text-[10px] font-bold text-secondary bg-secondary/15 px-2.5 py-0.5 rounded-full">💪
+                                Protein Rich</span>
+                            <h4 class="text-lg font-bold text-pink-500">Cashew Power Shake</h4>
+                            <p class="text-xs text-pink-500">Creamy &amp; nutrient-dense</p>
+                        </div>
+                        <img class="w-16 h-16 rounded-full object-cover border-2 border-secondary/40 shadow-lg"
+                            alt="Creamy cashew nut protein shake"
+                            src="https://i.pinimg.com/736x/e2/58/06/e258060b0f6e4664820b52990e8e2b5b.jpg" />
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <span class="text-xl font-extrabold text-pink-500">₹180</span>
+                        <button
+                            onclick="event.stopPropagation(); addItemToCart({name:'Cashew Power Shake', price:180, img:'https://i.pinimg.com/736x/e2/58/06/e258060b0f6e4664820b52990e8e2b5b.jpg', size:'Regular', quantity:1})"
+                            class="btn-glow bg-primary px-6 py-2 rounded-full font-extrabold text-sm text-bg-dark">Order</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- NEW: Our Signature Drinks -->
+    <section class="relative px-4 py-10">
+        <div
+            class="absolute inset-0 bg-gradient-to-b from-transparent via-secondary/5 to-transparent pointer-events-none">
+        </div>
+        <div class="relative z-10">
+            <div class="flex justify-between items-end mb-6">
+                <div>
+                    <div class="flex items-center gap-2 mb-1">
+                        <span class="text-2xl">✨</span>
+                        <h3 class="text-2xl font-extrabold text-pink-500">Our Signature Drinks</h3>
+                    </div>
+                    <p class="text-sm text-pink-500 mt-1">Exclusive, bold, and unforgettable</p>
+                </div>
+            </div>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+
+                <!-- Blue Lagoon -->
+                <div class="sig-card open-splash bg-gradient-to-br from-blue-500/15 to-bg-card rounded-2xl overflow-hidden border border-blue-500/10"
+                    data-name="Blue Lagoon" data-price="180" data-theme="lagoon" data-drink="lagoon"
+                    data-tagline="Electric blue paradise"
+                    data-img="https://i.pinimg.com/736x/93/63/cb/9363cb70134111e7daf165edda869c48.jpg"
+                    data-desc="A stunning electric blue curacao and lemonade blend with crushed ice. Refreshingly bold.">
+                    <div class="sig-img-wrap">
+                        <img class="sig-img" alt="Electric blue lagoon cocktail with ice"
+                            src="https://i.pinimg.com/1200x/27/8c/ff/278cff54998b3a790f4be858df2c7ffd.jpg" />
+                        <div class="absolute inset-0 bg-gradient-to-t from-bg-card via-transparent to-transparent">
+                        </div>
+                        <span
+                            class="sig-badge absolute top-2 left-2 bg-blue-500/90 text-white text-[9px] font-extrabold px-2 py-0.5 rounded-full">💎
+                            Stunning</span>
+                    </div>
+                    <div class="p-3 pt-2">
+                        <h4 class="font-bold text-pink-500 text-sm">Blue Lagoon</h4>
+                        <p class="text-[10px] text-pink-500 mb-2">Electric blue paradise</p>
+                        <div class="flex justify-between items-center">
+                            <span class="font-extrabold text-pink-500 text-base">₹80</span>
+                            <span class="material-symbols-outlined text-pink-500 text-sm">arrow_forward</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Shrek Drink -->
+                <div class="sig-card open-splash bg-gradient-to-br from-emerald-500/15 to-bg-card rounded-2xl overflow-hidden border border-emerald-500/10"
+                    data-name="Shrek drink" data-price="220" data-theme="pickle" data-drink="pickle"
+                    data-tagline="Wildly unexpected"
+                    data-img="https://i.pinimg.com/736x/4c/9a/2c/4c9a2c8f815dfdb457104cedb990a95e.jpg"
+                    data-desc="The wildest shake you'll ever try! Tangy pickle blended into creamy milkshake madness. Bold and unforgettable.">
+                    <div class="sig-img-wrap">
+                        <img class="sig-img" alt="Bright green pickle milkshake with garnish"
+                            src="https://i.pinimg.com/736x/4c/9a/2c/4c9a2c8f815dfdb457104cedb990a95e.jpg" />
+                        <div class="absolute inset-0 bg-gradient-to-t from-bg-card via-transparent to-transparent">
+                        </div>
+                        <span
+                            class="sig-badge absolute top-2 left-2 bg-emerald-500/90 text-white text-[9px] font-extrabold px-2 py-0.5 rounded-full">🤪
+                            Wild</span>
+                    </div>
+                    <div class="p-3 pt-2">
+                        <h4 class="font-bold text-pink-500 text-sm">Shrek Drink</h4>
+                        <p class="text-[10px] text-pink-500 mb-2">Wildly unexpected</p>
+                        <div class="flex justify-between items-center">
+                            <span class="font-extrabold text-pink-500 text-base">₹120</span>
+                            <span class="material-symbols-outlined text-pink-500 text-sm">arrow_forward</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Guava Milkshake -->
+                <div class="sig-card open-splash bg-gradient-to-br from-pink-400/15 to-bg-card rounded-2xl overflow-hidden border border-pink-400/10"
+                    data-name="Guava Milkshake" data-price="160" data-theme="guava" data-drink="guava"
+                    data-tagline="Tropical pink perfection"
+                    data-img="https://i.pinimg.com/736x/1a/a8/46/1aa846878b94b0a9ff227431e80c39a0.jpg"
+                    data-desc="Sweet guava pulp blended into creamy perfection. A tropical pink delight that's naturally sweet.">
+                    <div class="sig-img-wrap">
+                        <img class="sig-img" alt="Pink guava milkshake with tropical vibes"
+                            src="https://images.pexels.com/photos/8737022/pexels-photo-8737022.jpeg" />
+                        <div class="absolute inset-0 bg-gradient-to-t from-bg-card via-transparent to-transparent">
+                        </div>
+                        <span
+                            class="sig-badge absolute top-2 left-2 bg-pink-400/90 text-white text-[9px] font-extrabold px-2 py-0.5 rounded-full">🌸
+                            Fresh</span>
+                    </div>
+                    <div class="p-3 pt-2">
+                        <h4 class="font-bold text-pink-500 text-sm">Guava Milkshake</h4>
+                        <p class="text-[10px] text-pink-500 mb-2">Tropical pink perfection</p>
+                        <div class="flex justify-between items-center">
+                            <span class="font-extrabold text-pink-500 text-base">₹60</span>
+                            <span class="material-symbols-outlined text-pink-500 text-sm">arrow_forward</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Birthday Shake -->
+                <div class="sig-card open-splash bg-gradient-to-br from-amber-400/15 via-pink-400/10 to-bg-card rounded-2xl overflow-hidden border border-amber-400/10"
+                    data-name="Birthday Shake" data-price="250" data-theme="birthday" data-drink="birthday"
+                    data-tagline="Cake in a cup"
+                    data-img="https://i.pinimg.com/736x/66/04/b4/6604b42ec9512925f888729f8a677280.jpg"
+                    data-desc="A party in a glass! Vanilla cake batter blended with sprinkles, whipped cream, and birthday magic.">
+                    <div class="sig-img-wrap">
+                        <img class="sig-img" alt="Colorful birthday cake milkshake with sprinkles"
+                            src="https://i.pinimg.com/736x/66/04/b4/6604b42ec9512925f888729f8a677280.jpg" />
+                        <div class="absolute inset-0 bg-gradient-to-t from-bg-card via-transparent to-transparent">
+                        </div>
+                        <span
+                            class="sig-badge absolute top-2 left-2 bg-amber-400/90 text-bg-dark text-[9px] font-extrabold px-2 py-0.5 rounded-full">🎉
+                            Party</span>
+                    </div>
+                    <div class="p-3 pt-2">
+                        <h4 class="font-bold text-pink-500 text-sm">Birthday Shake</h4>
+                        <p class="text-[10px] text-pink-500 mb-2">Cake in a cup</p>
+                        <div class="flex justify-between items-center">
+                            <span class="font-extrabold text-pink-500 text-base">₹250</span>
+                            <span class="material-symbols-outlined text-pink-500 text-sm">arrow_forward</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Unicorn Shake -->
+                <div class="sig-card open-splash bg-gradient-to-br from-purple-500/15 via-pink-400/10 to-bg-card rounded-2xl overflow-hidden border border-purple-500/10"
+                    data-name="Unicorn Shake" data-price="280" data-theme="unicorn" data-drink="unicorn"
+                    data-tagline="Magical pastel dream"
+                    data-img="https://i.pinimg.com/1200x/cd/87/bd/cd87bdf181d7a9ef0efa9ae9220096a4.jpg"
+                    data-desc="A magical swirl of berry, vanilla, and cotton candy flavors in stunning purple-pink hues. Pure fantasy.">
+                    <div class="sig-img-wrap">
+                        <img class="sig-img" alt="Magical purple and pink unicorn milkshake"
+                            src="https://i.pinimg.com/1200x/cd/87/bd/cd87bdf181d7a9ef0efa9ae9220096a4.jpg" />
+                        <div class="absolute inset-0 bg-gradient-to-t from-bg-card via-transparent to-transparent">
+                        </div>
+                        <span
+                            class="sig-badge absolute top-2 left-2 bg-purple-500/90 text-white text-[9px] font-extrabold px-2 py-0.5 rounded-full">🦄
+                            Fantasy</span>
+                    </div>
+                    <div class="p-3 pt-2">
+                        <h4 class="font-bold text-pink-500 text-sm">Unicorn Shake</h4>
+                        <p class="text-[10px] text-pink-500 mb-2">Magical pastel dream</p>
+                        <div class="flex justify-between items-center">
+                            <span class="font-extrabold text-pink-500 text-base">₹280</span>
+                            <span class="material-symbols-outlined text-pink-500 text-sm">arrow_forward</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Red Velvet Cookie Crazyshake -->
+                <div class="sig-card open-splash bg-gradient-to-br from-red-600/15 to-bg-card rounded-2xl overflow-hidden border border-red-600/10"
+                    data-name="Red Velvet Cookie Crazyshake" data-price="300" data-theme="velvet" data-drink="velvet"
+                    data-tagline="Over-the-top indulgence"
+                    data-img="https://i.pinimg.com/736x/aa/67/94/aa67946a9845e2dd4dd72c5e2c110367.jpg"
+                    data-desc="The ultimate over-the-top creation. Red velvet cake blended with cookie crumbles, drizzled with cream cheese frosting.">
+                    <div class="sig-img-wrap">
+                        <img class="sig-img" alt="Epic red velvet cookie shake with toppings"
+                            src="https://i.pinimg.com/736x/aa/67/94/aa67946a9845e2dd4dd72c5e2c110367.jpg" />
+                        <div class="absolute inset-0 bg-gradient-to-t from-bg-card via-transparent to-transparent">
+                        </div>
+                        <span
+                            class="sig-badge absolute top-2 left-2 bg-red-600/90 text-white text-[9px] font-extrabold px-2 py-0.5 rounded-full">🔥
+                            Crazy</span>
+                    </div>
+                    <div class="p-3 pt-2">
+                        <h4 class="font-bold text-pink-500 text-sm">Red Velvet Crazy</h4>
+                        <p class="text-[10px] text-pink-500 mb-2">Over-the-top indulgence</p>
+                        <div class="flex justify-between items-center">
+                            <span class="font-extrabold text-pink-500 text-base">₹300</span>
+                            <span class="material-symbols-outlined text-pink-500 text-sm">arrow_forward</span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- 6. Why Choose Us -->
+    <section class="relative px-4 py-12">
+        <div
+            class="absolute inset-0 bg-gradient-to-b from-bg-darker/60 via-bg-dark to-bg-darker/60 pointer-events-none">
+        </div>
+        <div class="relative z-10">
+            <h3 class="text-center text-xl font-extrabold text-white mb-2">Why NutriShake?</h3>
+            <p class="text-center text-white/40 text-sm mb-8">Quality you can taste</p>
+            <div class="grid grid-cols-3 gap-4 text-center">
+                <div class="space-y-3">
+                    <div
+                        class="w-16 h-16 bg-primary/15 border border-primary/20 rounded-2xl flex items-center justify-center mx-auto">
+                        <span class="material-symbols-outlined text-primary text-3xl">eco</span>
+                    </div>
+                    <p class="text-xs font-bold text-white">Fresh Ingredients</p>
+                    <p class="text-[10px] text-white/40">Farm to glass</p>
+                </div>
+                <div class="space-y-3">
+                    <div
+                        class="w-16 h-16 bg-pista/15 border border-pista/20 rounded-2xl flex items-center justify-center mx-auto">
+                        <span class="material-symbols-outlined text-pista text-3xl">verified</span>
+                    </div>
+                    <p class="text-xs font-bold text-white">No Preservatives</p>
+                    <p class="text-[10px] text-white/40">100% pure</p>
+                </div>
+                <div class="space-y-3">
+                    <div
+                        class="w-16 h-16 bg-secondary/15 border border-secondary/20 rounded-2xl flex items-center justify-center mx-auto">
+                        <span class="material-symbols-outlined text-secondary text-3xl">workspace_premium</span>
+                    </div>
+                    <p class="text-xs font-bold text-white">Premium Nuts</p>
+                    <p class="text-[10px] text-white/40">Handpicked</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 7. Reviews -->
+    <section class="relative px-4 py-10">
+        <div
+            class="absolute inset-0 bg-gradient-to-b from-transparent via-primary/5 to-transparent pointer-events-none">
+        </div>
+        <div class="relative z-10">
+            <h3 class="text-2xl font-extrabold text-pink-400 mb-6">What Shakers Say</h3>
+            <div class="space-y-4">
+                <div class="bg-bg-card p-5 rounded-2xl border border-white/5 card-hover">
+                    <div class="flex gap-1 text-primary mb-3">
+                        <span class="material-symbols-outlined text-base fill-1">star</span>
+                        <span class="material-symbols-outlined text-base fill-1">star</span>
+                        <span class="material-symbols-outlined text-base fill-1">star</span>
+                        <span class="material-symbols-outlined text-base fill-1">star</span>
+                        <span class="material-symbols-outlined text-base fill-1">star</span>
+                    </div>
+                    <p class="text-sm italic text-pink-400 mb-3 leading-relaxed">"The Dates Shake is literally a
+                        powerhouse. Best post-workout drink ever!"</p>
+                    <div class="flex items-center gap-2">
+                        <div class="w-7 h-7 bg-primary/20 rounded-full flex items-center justify-center">
+                            <span class="text-primary font-bold text-xs">R</span>
+                        </div>
+                        <p class="text-xs font-bold text-pink-400">Rahul V.</p>
+                    </div>
+                </div>
+                <div class="bg-bg-card p-5 rounded-2xl border border-white/5 card-hover">
+                    <div class="flex gap-1 text-primary mb-3">
+                        <span class="material-symbols-outlined text-base fill-1">star</span>
+                        <span class="material-symbols-outlined text-base fill-1">star</span>
+                        <span class="material-symbols-outlined text-base fill-1">star</span>
+                        <span class="material-symbols-outlined text-base fill-1">star</span>
+                        <span class="material-symbols-outlined text-base fill-1">star</span>
+                    </div>
+                    <p class="text-sm italic text-pink-400 mb-3 leading-relaxed">"Strawberry Bliss is my kids'
+                        favorite.
+                        It's so creamy and clearly made with real fruit."</p>
+                    <div class="flex items-center gap-2">
+                        <div class="w-7 h-7 bg-secondary/20 rounded-full flex items-center justify-center">
+                            <span class="text-secondary font-bold text-xs">P</span>
+                        </div>
+                        <p class="text-xs font-bold text-pink-400">Priya S.</p>
+                    </div>
+                </div>
+                <div class="bg-bg-card p-5 rounded-2xl border border-white/5 card-hover">
+                    <div class="flex gap-1 text-primary mb-3">
+                        <span class="material-symbols-outlined text-base fill-1">star</span>
+                        <span class="material-symbols-outlined text-base fill-1">star</span>
+                        <span class="material-symbols-outlined text-base fill-1">star</span>
+                        <span class="material-symbols-outlined text-base fill-1">star</span>
+                        <span class="material-symbols-outlined text-base fill-1">star</span>
+                    </div>
+                    <p class="text-sm italic text-pink-400 mb-3 leading-relaxed">"Mango Magic tastes like pure India
+                        summer. Absolutely divine with real Alphonso pulp!"</p>
+                    <div class="flex items-center gap-2">
+                        <div class="w-7 h-7 bg-pista/20 rounded-full flex items-center justify-center">
+                            <span class="text-pista font-bold text-xs">A</span>
+                        </div>
+                        <p class="text-xs font-bold text-pink-400">Arjun M.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 8. Footer -->
+    <footer class="relative bg-bg-darker text-white px-4 py-12 rounded-t-3xl overflow-hidden">
+        <div class="absolute inset-0 bg-gradient-to-t from-primary/5 to-transparent pointer-events-none"></div>
+        <div class="relative z-10">
+            <div class="text-center mb-8">
+                <h4 class="text-xl font-extrabold mb-1">
+                    <span class="text-primary">Nutri</span><span class="text-white">Shake</span>
+                    <span class="text-secondary text-sm font-bold ml-0.5">Bar</span>
+                </h4>
+                <p class="text-xs text-white/50">Fresh. Creamy. Energizing.</p>
+            </div>
+            <div class="grid grid-cols-2 gap-8 mb-10">
+                <div>
+                    <h4 class="font-bold text-primary text-sm mb-3 flex items-center gap-1">
+                        <span class="material-symbols-outlined text-base">location_on</span> Location
+                    </h4>
+                    <p class="text-xs text-pink-500 leading-relaxed">Perumanallur Main road ,Bharani bakery opp ,
+                        Tirupur - 641666</p>
+                </div>
+                <div>
+                    <h4 class="font-bold text-primary text-sm mb-3 flex items-center gap-1">
+                        <span class="material-symbols-outlined text-base">call</span> Contact
+                    </h4>
+                    <p class="text-xs text-pink-500">+91 98765 43210<br />hello@nutrishake.com</p>
+                </div>
+            </div>
+            <div class="flex justify-center gap-4 border-t border-white/5 pt-8 mb-8">
+                <div
+                    class="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center hover:bg-primary/20 transition-colors cursor-pointer">
+                    <span class="material-symbols-outlined text-xl text-pink-500">language</span>
+                </div>
+                <div
+                    class="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center hover:bg-primary/20 transition-colors cursor-pointer">
+                    <span class="material-symbols-outlined text-xl text-pink-500">share</span>
+                </div>
+                <div
+                    class="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center hover:bg-primary/20 transition-colors cursor-pointer">
+                    <span class="material-symbols-outlined text-xl text-pink-500">location_on</span>
+                </div>
+            </div>
+            <p class="text-center text-[10px] text-pink-500">© 2025 NutriShake Bar. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Bottom Nav Bar -->
+    <div
+        class="fixed bottom-0 left-0 right-0 z-50 bg-bg-darker/95 backdrop-blur-xl border-t border-white/5 px-4 py-2.5 flex justify-between items-center">
+        <a class="flex flex-col items-center gap-1 text-primary" href="index.html">
+            <span class="material-symbols-outlined fill-1">home</span>
+            <span class="text-[10px] font-bold">Home</span>
+        </a>
+        <a class="flex flex-col items-center gap-1 text-white/40 hover:text-primary transition-colors" href="menu.html">
+            <span class="material-symbols-outlined">restaurant_menu</span>
+            <span class="text-[10px] font-medium">Menu</span>
+        </a>
+        <a class="flex flex-col items-center gap-1 text-white/40 hover:text-primary transition-colors"
+            href="deals.html">
+            <span class="material-symbols-outlined">local_offer</span>
+            <span class="text-[10px] font-medium">Deals</span>
+        </a>
+        <a class="flex flex-col items-center gap-1 text-white/40 hover:text-primary transition-colors" href="#">
+            <span class="material-symbols-outlined">person</span>
+            <span class="text-[10px] font-medium">Profile</span>
+        </a>
+    </div>
+
+    <!-- Padding for bottom nav -->
+    <div class="h-16"></div>
+
+    <!-- Drink Splash Overlay (Ripple V2) -->
+    <div id="drinkSplashV2" class="drink-splash-v2">
+        <div class="ripple-circle" id="rippleCircle"></div>
+        <div class="splash-glass"></div>
+        <div class="splash-glow-ring"></div>
+        <div class="splash-center">
+            <div class="splash-emoji" id="splashEmoji">🥤</div>
+            <div class="splash-label" id="splashLabel">Blending magic... ✨</div>
+        </div>
+    </div>
+    <div class="wipe-overlay" id="wipeOverlay"></div>
+
+    <script src="cart.js"></script>
+    <script src="wishlist.js"></script>
+    <script>
+        // ============================
+        // Time-Based Theme Adjustment
+        // ============================
+        function updateTheme() {
+            const hour = new Date().getHours();
+            const isMorning = hour >= 6 && hour < 18;
+            if (isMorning) {
+                document.body.classList.add('morning-theme');
+                document.body.classList.remove('night-theme');
+            } else {
+                document.body.classList.add('night-theme');
+                document.body.classList.remove('morning-theme');
+            }
+        }
+        updateTheme();
+
+        // ============================
+        // Search Suggestions logic
+        // ============================
+        // Placeholder for real logic - would search menu items
+        function handleSearch(input) {
+            // This would normally show a dropdown
+            console.log("Searching for: " + input);
+        }
+        function triggerSplash() {
+            const btn = document.getElementById('exploreMenuBtn');
+            const overlay = document.getElementById('splashOverlay');
+            btn.classList.add('btn-splash-click');
+            overlay.classList.add('active');
+            setTimeout(() => {
+                window.location.href = 'menu.html';
+            }, 1500);
+        }
+
+        // ============================
+        // Hero Slideshow
+        // ============================
+        const SLIDE_INTERVAL = 4500; // 4.5 seconds
+        let currentSlide = 0;
+        let slideTimer = null;
+        const totalSlides = document.querySelectorAll('.hero-slide').length;
+
+        function applySlideTheme(index) {
+            const slide = document.querySelector(`.hero-slide[data-slide="${index}"]`);
+            const accent = slide.dataset.themeAccent || '#FFC107';
+            const glow = slide.dataset.themeGlow || 'rgba(255,193,7,0.5)';
+            const overlay = slide.dataset.themeOverlay || 'rgba(200,110,0,0.15)';
+
+            // Update CSS custom properties on the hero wrapper
+            const hero = document.getElementById('heroSlider');
+            hero.style.setProperty('--hero-accent', accent);
+            hero.style.setProperty('--hero-accent-glow', glow);
+
+            // Shift colour-tint overlay
+            document.getElementById('heroThemeOverlay').style.background =
+                `linear-gradient(135deg, ${overlay}, transparent 60%)`;
+        }
+
+        function goToSlide(index) {
+            document.querySelectorAll('.hero-slide').forEach(s => s.classList.remove('active'));
+            document.querySelectorAll('.slide-dot').forEach(d => d.classList.remove('active'));
+
+            currentSlide = index;
+            document.querySelector(`.hero-slide[data-slide="${index}"]`).classList.add('active');
+            document.querySelector(`.slide-dot[data-index="${index}"]`).classList.add('active');
+
+            applySlideTheme(index);
+            restartAutoAdvance();
+        }
+
+        function heroSlideChange(direction) {
+            let next = (currentSlide + direction + totalSlides) % totalSlides;
+            goToSlide(next);
+        }
+
+        function restartAutoAdvance() {
+            clearInterval(slideTimer);
+            slideTimer = setInterval(() => heroSlideChange(1), SLIDE_INTERVAL);
+        }
+
+        // Pause on hover
+        const heroSlider = document.getElementById('heroSlider');
+        heroSlider.addEventListener('mouseenter', () => clearInterval(slideTimer));
+        heroSlider.addEventListener('mouseleave', restartAutoAdvance);
+
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowLeft') heroSlideChange(-1);
+            if (e.key === 'ArrowRight') heroSlideChange(1);
+        });
+
+        // Touch swipe support
+        let touchStartX = 0;
+        heroSlider.addEventListener('touchstart', (e) => {
+            touchStartX = e.changedTouches[0].screenX;
+        }, { passive: true });
+        heroSlider.addEventListener('touchend', (e) => {
+            const diff = touchStartX - e.changedTouches[0].screenX;
+            if (Math.abs(diff) > 50) heroSlideChange(diff > 0 ? 1 : -1);
+        }, { passive: true });
+
+        // Initialize with first slide's theme
+        applySlideTheme(0);
+        restartAutoAdvance();
+
+        // ============================
+        // Drink Themes & Splash Mapping
+        // ============================
+        const THEMES = {
+            'mango': { color: '#FFB300', icon: '🥭', text: 'Mango Magic incoming... 🥭✨' },
+            'pomegranate': { color: '#B91C1C', icon: '🍎', text: 'Pomegranate Ruby pouring... ❤️✨' },
+            'watermelon': { color: '#FF4F81', icon: '🍉', text: 'Watermelon Chill blending... 🍉🧊' },
+            'orange': { color: '#FF9800', icon: '🍊', text: 'Orange Zest squeezing... 🍊✨' },
+            'lemon': { color: '#FDE047', icon: '🍋', text: 'Lemon Fizz refreshing... 🍋✨' },
+            'apple': { color: '#66BB6A', icon: '🍎', text: 'Apple Freshness pouring... 🍎✨' },
+            'pineapple': { color: '#FDD835', icon: '🍍', text: 'Pineapple Punch blending... 🍍✨' },
+            'guava': { color: '#F472B6', icon: '🍈', text: 'Guava Bliss loading... 🍈💖' },
+            'mojito': { color: '#10B981', icon: '🌿', text: 'Minty freshness loading... 🌿✨' },
+            'lagoon': { color: '#0EA5E9', icon: '💎', text: 'Blue lagoon surfing... 💎🌊' },
+            'strawberry': { color: '#FF4F81', icon: '🍓', text: 'Berry Bliss pouring... 🍓💖' },
+            'choco': { color: '#3B1F0F', icon: '🍫', text: 'Cocoa dreams blending... 🍫✨' },
+            'pista': { color: '#A8D88E', icon: '🥜', text: 'Nutty energy charging... 🥜💪' },
+            'berry': { color: '#EF4444', icon: '🍉', text: 'Fruity goodness ahead... 🍉🍎' },
+            'shrek': { color: '#10B981', icon: '🥒', text: 'Going pickle-crazy... 🥒🤪' },
+            'birthday': { color: '#FBBF24', icon: '🎂', text: 'Happy shake day! 🎂🎉' },
+            'unicorn': { color: '#A855F7', icon: '🦄', text: 'Unicorn magic brewing... 🦄✨' },
+            'velvet': { color: '#DC2626', icon: '🍪', text: 'Cookie madness incoming... 🍪🔥' },
+            'dragon': { color: '#FFC107', icon: '🐍', text: 'Exotic pink refreshment incoming🍸🧃' },
+            'default': { color: '#FFC107', icon: '🥤', text: 'Pouring freshness... 🥤✨' }
+        };
+
+        // ============================
+        // Signature Drinks — Premium Ripple Splash
+        // ============================
+        function openSignatureDrink(card, event) {
+            // Prevent double-clicks
+            if (document.body.classList.contains('splash-animating')) return;
+            document.body.classList.add('splash-animating');
+
+            const e = event || window.event;
+            const splash = document.getElementById('drinkSplashV2');
+            const ripple = document.getElementById('rippleCircle');
+            const emojiEl = document.getElementById('splashEmoji');
+            const labelEl = document.getElementById('splashLabel');
+
+            // Read data from card
+            const drinkId = card.dataset.drink || 'default';
+            const themeKey = card.dataset.theme || drinkId;
+            const theme = THEMES[themeKey] || THEMES['default'];
+
+            const splashColor = theme.color;
+            const splashIcon = theme.icon;
+            const splashText = theme.text;
+
+            // --- Micro tap feedback ---
+            card.style.transform = 'scale(0.94)';
+            card.style.transition = 'transform 0.12s ease';
+            setTimeout(() => {
+                card.style.transform = '';
+            }, 120);
+
+            // --- Calculate ripple from click/tap point ---
+            let cx = window.innerWidth / 2;
+            let cy = window.innerHeight / 2;
+            if (e && e.clientX) {
+                cx = e.clientX;
+                cy = e.clientY;
+            } else {
+                // Fallback: center of card
+                const rect = card.getBoundingClientRect();
+                cx = rect.left + rect.width / 2;
+                cy = rect.top + rect.height / 2;
+            }
+
+            // Ripple needs to be big enough to cover entire viewport from the click point
+            const maxDist = Math.max(
+                Math.hypot(cx, cy),
+                Math.hypot(window.innerWidth - cx, cy),
+                Math.hypot(cx, window.innerHeight - cy),
+                Math.hypot(window.innerWidth - cx, window.innerHeight - cy)
+            ) * 2;
+
+            // Position & size the ripple
+            ripple.style.width = maxDist + 'px';
+            ripple.style.height = maxDist + 'px';
+            ripple.style.left = (cx - maxDist / 2) + 'px';
+            ripple.style.top = (cy - maxDist / 2) + 'px';
+            ripple.style.background = splashColor;
+            splash.style.setProperty('--ripple-color', splashColor);
+
+            // Set emoji and text
+            emojiEl.textContent = splashIcon;
+            labelEl.textContent = splashText;
+
+            // Reset animation
+            ripple.style.animation = 'none';
+            ripple.offsetHeight; // reflow
+            ripple.style.animation = '';
+
+            // Activate splash
+            splash.classList.add('active');
+
+            // After splash plays, wipe & navigate
+            setTimeout(() => {
+                document.body.classList.add('wipe-active');
+                setTimeout(() => {
+                    const name = card.dataset.name || 'Signature Drink';
+                    const price = card.dataset.price || '200';
+                    const theme = card.dataset.theme || 'default';
+                    const img = card.dataset.img || '';
+                    const desc = card.dataset.desc || '';
+
+                    window.location.href = `drink-detail.html?name=${encodeURIComponent(name)}&theme=${theme}&price=${price}&img=${encodeURIComponent(img)}&desc=${encodeURIComponent(desc)}`;
+                }, 400);
+            }, 1200);
+        }
+
+
+        document.querySelectorAll('.open-splash').forEach(card => {
+            card.removeAttribute('onclick');
+            card.addEventListener('click', function (e) {
+                openSignatureDrink(this, e);
+            });
+        });
+
+        // Inject heart buttons on home page cards
+        function injectHomeHeartButtons() {
+            document.querySelectorAll('.open-splash').forEach(card => {
+                if (card.querySelector('.wishlist-heart-btn')) return;
+                const name = card.dataset.name;
+                if (!name) return;
+                const img = card.dataset.img || '';
+                const price = card.dataset.price || '0';
+                const desc = card.dataset.desc || '';
+                const drink = card.dataset.drink || 'default';
+
+                const btn = document.createElement('button');
+                btn.className = 'wishlist-heart-btn absolute top-3 right-3 w-9 h-9 rounded-full bg-black/30 hover:bg-secondary/50 backdrop-blur-sm flex items-center justify-center transition-all active:scale-90 z-10';
+                btn.title = 'Save to Wishlist';
+                btn.setAttribute('data-wishlist-btn', name);
+                btn.innerHTML = `<span class="material-symbols-outlined text-white text-[20px]" style="font-variation-settings:'FILL' 0">favorite</span>`;
+                btn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    toggleWishlist({ name, img, price, desc, drink }, btn);
+                });
+
+                // Position relative needed on parent if not already
+                const imgWrap = card.querySelector('.sig-img-wrap, .product-img-wrap, div[class*="relative"]');
+                if (imgWrap) {
+                    if (getComputedStyle(imgWrap).position === 'static') imgWrap.style.position = 'relative';
+                    imgWrap.appendChild(btn);
+                } else {
+                    card.style.position = 'relative';
+                    card.appendChild(btn);
+                }
+            });
+        }
+
+        injectHomeHeartButtons();
+        syncWishlistHearts();
+    </script>
+    <style>
+        @keyframes heartPop {
+            0% {
+                transform: scale(1);
+            }
+
+            40% {
+                transform: scale(1.5);
+            }
+
+            70% {
+                transform: scale(0.85);
+            }
+
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        .heart-pop {
+            animation: heartPop 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .wishlist-heart-btn {
+            transition: all 0.2s ease;
+        }
+
+        .wishlist-heart-btn:hover {
+            transform: scale(1.15);
+        }
+    </style>
+
+    <!-- Toast notification -->
+    <div id="appToast"
+        style="position:fixed;bottom:80px;left:50%;transform:translateX(-50%) translateY(20px);z-index:9999;opacity:0;pointer-events:none;transition:all 0.35s cubic-bezier(0.16,1,0.3,1);">
+        <div
+            style="display:flex;align-items:center;gap:10px;background:linear-gradient(135deg,#FF4F81,#FF6FA8);color:white;padding:12px 20px;border-radius:999px;font-family:'Plus Jakarta Sans',sans-serif;font-size:13px;font-weight:700;box-shadow:0 8px 28px rgba(255,79,129,0.4);white-space:nowrap;">
+            <span id="appToastIcon" style="font-size:16px;">🛒</span>
+            <span id="appToastMsg">Message</span>
+        </div>
+    </div>
+
+    <script>
+        // ============================
+        // Toast Notification
+        // ============================
+        let _toastTimer;
+        function showToast(msg, icon = '🛒', duration = 2800) {
+            const toast = document.getElementById('appToast');
+            document.getElementById('appToastMsg').textContent = msg;
+            document.getElementById('appToastIcon').textContent = icon;
+            clearTimeout(_toastTimer);
+            toast.style.opacity = '1';
+            toast.style.transform = 'translateX(-50%) translateY(0)';
+            toast.style.pointerEvents = 'auto';
+            _toastTimer = setTimeout(() => {
+                toast.style.opacity = '0';
+                toast.style.transform = 'translateX(-50%) translateY(20px)';
+                toast.style.pointerEvents = 'none';
+            }, duration);
+        }
+
+        // ============================
+        // Order Now button handler
+        // ============================
+        function handleOrderNow() {
+            const cart = (JSON.parse(localStorage.getItem('nutrishake_cart') || '[]'));
+            const total = cart.reduce((sum, i) => sum + (i.quantity || 0), 0);
+            if (total === 0) {
+                showToast("You haven't ordered yet.", '🥤');
+            } else {
+                window.location.href = 'cart.html';
+            }
+        }
+    </script>
+</body>
+
+</html>

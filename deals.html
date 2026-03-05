@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Deals & Offers | NutriShake Bar</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+        rel="stylesheet" />
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#FFC107",
+                        "secondary": "#FF4F81",
+                        "bg-dark": "#FFF0F6",
+                        "bg-darker": "#FFE4F0",
+                        "bg-card": "#FFFFFF",
+                    },
+                },
+            },
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background: #FFF0F6;
+            min-height: 100dvh;
+        }
+
+        .fill-1 {
+            font-variation-settings: 'FILL' 1;
+        }
+
+        /* Deal card */
+        .deal-card {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            border: 1.5px solid rgba(255, 79, 129, 0.1);
+            box-shadow: 0 4px 20px rgba(255, 79, 129, 0.07);
+            transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease;
+        }
+
+        .deal-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 32px rgba(255, 79, 129, 0.15);
+        }
+
+        .deal-card:active {
+            transform: scale(0.98);
+        }
+
+        /* Offer badge */
+        .offer-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 10px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            padding: 3px 10px;
+            border-radius: 999px;
+        }
+
+        /* Timer bar */
+        .timer-bar {
+            height: 3px;
+            border-radius: 2px;
+            background: rgba(255, 79, 129, 0.12);
+            overflow: hidden;
+        }
+
+        .timer-fill {
+            height: 100%;
+            border-radius: 2px;
+            background: linear-gradient(90deg, #FF4F81, #FFC107);
+            animation: timerShrink linear forwards;
+        }
+
+        @keyframes timerShrink {
+            from {
+                width: 100%;
+            }
+
+            to {
+                width: 0%;
+            }
+        }
+
+        /* Copy code ripple */
+        @keyframes badgePop {
+            0% {
+                transform: scale(1);
+            }
+
+            40% {
+                transform: scale(1.18);
+            }
+
+            70% {
+                transform: scale(0.94);
+            }
+
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        .code-pop {
+            animation: badgePop 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        /* Fade-in */
+        @keyframes fadeSlideUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .deal-card {
+            animation: fadeSlideUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
+        }
+
+        /* Hero shimmer */
+        .shimmer-bg {
+            background: linear-gradient(135deg, #FF4F81 0%, #FF6FA8 50%, #FFC107 100%);
+        }
+
+        /* Scrolling ticker */
+        @keyframes scrollTicker {
+            from {
+                transform: translateX(0);
+            }
+
+            to {
+                transform: translateX(-50%);
+            }
+        }
+
+        .ticker-track {
+            display: flex;
+            white-space: nowrap;
+            animation: scrollTicker 18s linear infinite;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Navbar -->
+    <nav
+        class="sticky top-0 z-50 bg-bg-darker/90 backdrop-blur-xl border-b border-secondary/10 px-4 py-3 flex items-center justify-between">
+        <div class="flex items-center gap-3">
+            <button onclick="window.history.back()"
+                class="w-9 h-9 rounded-full bg-secondary/10 hover:bg-secondary/20 flex items-center justify-center transition-all active:scale-90">
+                <span class="material-symbols-outlined text-secondary text-xl">arrow_back</span>
+            </button>
+            <div>
+                <h1 class="text-base font-extrabold text-rose-800 tracking-tight">Deals & Offers</h1>
+                <p class="text-[10px] text-rose-800/50 font-medium">Limited time, unlimited savings 🎁</p>
+            </div>
+        </div>
+        <div class="relative cursor-pointer hover:scale-110 transition-transform"
+            onclick="window.location.href='cart.html'">
+            <span class="material-symbols-outlined text-secondary/70">shopping_cart</span>
+            <span id="cartBadge"
+                class="absolute -top-1.5 -right-1.5 bg-secondary text-white text-[9px] font-bold w-4 h-4 flex items-center justify-center rounded-full"
+                style="display: none;">0</span>
+        </div>
+    </nav>
+
+    <!-- Live ticker -->
+    <div class="overflow-hidden bg-secondary py-2">
+        <div class="ticker-track">
+            <span class="text-white text-[10px] font-extrabold uppercase tracking-widest px-8">🔥 Buy 2 Get 1 Free on
+                all Milkshakes</span>
+            <span class="text-white text-[10px] font-extrabold uppercase tracking-widest px-8">🍓 20% Off on Berry Bliss
+                today</span>
+            <span class="text-white text-[10px] font-extrabold uppercase tracking-widest px-8">🥑 Weekend Special: Any 3
+                Drinks for ₹450</span>
+            <span class="text-white text-[10px] font-extrabold uppercase tracking-widest px-8">🎂 Birthday Special: Free
+                drink on your birthday</span>
+            <span class="text-white text-[10px] font-extrabold uppercase tracking-widest px-8">🔥 Buy 2 Get 1 Free on
+                all Milkshakes</span>
+            <span class="text-white text-[10px] font-extrabold uppercase tracking-widest px-8">🍓 20% Off on Berry Bliss
+                today</span>
+            <span class="text-white text-[10px] font-extrabold uppercase tracking-widest px-8">🥑 Weekend Special: Any 3
+                Drinks for ₹450</span>
+            <span class="text-white text-[10px] font-extrabold uppercase tracking-widest px-8">🎂 Birthday Special: Free
+                drink on your birthday</span>
+        </div>
+    </div>
+
+    <!-- Hero banner -->
+    <div class="shimmer-bg mx-4 mt-5 rounded-2xl p-6 relative overflow-hidden">
+        <div class="absolute right-4 top-1/2 -translate-y-1/2 text-6xl opacity-20 select-none">🎉</div>
+        <span class="offer-badge bg-white/20 text-white mb-3">🔥 Limited Time</span>
+        <h2 class="text-2xl font-extrabold text-white mb-1">Today's Best Deals</h2>
+        <p class="text-white/80 text-sm">Use promo codes below to save big on every order!</p>
+    </div>
+
+    <!-- Deals Grid -->
+    <div class="px-4 py-5 space-y-4 pb-24">
+
+        <!-- Deal 1: BOGO -->
+        <div class="deal-card" style="animation-delay:0.05s">
+            <div class="bg-gradient-to-r from-secondary/15 to-pink-50 px-5 pt-5 pb-4">
+                <div class="flex items-start justify-between gap-3">
+                    <div>
+                        <span class="offer-badge bg-secondary text-white mb-2">🎁 BOGO Deal</span>
+                        <h3 class="text-lg font-extrabold text-rose-800">Buy 2 Get 1 Free</h3>
+                        <p class="text-xs text-rose-800/55 mt-1 leading-relaxed">Order any 2 milkshakes and get the 3rd
+                            one absolutely FREE. Mix and match from our full menu!</p>
+                    </div>
+                    <div class="text-4xl flex-shrink-0">🥛</div>
+                </div>
+                <!-- Valid on -->
+                <div class="flex flex-wrap gap-2 mt-3">
+                    <span
+                        class="text-[10px] font-bold bg-secondary/10 text-secondary px-2.5 py-1 rounded-full">Milkshakes</span>
+                    <span class="text-[10px] font-bold bg-secondary/10 text-secondary px-2.5 py-1 rounded-full">Nut
+                        Drinks</span>
+                </div>
+            </div>
+            <div class="px-5 py-4">
+                <div class="flex items-center justify-between mb-3">
+                    <div>
+                        <p class="text-[10px] font-bold text-rose-800/40 uppercase mb-1">Promo Code</p>
+                        <div class="flex items-center gap-2">
+                            <code
+                                class="text-sm font-extrabold text-secondary tracking-widest bg-secondary/8 px-3 py-1 rounded-lg"
+                                id="code1">BOGO3</code>
+                            <button onclick="copyCode('code1', this)"
+                                class="w-7 h-7 rounded-lg bg-secondary/10 hover:bg-secondary/20 flex items-center justify-center transition-all active:scale-90">
+                                <span class="material-symbols-outlined text-secondary text-sm">content_copy</span>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="text-right">
+                        <p class="text-[10px] font-bold text-rose-800/40 uppercase mb-1">Savings</p>
+                        <p class="text-lg font-extrabold text-secondary">Up to ₹300</p>
+                    </div>
+                </div>
+                <div class="timer-bar mb-1">
+                    <div class="timer-fill" style="animation-duration:12h;width:68%"></div>
+                </div>
+                <p class="text-[9px] text-rose-800/35 font-medium">⏰ Valid until midnight · Min order ₹350</p>
+            </div>
+            <div class="px-5 pb-5">
+                <button onclick="window.location.href='menu.html'"
+                    class="w-full bg-secondary text-white py-3 rounded-xl font-extrabold text-sm hover:opacity-90 transition-all active:scale-95 shadow-lg shadow-secondary/25">
+                    Order & Apply Deal
+                </button>
+            </div>
+        </div>
+
+        <!-- Deal 2: Weekend Special -->
+        <div class="deal-card" style="animation-delay:0.10s">
+            <div class="bg-gradient-to-r from-primary/15 to-amber-50 px-5 pt-5 pb-4">
+                <div class="flex items-start justify-between gap-3">
+                    <div>
+                        <span class="offer-badge bg-primary text-rose-900 mb-2">🥑 Weekend Deal</span>
+                        <h3 class="text-lg font-extrabold text-rose-800">Any 3 Drinks for ₹450</h3>
+                        <p class="text-xs text-rose-800/55 mt-1 leading-relaxed">Pick any 3 drinks from our entire menu
+                            — juices, shakes, or mojitos — for a flat ₹450. Save up to ₹200!</p>
+                    </div>
+                    <div class="text-4xl flex-shrink-0">🥤</div>
+                </div>
+                <div class="flex flex-wrap gap-2 mt-3">
+                    <span class="text-[10px] font-bold bg-primary/15 text-amber-700 px-2.5 py-1 rounded-full">All
+                        Categories</span>
+                    <span class="text-[10px] font-bold bg-primary/15 text-amber-700 px-2.5 py-1 rounded-full">Weekend
+                        Only</span>
+                </div>
+            </div>
+            <div class="px-5 py-4">
+                <div class="flex items-center justify-between mb-3">
+                    <div>
+                        <p class="text-[10px] font-bold text-rose-800/40 uppercase mb-1">Promo Code</p>
+                        <div class="flex items-center gap-2">
+                            <code
+                                class="text-sm font-extrabold text-amber-600 tracking-widest bg-primary/10 px-3 py-1 rounded-lg"
+                                id="code2">WKND450</code>
+                            <button onclick="copyCode('code2', this)"
+                                class="w-7 h-7 rounded-lg bg-primary/10 hover:bg-primary/20 flex items-center justify-center transition-all active:scale-90">
+                                <span class="material-symbols-outlined text-primary text-sm">content_copy</span>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="text-right">
+                        <p class="text-[10px] font-bold text-rose-800/40 uppercase mb-1">Flat Price</p>
+                        <p class="text-lg font-extrabold text-primary">₹450 only</p>
+                    </div>
+                </div>
+                <div class="timer-bar mb-1">
+                    <div class="timer-fill" style="animation-duration:12h;width:45%"></div>
+                </div>
+                <p class="text-[9px] text-rose-800/35 font-medium">⏰ Saturday & Sunday only · No minimum</p>
+            </div>
+            <div class="px-5 pb-5">
+                <button onclick="window.location.href='menu.html'"
+                    class="w-full bg-primary text-rose-900 py-3 rounded-xl font-extrabold text-sm hover:opacity-90 transition-all active:scale-95 shadow-lg shadow-primary/25">
+                    Order & Apply Deal
+                </button>
+            </div>
+        </div>
+
+        <!-- Deal 3: Berry Bliss 20% Off -->
+        <div class="deal-card" style="animation-delay:0.15s">
+            <div class="bg-gradient-to-r from-rose-100 to-pink-50 px-5 pt-5 pb-4">
+                <div class="flex items-start justify-between gap-3">
+                    <div>
+                        <span class="offer-badge bg-rose-500 text-white mb-2">🍓 20% Off</span>
+                        <h3 class="text-lg font-extrabold text-rose-800">Berry Bliss Flash Sale</h3>
+                        <p class="text-xs text-rose-800/55 mt-1 leading-relaxed">Get 20% off on our most popular Berry
+                            Bliss milkshake — perfect with strawberry, blueberry and pomegranate combo!</p>
+                    </div>
+                    <div class="text-4xl flex-shrink-0">🍓</div>
+                </div>
+                <div class="flex flex-wrap gap-2 mt-3">
+                    <span
+                        class="text-[10px] font-bold bg-rose-100 text-rose-600 px-2.5 py-1 rounded-full">Strawberry</span>
+                    <span
+                        class="text-[10px] font-bold bg-rose-100 text-rose-600 px-2.5 py-1 rounded-full">Pomegranate</span>
+                    <span
+                        class="text-[10px] font-bold bg-rose-100 text-rose-600 px-2.5 py-1 rounded-full">Blueberry</span>
+                </div>
+            </div>
+            <div class="px-5 py-4">
+                <div class="flex items-center justify-between mb-3">
+                    <div>
+                        <p class="text-[10px] font-bold text-rose-800/40 uppercase mb-1">Promo Code</p>
+                        <div class="flex items-center gap-2">
+                            <code
+                                class="text-sm font-extrabold text-rose-500 tracking-widest bg-rose-50 px-3 py-1 rounded-lg"
+                                id="code3">BERRY20</code>
+                            <button onclick="copyCode('code3', this)"
+                                class="w-7 h-7 rounded-lg bg-rose-50 hover:bg-rose-100 flex items-center justify-center transition-all active:scale-90">
+                                <span class="material-symbols-outlined text-rose-500 text-sm">content_copy</span>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="text-right">
+                        <p class="text-[10px] font-bold text-rose-800/40 uppercase mb-1">Discount</p>
+                        <p class="text-lg font-extrabold text-rose-500">20% Off</p>
+                    </div>
+                </div>
+                <div class="timer-bar mb-1">
+                    <div class="timer-fill" style="animation-duration:12h;width:30%"></div>
+                </div>
+                <p class="text-[9px] text-rose-800/35 font-medium">⏰ Today only · Max discount ₹50</p>
+            </div>
+            <div class="px-5 pb-5">
+                <button onclick="window.location.href='menu.html'"
+                    class="w-full bg-rose-500 text-white py-3 rounded-xl font-extrabold text-sm hover:opacity-90 transition-all active:scale-95 shadow-lg shadow-rose-500/25">
+                    Order & Apply Deal
+                </button>
+            </div>
+        </div>
+
+        <!-- Deal 4: Birthday -->
+        <div class="deal-card" style="animation-delay:0.20s">
+            <div class="bg-gradient-to-r from-purple-100 to-pink-50 px-5 pt-5 pb-4">
+                <div class="flex items-start justify-between gap-3">
+                    <div>
+                        <span class="offer-badge bg-purple-500 text-white mb-2">🎂 Birthday</span>
+                        <h3 class="text-lg font-extrabold text-rose-800">Free Drink on Your Birthday!</h3>
+                        <p class="text-xs text-rose-800/55 mt-1 leading-relaxed">Celebrate your special day with a free
+                            drink on us! Show your birthday at checkout to redeem this exclusive treat.</p>
+                    </div>
+                    <div class="text-4xl flex-shrink-0">🎉</div>
+                </div>
+                <div class="flex flex-wrap gap-2 mt-3">
+                    <span class="text-[10px] font-bold bg-purple-100 text-purple-600 px-2.5 py-1 rounded-full">Any
+                        Drink</span>
+                    <span class="text-[10px] font-bold bg-purple-100 text-purple-600 px-2.5 py-1 rounded-full">Show
+                        ID</span>
+                </div>
+            </div>
+            <div class="px-5 py-4">
+                <div class="flex items-center justify-between mb-3">
+                    <div>
+                        <p class="text-[10px] font-bold text-rose-800/40 uppercase mb-1">Promo Code</p>
+                        <div class="flex items-center gap-2">
+                            <code
+                                class="text-sm font-extrabold text-purple-600 tracking-widest bg-purple-50 px-3 py-1 rounded-lg"
+                                id="code4">BDAY1</code>
+                            <button onclick="copyCode('code4', this)"
+                                class="w-7 h-7 rounded-lg bg-purple-50 hover:bg-purple-100 flex items-center justify-center transition-all active:scale-90">
+                                <span class="material-symbols-outlined text-purple-500 text-sm">content_copy</span>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="text-right">
+                        <p class="text-[10px] font-bold text-rose-800/40 uppercase mb-1">Value</p>
+                        <p class="text-lg font-extrabold text-purple-500">1 Free 🎁</p>
+                    </div>
+                </div>
+                <div class="timer-bar mb-1">
+                    <div class="timer-fill" style="animation-duration:12h;width:100%"></div>
+                </div>
+                <p class="text-[9px] text-rose-800/35 font-medium">✅ Always available · Valid ID required</p>
+            </div>
+            <div class="px-5 pb-5">
+                <button onclick="window.location.href='menu.html'"
+                    class="w-full bg-purple-500 text-white py-3 rounded-xl font-extrabold text-sm hover:opacity-90 transition-all active:scale-95 shadow-lg shadow-purple-500/25">
+                    Order & Apply Deal
+                </button>
+            </div>
+        </div>
+
+        <!-- Deal 5: First Order -->
+        <div class="deal-card" style="animation-delay:0.25s">
+            <div class="bg-gradient-to-r from-emerald-100 to-teal-50 px-5 pt-5 pb-4">
+                <div class="flex items-start justify-between gap-3">
+                    <div>
+                        <span class="offer-badge bg-emerald-500 text-white mb-2">🌟 First Order</span>
+                        <h3 class="text-lg font-extrabold text-rose-800">Flat ₹50 Off — New User</h3>
+                        <p class="text-xs text-rose-800/55 mt-1 leading-relaxed">Placing your first order? Get ₹50 off
+                            instantly! Valid on all orders above ₹150. Welcome to NutriShake!</p>
+                    </div>
+                    <div class="text-4xl flex-shrink-0">🌿</div>
+                </div>
+                <div class="flex flex-wrap gap-2 mt-3">
+                    <span class="text-[10px] font-bold bg-emerald-100 text-emerald-700 px-2.5 py-1 rounded-full">All
+                        Drinks</span>
+                    <span class="text-[10px] font-bold bg-emerald-100 text-emerald-700 px-2.5 py-1 rounded-full">First
+                        Order Only</span>
+                </div>
+            </div>
+            <div class="px-5 py-4">
+                <div class="flex items-center justify-between mb-3">
+                    <div>
+                        <p class="text-[10px] font-bold text-rose-800/40 uppercase mb-1">Promo Code</p>
+                        <div class="flex items-center gap-2">
+                            <code
+                                class="text-sm font-extrabold text-emerald-600 tracking-widest bg-emerald-50 px-3 py-1 rounded-lg"
+                                id="code5">FIRST50</code>
+                            <button onclick="copyCode('code5', this)"
+                                class="w-7 h-7 rounded-lg bg-emerald-50 hover:bg-emerald-100 flex items-center justify-center transition-all active:scale-90">
+                                <span class="material-symbols-outlined text-emerald-600 text-sm">content_copy</span>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="text-right">
+                        <p class="text-[10px] font-bold text-rose-800/40 uppercase mb-1">Savings</p>
+                        <p class="text-lg font-extrabold text-emerald-600">₹50 Flat</p>
+                    </div>
+                </div>
+                <div class="timer-bar mb-1">
+                    <div class="timer-fill" style="animation-duration:12h;width:100%"></div>
+                </div>
+                <p class="text-[9px] text-rose-800/35 font-medium">✅ Always valid · Min order ₹150</p>
+            </div>
+            <div class="px-5 pb-5">
+                <button onclick="window.location.href='menu.html'"
+                    class="w-full bg-emerald-500 text-white py-3 rounded-xl font-extrabold text-sm hover:opacity-90 transition-all active:scale-95 shadow-lg shadow-emerald-500/25">
+                    Order & Apply Deal
+                </button>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Bottom Nav -->
+    <div
+        class="fixed bottom-0 left-0 right-0 z-50 bg-bg-darker/95 backdrop-blur-xl border-t border-secondary/8 px-4 py-2.5 flex justify-between items-center">
+        <a class="flex flex-col items-center gap-1 text-rose-800/40 hover:text-secondary transition-colors"
+            href="index.html">
+            <span class="material-symbols-outlined">home</span>
+            <span class="text-[10px] font-medium">Home</span>
+        </a>
+        <a class="flex flex-col items-center gap-1 text-rose-800/40 hover:text-secondary transition-colors"
+            href="menu.html">
+            <span class="material-symbols-outlined">restaurant_menu</span>
+            <span class="text-[10px] font-medium">Menu</span>
+        </a>
+        <a class="flex flex-col items-center gap-1 text-secondary" href="deals.html">
+            <span class="material-symbols-outlined fill-1">local_offer</span>
+            <span class="text-[10px] font-bold">Deals</span>
+        </a>
+        <a class="flex flex-col items-center gap-1 text-rose-800/40 hover:text-secondary transition-colors"
+            href="cart.html">
+            <span class="material-symbols-outlined">shopping_cart</span>
+            <span class="text-[10px] font-medium">Cart</span>
+        </a>
+    </div>
+
+    <script src="cart.js"></script>
+    <script>
+        // Copy promo code
+        function copyCode(codeId, btn) {
+            const code = document.getElementById(codeId).textContent;
+            navigator.clipboard.writeText(code).catch(() => { });
+
+            const icon = btn.querySelector('.material-symbols-outlined');
+            icon.textContent = 'check';
+            btn.classList.add('code-pop');
+            setTimeout(() => {
+                icon.textContent = 'content_copy';
+                btn.classList.remove('code-pop');
+            }, 1800);
+        }
+    </script>
+</body>
+
+</html>

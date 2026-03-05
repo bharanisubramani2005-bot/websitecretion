@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Checkout | NutriShake Bar</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+        rel="stylesheet" />
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#FFC107",
+                        "secondary": "#FF4F81",
+                        "bg-dark": "#3B1F0F",
+                        "bg-darker": "#2A1508",
+                        "bg-card": "#4E2E1A",
+                    },
+                },
+            },
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background: #3B1F0F;
+            color: white;
+            min-height: 100dvh;
+        }
+
+        input,
+        select {
+            background: rgba(255, 255, 255, 0.05) !important;
+            border: 1px solid rgba(255, 255, 255, 0.1) !important;
+            color: white !important;
+            border-radius: 0.75rem !important;
+        }
+
+        input:focus,
+        select:focus {
+            border-color: #FFC107 !important;
+            ring: 0 !important;
+        }
+
+        .success-screen {
+            display: none;
+        }
+    </style>
+</head>
+
+<body class="bg-bg-dark text-white font-display">
+    <nav
+        class="sticky top-0 z-50 bg-bg-darker/90 backdrop-blur-xl border-b border-white/5 px-4 py-4 flex items-center gap-4">
+        <a href="cart.html" class="material-symbols-outlined text-white/80">arrow_back</a>
+        <h1 class="text-lg font-extrabold tracking-tight">Checkout</h1>
+    </nav>
+
+    <div id="checkoutForm" class="px-4 py-6 max-w-2xl mx-auto">
+        <div class="space-y-8">
+            <!-- Customer Details -->
+            <section>
+                <h2 class="text-sm font-bold text-primary uppercase tracking-widest mb-4">Customer Details</h2>
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-[10px] text-white/40 font-bold uppercase mb-1.5 ml-1">Full Name</label>
+                        <input type="text" id="fullName" class="w-full px-4 py-3 text-sm" placeholder="John Doe"
+                            required>
+                    </div>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-[10px] text-white/40 font-bold uppercase mb-1.5 ml-1">Email
+                                ID</label>
+                            <input type="email" id="email" class="w-full px-4 py-3 text-sm"
+                                placeholder="john@example.com" required>
+                        </div>
+                        <div>
+                            <label class="block text-[10px] text-white/40 font-bold uppercase mb-1.5 ml-1">Phone
+                                Number</label>
+                            <input type="tel" id="phone" class="w-full px-4 py-3 text-sm" placeholder="+91 9876543210"
+                                required>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Delivery Address -->
+            <section>
+                <h2 class="text-sm font-bold text-primary uppercase tracking-widest mb-4">Delivery Address</h2>
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-[10px] text-white/40 font-bold uppercase mb-1.5 ml-1">Street
+                            Address</label>
+                        <input type="text" id="address" class="w-full px-4 py-3 text-sm"
+                            placeholder="Flat No, Street Name" required>
+                    </div>
+                    <div class="grid grid-cols-3 gap-3">
+                        <div class="col-span-1">
+                            <label class="block text-[10px] text-white/40 font-bold uppercase mb-1.5 ml-1">City</label>
+                            <input type="text" id="city" class="w-full px-4 py-3 text-sm" placeholder="City" required>
+                        </div>
+                        <div class="col-span-1">
+                            <label class="block text-[10px] text-white/40 font-bold uppercase mb-1.5 ml-1">State</label>
+                            <input type="text" id="state" class="w-full px-4 py-3 text-sm" placeholder="State" required>
+                        </div>
+                        <div class="col-span-1">
+                            <label
+                                class="block text-[10px] text-white/40 font-bold uppercase mb-1.5 ml-1">Pincode</label>
+                            <input type="text" id="pincode" class="w-full px-4 py-3 text-sm" placeholder="123456"
+                                required>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Payment Mode -->
+            <section>
+                <h2 class="text-sm font-bold text-primary uppercase tracking-widest mb-4">Mode of Payment</h2>
+                <div class="grid grid-cols-2 gap-3">
+                    <label
+                        class="relative flex flex-col items-center justify-center p-4 bg-white/5 border border-white/10 rounded-xl cursor-pointer hover:bg-white/10 transition-colors">
+                        <input type="radio" name="payment" value="COD" class="hidden" checked>
+                        <span class="material-symbols-outlined mb-2">payments</span>
+                        <span class="text-[11px] font-bold">Cash on Delivery</span>
+                    </label>
+                    <label
+                        class="relative flex flex-col items-center justify-center p-4 bg-white/5 border border-white/10 rounded-xl cursor-pointer hover:bg-white/10 transition-colors">
+                        <input type="radio" name="payment" value="UPI" class="hidden">
+                        <span class="material-symbols-outlined mb-2">qr_code_2</span>
+                        <span class="text-[11px] font-bold">UPI</span>
+                    </label>
+                </div>
+            </section>
+
+            <div class="pt-6">
+                <div class="bg-bg-card rounded-2xl p-6 mb-6">
+                    <div class="flex justify-between items-center text-sm font-bold">
+                        <span class="text-white/40">Total to Pay</span>
+                        <span class="text-primary text-xl">₹<span id="finalAmount">0</span></span>
+                    </div>
+                </div>
+                <button onclick="finishOrder()" id="finishBtn"
+                    class="w-full bg-primary text-bg-dark py-4 rounded-2xl font-extrabold text-base shadow-xl active:scale-[0.98] transition-transform flex items-center justify-center gap-2">
+                    Finish Order
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Success Screen -->
+    <div id="successScreen"
+        class="success-screen fixed inset-0 z-[100] bg-bg-dark flex flex-col items-center justify-center p-6 text-center animate-fade-in">
+        <div class="w-24 h-24 bg-primary/20 rounded-full flex items-center justify-center mb-6">
+            <span class="material-symbols-outlined text- primary text-5xl">check_circle</span>
+        </div>
+        <h2 class="text-3xl font-extrabold text-white mb-2">Order Confirmed! 🥤✨</h2>
+        <p class="text-white/60 mb-8">Your freshness is on the way!</p>
+
+        <div class="bg-bg-card border border-white/5 rounded-2xl p-6 w-full max-w-sm mb-10 text-left space-y-4">
+            <div class="flex justify-between items-center pb-3 border-b border-white/5">
+                <span class="text-[11px] font-bold text-white/40 uppercase">Total Paid</span>
+                <span class="text-primary font-extrabold">₹<span id="paidAmount">0</span></span>
+            </div>
+            <div>
+                <span class="text-[11px] font-bold text-white/40 uppercase block mb-1">Delivering To</span>
+                <p id="summaryAddress" class="text-sm font-medium"></p>
+            </div>
+            <div class="flex justify-between">
+                <div>
+                    <span class="text-[11px] font-bold text-white/40 uppercase block mb-1">Estimated Time</span>
+                    <p class="text-sm font-medium">25-35 mins</p>
+                </div>
+                <div class="text-right">
+                    <span class="text-[11px] font-bold text-white/40 uppercase block mb-1">Order ID</span>
+                    <p id="orderId" class="text-sm font-medium font-mono text-white/60">#492042</p>
+                </div>
+            </div>
+        </div>
+
+        <button onclick="window.location.href='index.html'"
+            class="bg-white/10 text-white px-10 py-4 rounded-full font-extrabold text-sm">Back to Home</button>
+    </div>
+
+    <script src="cart.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const cart = getCart();
+            let total = cart.reduce((sum, i) => sum + i.price * i.quantity, 0);
+            document.getElementById('finalAmount').textContent = total;
+            document.getElementById('paidAmount').textContent = total;
+        });
+
+        function finishOrder() {
+            const btn = document.getElementById('finishBtn');
+            const fields = ['fullName', 'email', 'phone', 'address', 'city', 'pincode'];
+            let valid = true;
+
+            fields.forEach(id => {
+                const el = document.getElementById(id);
+                if (!el.value) {
+                    el.style.borderColor = '#FF4F81';
+                    valid = false;
+                } else {
+                    el.style.borderColor = 'rgba(255,255,255,0.1)';
+                }
+            });
+
+            if (!valid) return;
+
+            btn.innerHTML = `<span class="material-symbols-outlined animate-spin">sync</span> Validating...`;
+            btn.style.pointerEvents = 'none';
+
+            setTimeout(() => {
+                const address = document.getElementById('address').value + ', ' + document.getElementById('city').value;
+                document.getElementById('summaryAddress').textContent = address;
+                document.getElementById('orderId').textContent = '#' + Math.floor(Math.random() * 900000 + 100000);
+
+                document.getElementById('checkoutForm').style.display = 'none';
+                document.getElementById('successScreen').style.display = 'flex';
+
+                clearCart();
+            }, 1200);
+        }
+    </script>
+</body>
+
+</html>
