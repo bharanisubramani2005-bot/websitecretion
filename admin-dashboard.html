@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Admin Dashboard | NutriShake Bar</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+        rel="stylesheet" />
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#FFC107",
+                        "secondary": "#FF4F81",
+                        "bg-dark": "#FFF0F6",
+                        "bg-darker": "#FFE4F0",
+                    },
+                },
+            },
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background: #FFF0F6;
+            color: #1F2937;
+            min-height: 100dvh;
+        }
+
+        .glass-nav {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .management-card {
+            background: var(--bg-card);
+            border-radius: 20px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            display: flex;
+            align-items: center;
+            padding: 12px;
+            gap: 16px;
+        }
+
+        .management-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 20px -5px rgba(0, 0, 0, 0.1);
+        }
+
+        .card-thumb {
+            width: 80px;
+            height: 80px;
+            border-radius: 14px;
+            object-fit: cover;
+            flex-shrink: 0;
+            background: #f1f5f9;
+        }
+
+        .card-info {
+            flex-grow: 1;
+            min-width: 0;
+        }
+
+        .card-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            flex-shrink: 0;
+        }
+
+        .action-btn {
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+        }
+
+        .btn-edit {
+            background: rgba(59, 130, 246, 0.1);
+            color: #3b82f6;
+        }
+
+        .btn-edit:hover {
+            background: #3b82f6;
+            color: white;
+        }
+
+        .btn-delete {
+            background: rgba(239, 68, 68, 0.1);
+            color: #ef4444;
+        }
+
+        .btn-delete:hover {
+            background: #ef4444;
+            color: white;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            z-index: 100;
+            background: rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(4px);
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 24px;
+            width: 100%;
+            max-width: 500px;
+            max-height: 90vh;
+            overflow-y: auto;
+            padding: 32px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            animation: modalPop 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            border: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        @keyframes modalPop {
+            from {
+                opacity: 0;
+                transform: scale(0.95);
+            }
+
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .input-group label {
+            display: block;
+            font-size: 11px;
+            font-weight: 800;
+            color: #64748b;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 4px;
+            margin-left: 4px;
+        }
+
+        .input-field {
+            width: 100%;
+            padding: 12px 16px;
+            border-radius: 12px;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            background: #f1f5f9;
+            color: #1e293b;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.2s ease;
+        }
+
+        .input-field:focus {
+            outline: none;
+            border-color: #FF4F81;
+            background: white;
+            box-shadow: 0 0 0 4px rgba(255, 79, 129, 0.1);
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Header -->
+    <header class="glass-nav sticky top-0 z-50 px-6 py-4 flex items-center justify-between">
+        <div>
+            <h1 class="text-xl font-extrabold text-slate-800 tracking-tight">ADMIN DASHBOARD</h1>
+            <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Management Console</p>
+        </div>
+        <div class="flex items-center gap-4">
+            <button onclick="openModal()"
+                class="bg-primary text-white px-5 py-2.5 rounded-xl font-bold text-sm shadow-lg shadow-primary/20 hover:scale-105 transition-all flex items-center gap-2">
+                <span class="material-symbols-outlined text-lg">add</span>
+                ADD NEW ITEM
+            </button>
+            <button onclick="handleLogout()"
+                class="p-2.5 rounded-xl hover:bg-slate-100 text-slate-400 transition-colors">
+                <span class="material-symbols-outlined">logout</span>
+            </button>
+        </div>
+    </header>
+
+    <main class="max-w-6xl mx-auto px-6 py-8">
+        <div id="menuGrid" class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <!-- Cards injected by JS -->
+        </div>
+
+        <!-- Empty State -->
+        <div id="emptyState" class="hidden py-20 text-center">
+            <div
+                class="w-20 h-20 bg-slate-100 dark:bg-slate-800/50 rounded-full flex items-center justify-center mx-auto mb-4">
+                <span class="material-symbols-outlined text-4xl text-slate-300">inventory_2</span>
+            </div>
+            <h3 class="text-lg font-bold text-slate-500">No menu items found</h3>
+            <p class="text-sm text-slate-400 mt-1">Click 'Add New Item' to create one.</p>
+        </div>
+    </main>
+
+    <!-- Modal Form -->
+    <div id="itemModal" class="modal">
+        <div class="modal-content">
+            <h2 id="modalTitle" class="text-2xl font-extrabold text-slate-800 mb-6">Add New Item</h2>
+            <form id="itemForm" class="space-y-4" onsubmit="saveItem(event)">
+                <input type="hidden" id="editIndex">
+
+                <div class="input-group">
+                    <label>Item Name</label>
+                    <input type="text" id="itemName" class="input-field" placeholder="e.g. Mango Magic" required>
+                </div>
+
+                <div class="grid grid-cols-2 gap-4">
+                    <div class="input-group">
+                        <label>Price (₹)</label>
+                        <input type="number" id="itemPrice" class="input-field" placeholder="180" required>
+                    </div>
+                    <div class="input-group">
+                        <label>Category</label>
+                        <select id="itemCategory" class="input-field" required>
+                            <option value="milkshake">Milkshake</option>
+                            <option value="juice">Juice</option>
+                            <option value="nut">Nut Drink</option>
+                            <option value="mojito">Mojito/Soda</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <label>Description</label>
+                    <textarea id="itemDesc" class="input-field h-24 resize-none"
+                        placeholder="Brief description..."></textarea>
+                </div>
+
+                <div class="input-group">
+                    <label>Image URL</label>
+                    <input type="url" id="itemImg" class="input-field" placeholder="https://...">
+                </div>
+
+                <div class="input-group">
+                    <label>Theme Color (Theme Key)</label>
+                    <select id="itemTheme" class="input-field">
+                        <option value="mango">Mango (Amber)</option>
+                        <option value="strawberry">Strawberry (Pink)</option>
+                        <option value="choco">Chocolate (Brown)</option>
+                        <option value="pista">Pistachio (Green)</option>
+                        <option value="lagoon">Lagoon (Blue)</option>
+                        <option value="mojito">Mint (Emerald)</option>
+                        <option value="watermelon">Watermelon (Rose)</option>
+                        <option value="default">Default (Yellow)</option>
+                    </select>
+                </div>
+
+                <div class="flex gap-4 pt-4">
+                    <button type="button" onclick="closeModal()"
+                        class="flex-1 py-3.5 rounded-xl font-bold text-slate-500 bg-slate-100 hover:bg-slate-200 transition-colors">CANCEL</button>
+                    <button type="submit"
+                        class="flex-1 py-3.5 rounded-xl font-bold text-white bg-secondary shadow-lg shadow-secondary/20 hover:scale-[1.02] transition-all">SAVE
+                        ITEM</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Security check
+        if (localStorage.getItem('isAdminLoggedIn') !== 'true') {
+            window.location.href = 'admin-login.html';
+        }
+
+        function handleLogout() {
+            localStorage.removeItem('isAdminLoggedIn');
+            window.location.href = 'index.html';
+        }
+
+        // --- Data Management ---
+        const LOCAL_STORAGE_KEY = 'menuItems';
+
+        let menuItems = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY)) || [];
+
+        function renderGrid() {
+            const grid = document.getElementById('menuGrid');
+            const emptyState = document.getElementById('emptyState');
+            grid.innerHTML = '';
+
+            if (menuItems.length === 0) {
+                grid.classList.add('hidden');
+                emptyState.classList.remove('hidden');
+                return;
+            }
+
+            grid.classList.remove('hidden');
+            emptyState.classList.add('hidden');
+
+            menuItems.forEach((item, index) => {
+                const card = document.createElement('div');
+                card.className = 'management-card';
+                card.innerHTML = `
+                    <img src="${item.img || 'https://via.placeholder.com/400x300'}" class="card-thumb" alt="${item.name}">
+                    <div class="card-info">
+                        <h3 class="font-extrabold text-slate-800 text-sm truncate">${item.name}</h3>
+                        <p class="text-lg font-black text-secondary">₹${item.price}</p>
+                        <span class="text-[10px] font-bold text-slate-400 capitalize bg-slate-100 dark:bg-slate-800 px-2 py-0.5 rounded-md inline-block mt-1">${item.category}</span>
+                    </div>
+                    <div class="card-actions">
+                        <button onclick="editItem(${index})" class="action-btn btn-edit" title="Edit Item">
+                            <span class="material-symbols-outlined text-[18px]">edit</span>
+                        </button>
+                        <button onclick="confirmDelete(${index})" class="action-btn btn-delete" title="Delete Item">
+                            <span class="material-symbols-outlined text-[18px]">delete</span>
+                        </button>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        function saveItem(e) {
+            e.preventDefault();
+            const editIndex = document.getElementById('editIndex').value;
+
+            const item = {
+                name: document.getElementById('itemName').value,
+                price: document.getElementById('itemPrice').value,
+                category: document.getElementById('itemCategory').value,
+                desc: document.getElementById('itemDesc').value,
+                img: document.getElementById('itemImg').value,
+                theme: document.getElementById('itemTheme').value
+            };
+
+            if (editIndex !== "") {
+                menuItems[editIndex] = item;
+            } else {
+                menuItems.push(item);
+            }
+
+            localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(menuItems));
+            closeModal();
+            renderGrid();
+        }
+
+        function editItem(index) {
+            const item = menuItems[index];
+            document.getElementById('modalTitle').textContent = 'Edit Item';
+            document.getElementById('editIndex').value = index;
+            document.getElementById('itemName').value = item.name;
+            document.getElementById('itemPrice').value = item.price;
+            document.getElementById('itemCategory').value = item.category;
+            document.getElementById('itemDesc').value = item.desc;
+            document.getElementById('itemImg').value = item.img;
+            document.getElementById('itemTheme').value = item.theme;
+            openModal();
+        }
+
+        function confirmDelete(index) {
+            if (confirm('Are you sure you want to delete this item?')) {
+                menuItems.splice(index, 1);
+                localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(menuItems));
+                renderGrid();
+            }
+        }
+
+        // --- UI Logic ---
+        function openModal() {
+            document.getElementById('itemModal').classList.add('active');
+        }
+
+        function closeModal() {
+            document.getElementById('itemModal').classList.remove('active');
+            document.getElementById('itemForm').reset();
+            document.getElementById('editIndex').value = "";
+            document.getElementById('modalTitle').textContent = 'Add New Item';
+        }
+
+        // Initial render
+        renderGrid();
+    </script>
+</body>
+
+</html>

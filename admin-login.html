@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Admin Login | NutriShake Bar</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+        rel="stylesheet" />
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#FF7EB6",
+                        "secondary": "#FF4F81",
+                        "bg-dark": "#FFF0F6",
+                        "bg-darker": "#FFE4F0",
+                    },
+                },
+            },
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background: #FFF0F6;
+            color: #1F2937;
+            padding: 20px;
+            min-height: 100dvh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .login-card {
+            background: white;
+            padding: 40px;
+            border-radius: 32px;
+            box-shadow: 0 20px 50px rgba(255, 79, 129, 0.1);
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+            animation: slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .input-field {
+            width: 100%;
+            padding: 14px 20px;
+            border-radius: 16px;
+            border: 2px solid #FFF0F6;
+            background: #FFF0F6;
+            margin-top: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            outline: none;
+        }
+
+        .input-field:focus {
+            border-color: #FF4F81;
+            background: white;
+            box-shadow: 0 0 0 4px rgba(255, 79, 129, 0.1);
+        }
+
+        .login-btn {
+            width: 100%;
+            padding: 16px;
+            border-radius: 16px;
+            background: linear-gradient(135deg, #FF4F81, #FF8C00);
+            color: white;
+            font-weight: 800;
+            font-size: 15px;
+            margin-top: 24px;
+            box-shadow: 0 10px 20px rgba(255, 79, 129, 0.2);
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+        }
+
+        .login-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 30px rgba(255, 79, 129, 0.3);
+        }
+
+        .login-btn:active {
+            transform: scale(0.98);
+        }
+
+        #errorMessage {
+            color: #E53935;
+            font-size: 12px;
+            font-weight: 600;
+            margin-top: 12px;
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="login-card">
+        <div class="mb-8">
+            <div class="w-16 h-16 bg-secondary/10 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                <span class="material-symbols-outlined text-secondary text-3xl">admin_panel_settings</span>
+            </div>
+            <h1 class="text-2xl font-extrabold text-gray-800 tracking-tight">Admin Login</h1>
+            <p class="text-sm text-gray-400 mt-1 font-medium">NutriShake Bar Portal</p>
+        </div>
+
+        <form id="loginForm" onsubmit="handleLogin(event)">
+            <div class="text-left">
+                <label class="text-[11px] font-bold text-gray-400 uppercase tracking-wider ml-1">Email Address</label>
+                <input type="email" id="email" class="input-field" placeholder="admin@nutrishake.com" required>
+            </div>
+            <div class="text-left mt-4">
+                <label class="text-[11px] font-bold text-gray-400 uppercase tracking-wider ml-1">Password</label>
+                <input type="password" id="password" class="input-field" placeholder="••••••••" required>
+            </div>
+
+            <div id="errorMessage">Invalid login. Admin access only.</div>
+
+            <button type="submit" class="login-btn">LOGIN</button>
+        </form>
+
+        <a href="settings.html"
+            class="inline-block mt-8 text-xs font-bold text-gray-400 hover:text-secondary transition-colors">
+            <span class="flex items-center gap-1 justify-center">
+                <span class="material-symbols-outlined text-sm">arrow_back</span>
+                Back to Settings
+            </span>
+        </a>
+    </div>
+
+    <script>
+        function handleLogin(e) {
+            e.preventDefault();
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const errorMsg = document.getElementById('errorMessage');
+
+            if (email === 'bharanisubramani2005@gmail.com' && password === 'Bharani@301005') {
+                localStorage.setItem('isAdminLoggedIn', 'true');
+                window.location.href = 'admin-dashboard.html';
+            } else {
+                errorMsg.style.display = 'block';
+                // Shake animation for error
+                const card = document.querySelector('.login-card');
+                card.style.animation = 'none';
+                card.offsetHeight; // trigger reflow
+                card.style.animation = 'shake 0.4s cubic-bezier(.36,.07,.19,.97) both';
+            }
+        }
+    </script>
+
+    <style>
+        @keyframes shake {
+
+            10%,
+            90% {
+                transform: translate3d(-1px, 0, 0);
+            }
+
+            20%,
+            80% {
+                transform: translate3d(2px, 0, 0);
+            }
+
+            30%,
+            50%,
+            70% {
+                transform: translate3d(-4px, 0, 0);
+            }
+
+            40%,
+            60% {
+                transform: translate3d(4px, 0, 0);
+            }
+        }
+    </style>
+</body>
+
+</html>
